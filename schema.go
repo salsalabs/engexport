@@ -20,7 +20,7 @@ const RecordsPerFile = 50000
 //Threads is the number of Drive threads.  That's the one that is the
 //"slowest".  WaitFor is responsible for shutting things down wihen
 //this number of Drives had pushed a "done" message.
-const Threads = 5
+const Threads = 25
 
 //R is a record from the database.  It's a basic map of strings pointing to
 //strings.  Oddly enough, Go makes a distrinction between the two.  When in
