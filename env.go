@@ -93,15 +93,6 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"Work_Phone":              "Work_Phone",
 		"Zip":                     "Zip",
 		"supporter_KEY":           "supporter_KEY",
-		"address":                 "address",
-		"bloomberg_a":             "bloomberg_a",
-		"bloomberg_b":             "bloomberg_b",
-		"bsd_date_created":        "bsd_date_created",
-		"bsd_largest_donation":    "bsd_largest_donation",
-		"bsd_last_donated":        "bsd_last_donated",
-		"bsd_number_of_donations": "bsd_number_of_donations",
-		"bsd_total_donated":       "bsd_total_donated",
-		"cbs":                     "cbs",
 	}
 	c := []string{
 		"Email IS NOT EMPTY",
