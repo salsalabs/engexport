@@ -5,45 +5,6 @@ import (
 	"sort"
 )
 
-func headers(f R) []string {
-	var h []string
-	for k := range f {
-		h = append(h, k)
-	}
-	sort.Strings(h)
-	return h
-}
-
-//NewGroups instantiates an environment for copying Gruups and Emails
-//t CSV files.
-func NewGroups(api *godig.API, dir string) *E {
-	f := R{
-		"Group": "Group_Name",
-		"Email": "supporter.Email",
-	}
-	c := []string{
-		"groups.Group_Name IS NOT EMPTY",
-		"supporter.Email IS NOT EMPTY",
-		"supporter.Email LIKE %@%.%",
-		"supporter.Receive_Email>0",
-	}
-
-	e := E{
-		API:            api,
-		OutDir:         dir,
-		Fields:         f,
-		Headers:        []string{"Group", "Email"},
-		Conditions:     c,
-		CsvFilename:    "groups.csv",
-		TableName:      "groups(groups_KEY)supporter_groups(supporter_KEY)supporter",
-		CountTableName: "supporter_groups",
-		OffsetChan:     make(chan int32),
-		RecordChan:     make(chan R),
-		DoneChan:       make(chan bool),
-	}
-	return &e
-}
-
 //NewDonation instantiates an environment for copying donations to CSV files.
 //TODO: Allow a user to iverride these selections with a YAML file.
 func NewDonation(api *godig.API, dir string) *E {
@@ -70,6 +31,36 @@ func NewDonation(api *godig.API, dir string) *E {
 		CsvFilename:    "donations.csv",
 		TableName:      "donation(supporter_KEY)supporter",
 		CountTableName: "donation",
+		OffsetChan:     make(chan int32),
+		RecordChan:     make(chan R),
+		DoneChan:       make(chan bool),
+	}
+	return &e
+}
+
+//NewGroups instantiates an environment for copying Gruups and Emails
+//t CSV files.
+func NewGroups(api *godig.API, dir string) *E {
+	f := R{
+		"Group": "Group_Name",
+		"Email": "supporter.Email",
+	}
+	c := []string{
+		"groups.Group_Name IS NOT EMPTY",
+		"supporter.Email IS NOT EMPTY",
+		"supporter.Email LIKE %@%.%",
+		"supporter.Receive_Email>0",
+	}
+
+	e := E{
+		API:            api,
+		OutDir:         dir,
+		Fields:         f,
+		Headers:        []string{"Group", "Email"},
+		Conditions:     c,
+		CsvFilename:    "groups.csv",
+		TableName:      "groups(groups_KEY)supporter_groups(supporter_KEY)supporter",
+		CountTableName: "supporter_groups",
 		OffsetChan:     make(chan int32),
 		RecordChan:     make(chan R),
 		DoneChan:       make(chan bool),
@@ -133,7 +124,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 	return &e
 }
 
-//NewActiveSupporters instantiates an envionrment to coppy active supportes to
+//NewActiveSupporter instantiates an envionrment to coppy active supportes to
 //CSV files.  Active supporters have a good email address and have not opted out
 //or been opted out (i.e. Receive_Email > 0).
 func NewActiveSupporter(api *godig.API, dir string) *E {
@@ -144,14 +135,56 @@ func NewActiveSupporter(api *godig.API, dir string) *E {
 	return e
 }
 
-//NewInActiveSupporter instantiates an envionrment to coppy active supportes to
-//CSV files.  Active supporters have a good email address but have either opted
+//NewInactiveSupporter instantiates an envionrment to coppy inactive supporters to
+//CSV files.  Inactive supporters have a good email address but have either opted
 // out or been opted out (i.e. Receive_Email < 1).
-func NewInActiveSupporter(api *godig.API, dir string) *E {
+func NewInactiveSupporter(api *godig.API, dir string) *E {
+	e := NewSupporter(api, dir)
+
+	//All of the field namesneed to be modified so that Salsa will know the
+	//database table where they live.  This gets stripped out automatically
+	//during the save, BTW.
+	for k, v := range e.Fields {
+		e.Fields[k] = "supporter." + v
+	}
+	//The table is a join between donations and supporters.
+	e.TableName = "donation(supporter_KEY)supporter"
+
+	//The output filename needs to change to protect existing supporter records.
+	//Not really.  It just makes accounting easier.
+	e.CsvFilename = "inactive_donors.csv"
+
+	//Add a  condition that looks for inactive supporters.
+	c := e.Conditions
+	c = append(c, "supporter_Receive_Email<1")
+
+	//Add a condition that looks for valid donations.
+	c = append(c, "RESULT IN 0,-1")
+
+	e.Conditions = c
+	return e
+}
+
+//NewInactiveDonors instantiates an envionrment to coppy inactive supporters with
+//donation history to CSV files.  Inctive supporters have a good email address but
+//have either opted out or been opted out (i.e. Receive_Email < 1).  Processing uses
+//the donation table as a guide to find inactive supporters.
+func NewInactiveDonors(api *godig.API, dir string) *E {
 	e := NewSupporter(api, dir)
 	c := e.Conditions
 	c = append(c, "Receive_Email<1")
 	e.Conditions = c
 	e.CsvFilename = "inactive_" + e.CsvFilename
 	return e
+}
+
+//headers accepts a field map and returns the keys.  Used as the header
+//line in a CSV file.
+func headers(f R) []string {
+	var h []string
+	for k := range f {
+		h = append(h, k)
+	}
+	sort.Strings(h)
+	return h
 }
