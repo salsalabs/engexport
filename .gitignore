@@ -27,32 +27,3 @@ logs
 .DS_Store
 cmd/.DS_Store
 
-
-=======
-# Output dirs
-data*
-
-# Log files
-*log*
-logs
-
-# Output dirs
-data*
-*.csv
-
-# Log files
-*log*
-logs
-
-# Output dirs
-data*
-
-# Log files
-*log*
-logs
-
-# Mac files
-.DS_Store
-cmd/.DS_Store
-
->>>>>>> origin/faster
