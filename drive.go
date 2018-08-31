@@ -37,10 +37,10 @@ func (env *E) Drive(id int) error {
 		if err != nil {
 			return err
 		}
+		fmt.Printf("drive_%02d: %6d returned %d\n", id, offset, len(a))
 		if len(a) == 0 {
 			break
 		}
-		fmt.Printf("drive_%02d: %6d returned %d\n", id, offset, len(a))
 		for _, r := range a {
 			env.RecordChan <- r
 		}
