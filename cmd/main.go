@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/salsalabs/engexport"
+	"github.com/salsalabs/godig"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -26,7 +28,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
-	var e *E
+	var e *engexport.E
 	switch args {
 	case "groups":
 		e = engexport.NewGroups(api, *outDir)
@@ -44,7 +46,7 @@ func main() {
 		return
 	}
 
-	err = e.Run(Threads, *start)
+	err = e.Run(engexport.Threads, *start)
 	if err != nil {
 		panic(err)
 	}

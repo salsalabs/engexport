@@ -1,10 +1,11 @@
 package engexport
 
 import (
-	"csv"
+	"encoding/csv"
 	"fmt"
 	"os"
 	"path"
+	"strings"
 )
 
 //Open creates a new CSV output file.  If the current one is still open, then it's closed.
