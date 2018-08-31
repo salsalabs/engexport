@@ -124,7 +124,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 	return &e
 }
 
-//NewActiveSupporter instantiates an envionrment to coppy active supportes to
+//NewActiveSupporter instantiates an envionrment to copy active supportes to
 //CSV files.  Active supporters have a good email address and have not opted out
 //or been opted out (i.e. Receive_Email > 0).
 func NewActiveSupporter(api *godig.API, dir string) *E {
@@ -135,46 +135,47 @@ func NewActiveSupporter(api *godig.API, dir string) *E {
 	return e
 }
 
-//NewInactiveSupporter instantiates an envionrment to coppy inactive supporters to
+//NewInactiveSupporter instantiates an envionrment to copy inactive supporters to
 //CSV files.  Inactive supporters have a good email address but have either opted
 // out or been opted out (i.e. Receive_Email < 1).
 func NewInactiveSupporter(api *godig.API, dir string) *E {
-	e := NewSupporter(api, dir)
-
-	//All of the field namesneed to be modified so that Salsa will know the
-	//database table where they live.  This gets stripped out automatically
-	//during the save, BTW.
-	for k, v := range e.Fields {
-		e.Fields[k] = "supporter." + v
-	}
-	//The table is a join between donations and supporters.
-	e.TableName = "donation(supporter_KEY)supporter"
-
-	//The output filename needs to change to protect existing supporter records.
-	//Not really.  It just makes accounting easier.
-	e.CsvFilename = "inactive_donors.csv"
-
-	//Add a  condition that looks for inactive supporters.
-	c := e.Conditions
-	c = append(c, "supporter_Receive_Email<1")
-
-	//Add a condition that looks for valid donations.
-	c = append(c, "RESULT IN 0,-1")
-
-	e.Conditions = c
-	return e
-}
-
-//NewInactiveDonors instantiates an envionrment to coppy inactive supporters with
-//donation history to CSV files.  Inctive supporters have a good email address but
-//have either opted out or been opted out (i.e. Receive_Email < 1).  Processing uses
-//the donation table as a guide to find inactive supporters.
-func NewInactiveDonors(api *godig.API, dir string) *E {
 	e := NewSupporter(api, dir)
 	c := e.Conditions
 	c = append(c, "Receive_Email<1")
 	e.Conditions = c
 	e.CsvFilename = "inactive_" + e.CsvFilename
+	return e
+}
+
+//NewInactiveDonors instantiates an envionrment to copy inactive supporters with
+//donation history to CSV files.  Inctive supporters have a good email address but
+//have either opted out or been opted out (i.e. Receive_Email < 1).  Processing uses
+//the donation table as a guide to find inactive supporters.
+func NewInactiveDonors(api *godig.API, dir string) *E {
+	e := NewSupporter(api, dir)
+
+	//Salsa gets confused with the contents of the "&uinclude=" in selective places.
+	//This is one of those times.
+	e.DisableInclude = true
+
+	//The table is a join between donations and supporters.
+	e.TableName = "supporter(supporter_KEY)donation"
+
+	//The output filename needs to change to protect existing supporter records.
+	//Not really.  It just makes accounting easier.
+	e.CsvFilename = "inactive_donors.csv"
+
+	//We are counting donations.
+	e.CountTableName = "donation"
+
+	//Add a  condition that looks for inactive supporters.
+	c := e.Conditions
+	c = append(c, "supporter.Receive_Email<1")
+
+	//Add a condition that looks for valid donations.
+	c = append(c, "donation.RESULT IN 0,-1")
+
+	e.Conditions = c
 	return e
 }
 

@@ -14,8 +14,12 @@ func (env *E) Drive(id int) error {
 	for _, v := range env.Fields {
 		f = append(f, v)
 	}
-	incl := strings.Join(f, ",")
-	cond = fmt.Sprintf("%v&include=%v", cond, incl)
+	//Salsa doesn't react will to some include queries in some calls.  Adding
+	//the "&include=" can cause errors even though the URL is clearly well-formed.
+	if !env.DisableInclude {
+		incl := strings.Join(f, ",")
+		cond = fmt.Sprintf("%v&include=%v", cond, incl)
+	}
 
 	for {
 		offset, ok := <-env.OffsetChan
