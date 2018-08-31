@@ -61,7 +61,7 @@ func (env *E) Run(Threads int, start int32) error {
 	}
 	fmt.Printf("run: %d records for %v\n", m, env.TableName)
 	m = m - int64(start)
-	for i := int64(start); i < m; i += 500 {
+	for i := int64(start); i < m + 499; i += 500 {
 		env.OffsetChan <- int32(i)
 	}
 	close(env.OffsetChan)
