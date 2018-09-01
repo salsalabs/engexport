@@ -112,6 +112,8 @@ func NewSupporter(api *godig.API, dir string) *E {
 		RecordChan:     make(chan R),
 		DoneChan:       make(chan bool),
 	}
+	// Just a reminder...
+	e.API.Verbose = false
 	return &e
 }
 

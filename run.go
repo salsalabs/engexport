@@ -65,11 +65,10 @@ func (env *E) Run(Threads int, start int32) error {
 		env.OffsetChan <- int32(i)
 	}
 	close(env.OffsetChan)
-	return nil
 
 	time.Sleep(5 * time.Second)
-	fmt.Println("main waiting")
+	fmt.Println("run waiting")
 	wg.Wait()
-	fmt.Println("main done")
+	fmt.Println("run done")
 	return nil
 }
