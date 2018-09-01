@@ -29,8 +29,7 @@ type R map[string]string
 
 //E is a runtime environment for a single application.  It contains
 //everything that an application needs to read stuff from Salsa and
-//write CSV files.  Note that E is used to iinstantiate the Procwessor
-//interface. TODO: Given this type a better name.
+//write CSV files. TODO: Given this type a better name.
 type E struct {
 	API            *godig.API
 	OutDir         string
@@ -48,9 +47,9 @@ type E struct {
 
 //Processor defines the tools that an engexport processor needs.
 type Processor interface {
-	Drive(id int) error
-	Save() error
-	WaitFor(count int) error
+	Drive(id int)
+	Save()
+	WaitFor(count int)
 	Run(Threads int, start int32)
 	Open(id int, f *os.File, w *csv.Writer) (*os.File, *csv.Writer, error)
 }

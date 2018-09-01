@@ -7,7 +7,7 @@ import (
 )
 
 //Drive reads qualified records from Salsa and writes them to a save queue.
-func (env *E) Drive(id int) error {
+func (env *E) Drive(id int) {
 	t := env.API.NewTable(env.TableName)
 	c := env.Conditions
 	cond := strings.Join(c, "&condition=")
@@ -37,7 +37,7 @@ func (env *E) Drive(id int) error {
 			a, err = t.ManyMap(offset, 500, cond)
 		}
 		if err != nil {
-			return err
+			panic(err)
 		}
 		if math.Mod(float64(offset), 10e3) == 0 {
 			fmt.Printf("drive_%02d: %6d\n", id, offset)
@@ -51,5 +51,5 @@ func (env *E) Drive(id int) error {
 		}
 	}
 	env.DoneChan <- true
-	return nil
+	fmt.Printf("drive_%02d: signaled done\n", id)
 }

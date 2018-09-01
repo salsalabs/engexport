@@ -11,7 +11,7 @@ import (
 
 //Save waits for records to arrive on a queue and saves them to a CSV file.  CSV files
 //are created as needed and are replaces when they get full.
-func (env *E) Save() error {
+func (env *E) Save() {
 	count := RecordsPerFile
 	var f *os.File
 	var w *csv.Writer
@@ -30,8 +30,7 @@ func (env *E) Save() error {
 			id++
 			f, w, err = env.Open(id, f, w)
 			if err != nil {
-				fmt.Println("save error %v\n", err)
-				break
+				panic(err)
 			}
 		}
 
@@ -60,19 +59,17 @@ func (env *E) Save() error {
 			case "Receive_Email":
 				t := "Unsubscribed"
 				x, err := strconv.ParseInt(s, 10, 32)
-				if err == nil {
-					if x > 0 {
-						t = "Subscribed"
-					}
+				if err == nil && x > 1 {
+					t = "Subscribed"
 				}
 				s = t
 			}
 			a = append(a, s)
 		}
-		err = w.Write(a)
+		err := w.Write(a)
 		count++
 		if err != nil {
-			break
+			panic(err)
 		}
 		w.Flush()
 	}
@@ -82,7 +79,6 @@ func (env *E) Save() error {
 	if f != nil {
 		f.Close()
 	}
-	return err
 }
 
 func date(s string) string {

@@ -50,8 +50,7 @@ func main() {
 		return
 	}
 
-	err = e.Run(engexport.Threads, *start)
-	if err != nil {
-		panic(err)
-	}
+	e.Run(engexport.Threads, *start)
+	fmt.Println("main: done")
+	return
 }
