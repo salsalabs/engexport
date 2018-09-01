@@ -2,6 +2,7 @@ package engexport
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -21,10 +22,11 @@ func (env *E) Drive(id int) error {
 		cond = fmt.Sprintf("%v&include=%v", cond, incl)
 	}
 
+	fmt.Printf("drive_%02d: begin\n", id)
 	for {
 		offset, ok := <-env.OffsetChan
 		if !ok {
-			fmt.Printf("drive_%02d done", id)
+			fmt.Printf("drive_%02d: end of queue\n", id)
 			break
 		}
 		var a []map[string]string
@@ -37,15 +39,17 @@ func (env *E) Drive(id int) error {
 		if err != nil {
 			return err
 		}
-		fmt.Printf("drive_%02d: %6d returned %d\n", id, offset, len(a))
+		if math.Mod(float64(offset), 10e3) == 0 {
+			fmt.Printf("drive_%02d: %6d\n", id, offset)
+		}
 		if len(a) == 0 {
+			fmt.Printf("drive_%02d: end of data\n", id)
 			break
 		}
 		for _, r := range a {
 			env.RecordChan <- r
 		}
 	}
-	fmt.Printf("drive_%02d: finished\n", id)
 	env.DoneChan <- true
 	return nil
 }
