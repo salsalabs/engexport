@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"time"
 )
 
 //Run starts all of the parts of a processor as goroutines.  It then waits
@@ -59,14 +58,13 @@ func (env *E) Run(Threads int, start int32) error {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("run: %d records for %v\n", m, env.TableName)
+	fmt.Printf("run: Using %d records from %v\n", m, env.CountTableName)
 	m = m - int64(start)
 	for i := int64(start); i < m + 499; i += 500 {
 		env.OffsetChan <- int32(i)
 	}
 	close(env.OffsetChan)
 
-	time.Sleep(5 * time.Second)
 	fmt.Println("run waiting")
 	wg.Wait()
 	fmt.Println("run done")
