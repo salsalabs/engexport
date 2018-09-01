@@ -14,7 +14,7 @@ func (env *E) WaitFor(c int) {
 		}
 		c--
 		if c == 0 {
-			fmt.Println("WaitFor complete")
+			fmt.Println("waitFor complete")
 			break
 		}
 	}

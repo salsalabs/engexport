@@ -21,7 +21,7 @@ func (env *E) Save() error {
 	for {
 		d, ok := <-env.RecordChan
 		if !ok {
-			fmt.Println("Save done")
+			fmt.Println("save done")
 			break
 		}
 
@@ -30,7 +30,7 @@ func (env *E) Save() error {
 			id++
 			f, w, err = env.Open(id, f, w)
 			if err != nil {
-				fmt.Println("Save error %v\n", err)
+				fmt.Println("save error %v\n", err)
 				break
 			}
 		}
