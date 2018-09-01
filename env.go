@@ -5,6 +5,8 @@ import (
 	"sort"
 )
 
+const queueSize = 100
+
 //NewDonation instantiates an environment for copying donations to CSV files.
 //TODO: Allow a user to iverride these selections with a YAML file.
 func NewDonation(api *godig.API, dir string) *E {
@@ -31,8 +33,8 @@ func NewDonation(api *godig.API, dir string) *E {
 		CsvFilename:    "donations.csv",
 		TableName:      "donation(supporter_KEY)supporter",
 		CountTableName: "donation",
-		OffsetChan:     make(chan int32),
-		RecordChan:     make(chan R),
+		OffsetChan:     make(chan int32, queueSize),
+		RecordChan:     make(chan R, queueSize),
 		DoneChan:       make(chan bool),
 	}
 	return &e
@@ -61,9 +63,9 @@ func NewGroups(api *godig.API, dir string) *E {
 		CsvFilename:    "groups.csv",
 		TableName:      "groups(groups_KEY)supporter_groups(supporter_KEY)supporter",
 		CountTableName: "supporter_groups",
-		OffsetChan:     make(chan int32),
-		RecordChan:     make(chan R),
-		DoneChan:       make(chan bool),
+		OffsetChan:     make(chan int32, queueSize),
+		RecordChan:     make(chan R, queueSize),
+		DoneChan:       make(chan bool, queueSize),
 	}
 	return &e
 }
@@ -108,9 +110,9 @@ func NewSupporter(api *godig.API, dir string) *E {
 		CsvFilename:    "supporters.csv",
 		TableName:      "supporter",
 		CountTableName: "supporter",
-		OffsetChan:     make(chan int32),
-		RecordChan:     make(chan R),
-		DoneChan:       make(chan bool),
+		OffsetChan:     make(chan int32, queueSize),
+		RecordChan:     make(chan R, queueSize),
+		DoneChan:       make(chan bool, queueSize),
 	}
 	// Just a reminder...
 	e.API.Verbose = false

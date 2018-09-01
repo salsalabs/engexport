@@ -5,12 +5,13 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
+
 
 //Run starts all of the parts of a processor as goroutines.  It then waits
 //for the goroutines to complete.
 func (env *E) Run(Threads int, start int32) {
-
 	var wg sync.WaitGroup
 	go (func(wg *sync.WaitGroup, env *E, c int) {
 		wg.Add(1)
@@ -31,6 +32,7 @@ func (env *E) Run(Threads int, start int32) {
 			env.Drive(id)
 		})(&wg, env, id)
 	}
+
 	//KLUDGE: Salsa's API does not have a way to count for a LeftJoin.  We'll
 	//use the whole donations table as a guide.  Drivers will get zero
 	//records at some point.  That causes a graceful shutdown.
@@ -60,6 +62,7 @@ func (env *E) Run(Threads int, start int32) {
 	close(env.OffsetChan)
 
 	fmt.Println("run waiting")
+	time.Sleep(2 * time.Second)
 	wg.Wait()
 	fmt.Println("run done")
 }

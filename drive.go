@@ -23,12 +23,12 @@ func (env *E) Drive(id int) {
 	}
 
 	fmt.Printf("drive_%02d: begin\n", id)
-	for {
-		offset, ok := <-env.OffsetChan
-		if !ok {
-			fmt.Printf("drive_%02d: end of queue\n", id)
-			break
-		}
+	for offset := range env.OffsetChan {
+		//offset, ok := <-env.OffsetChan
+		//if !ok {
+		//	fmt.Printf("drive_%02d: end of queue\n", id)
+		//	break
+		//}
 		var a []map[string]string
 		var err error
 		if strings.Index(env.TableName, ")") != -1 {
