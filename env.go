@@ -99,8 +99,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"address":                 "address",
 		"bloomberg_a":             "bloomberg_a",
 		"bloomberg_b":             "bloomberg_b",
-		"bsd_d":                   "bsd_d",
-		"ate_created":             "ate_created",
+		"bsd_date_created":        "bsd_date_created",
 		"bsd_largest_donation":    "bsd_largest_donation",
 		"bsd_last_donated":        "bsd_last_donated",
 		"bsd_number_of_donations": "bsd_number_of_donations",
@@ -126,7 +125,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		DoneChan:       make(chan bool, queueSize),
 	}
 	// Just a reminder...
-	e.API.Verbose = false
+	e.API.Verbose = true
 	return &e
 }
 
