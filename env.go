@@ -1,8 +1,9 @@
 package engexport
 
 import (
-	"github.com/salsalabs/godig"
 	"sort"
+
+	"github.com/salsalabs/godig"
 )
 
 const queueSize = 100
@@ -95,6 +96,16 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"Work_Phone":              "Work_Phone",
 		"Zip":                     "Zip",
 		"supporter_KEY":           "supporter_KEY",
+		"address":                 "address",
+		"bloomberg_a":             "bloomberg_a",
+		"bloomberg_b":             "bloomberg_b",
+		"bsd_d":                   "bsd_d",
+		"ate_created":             "ate_created",
+		"bsd_largest_donation":    "bsd_largest_donation",
+		"bsd_last_donated":        "bsd_last_donated",
+		"bsd_number_of_donations": "bsd_number_of_donations",
+		"bsd_total_donated":       "bsd_total_donated",
+		"cbs":                     "cbs",
 	}
 	c := []string{
 		"Email IS NOT EMPTY",
