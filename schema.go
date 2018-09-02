@@ -51,5 +51,5 @@ type Processor interface {
 	Save()
 	WaitFor(count int)
 	Run(Threads int, start int32)
-	Open(id int, f *os.File, w *csv.Writer) (*os.File, *csv.Writer, error)
+	Open(f *os.File, w *csv.Writer) (*os.File, *csv.Writer, error)
 }

@@ -9,7 +9,7 @@ import (
 )
 
 //Open creates a new CSV output file.  If the current one is still open, then it's closed.
-func (env *E) Open(id int, f *os.File, w *csv.Writer) (*os.File, *csv.Writer, error) {
+func (env *E) Open(f *os.File, w *csv.Writer) (*os.File, *csv.Writer, error) {
 	if w != nil {
 		w.Flush()
 		w = nil
@@ -19,10 +19,20 @@ func (env *E) Open(id int, f *os.File, w *csv.Writer) (*os.File, *csv.Writer, er
 		f = nil
 	}
 
-	e := path.Ext(env.CsvFilename)
-	b := strings.Replace(env.CsvFilename, e, "", -1)
-	fn := fmt.Sprintf("%s_%03d%s", b, id, e)
-	fn = path.Join(env.OutDir, fn)
+	searching := true
+	id := 1
+	var fn string
+	for searching {
+		e := path.Ext(env.CsvFilename)
+		b := strings.Replace(env.CsvFilename, e, "", -1)
+		fn = fmt.Sprintf("%s_%03d%s", b, id, e)
+		fn = path.Join(env.OutDir, fn)
+		if _, err := os.Stat(fn); os.IsNotExist(err) {
+			searching = false
+		} else {
+			id++
+		}
+	}
 	err := os.MkdirAll(path.Dir(fn), os.ModePerm)
 	if err != nil {
 		return f, w, err

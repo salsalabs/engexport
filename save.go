@@ -16,7 +16,6 @@ func (env *E) Save() {
 	var f *os.File
 	var w *csv.Writer
 	var err error
-	id := 0
 
 	for {
 		d, ok := <-env.RecordChan
@@ -27,8 +26,7 @@ func (env *E) Save() {
 
 		if count >= RecordsPerFile {
 			count = 0
-			id++
-			f, w, err = env.Open(id, f, w)
+			f, w, err = env.Open(f, w)
 			if err != nil {
 				panic(err)
 			}

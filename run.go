@@ -54,8 +54,8 @@ func (env *E) Run(Threads int, start int32) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("run: Using %d records from %v\n", m, env.CountTableName)
 	m = m - int64(start)
+	fmt.Printf("run: Using %d records from %v\n", m, env.CountTableName)
 	for i := int64(start); i < m + 499; i += 500 {
 		env.OffsetChan <- int32(i)
 	}
