@@ -125,7 +125,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		DoneChan:       make(chan bool, queueSize),
 	}
 	// Just a reminder...
-	e.API.Verbose = true
+	e.API.Verbose = false
 	return &e
 }
 
