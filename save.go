@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -33,6 +34,7 @@ func (env *E) Save() {
 		}
 
 		var a []string
+		datePattern := regexp.MustCompile("(date|Date)")
 		for _, k := range env.Headers {
 			m := env.Fields[k]
 			//KLUDGE:  Salsa wants to see supporter.supporter_KEY/supporter.Email
@@ -47,20 +49,22 @@ func (env *E) Save() {
 			if !ok {
 				s = ""
 			}
-			switch k {
-			case "Transaction_Date":
-				s = date(s)
-			case "Transaction_Type":
-				if s != "Recurring" {
-					s = "OneTime"
+			if datePattern.MatchString(k) {
+				s := date(k)
+			} else {
+				switch k {
+				case "Transaction_Type":
+					if s != "Recurring" {
+						s = "OneTime"
+					}
+				case "Receive_Email":
+					t := "Unsubscribed"
+					x, err := strconv.ParseInt(s, 10, 32)
+					if err == nil && x > 1 {
+						t = "Subscribed"
+					}
+					s = t
 				}
-			case "Receive_Email":
-				t := "Unsubscribed"
-				x, err := strconv.ParseInt(s, 10, 32)
-				if err == nil && x > 1 {
-					t = "Subscribed"
-				}
-				s = t
 			}
 			a = append(a, s)
 		}
