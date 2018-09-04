@@ -119,7 +119,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		Fields:         f,
 		Headers:        h,
 		Conditions:     c,
-		CsvFilename:    "supporters.csv",
+		CsvFilename:    "custom_fields.csv",
 		TableName:      "supporter",
 		CountTableName: "supporter",
 		OffsetChan:     make(chan int32, queueSize),
