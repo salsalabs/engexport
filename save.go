@@ -34,7 +34,7 @@ func (env *E) Save() {
 		}
 
 		var a []string
-		datePattern := regexp.MustCompile("(date|Date)")
+		datePattern := regexp.MustCompile("(date|Date|last_donated)")
 		for _, k := range env.Headers {
 			m := env.Fields[k]
 			//KLUDGE:  Salsa wants to see supporter.supporter_KEY/supporter.Email
@@ -68,12 +68,27 @@ func (env *E) Save() {
 			}
 			a = append(a, s)
 		}
-		err := w.Write(a)
-		count++
-		if err != nil {
-			panic(err)
+		//If the custom fields are all empty then there's no reason to write
+		//this record.
+		doWrite := false
+		for i := 2; i < len(a); i++ {
+			if len(a[i]) > 0 {
+				doWrite = true
+				break
+			}
 		}
-		w.Flush()
+		if doWrite {
+			fmt.Printf("Save: writing %v %v\n", a[0], a[1])
+			err := w.Write(a)
+			count++
+			if err != nil {
+				panic(err)
+			}
+			w.Flush()
+		} else {
+			fmt.Printf("Save: skipping %v %v\n", a[0], a[1])
+
+		}
 	}
 	if w != nil {
 		w.Flush()
