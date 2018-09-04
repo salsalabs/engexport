@@ -50,7 +50,7 @@ func (env *E) Save() {
 				s = ""
 			}
 			if datePattern.MatchString(k) {
-				s := date(k)
+				s = date(s)
 			} else {
 				switch k {
 				case "Transaction_Type":
