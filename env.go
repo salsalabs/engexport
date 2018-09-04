@@ -76,26 +76,15 @@ func NewGroups(api *godig.API, dir string) *E {
 //That means that both subscribed and unsubscribed supporrters are written to CSV
 //files.  TODO: Allow a user to iverride these selections with a YAML file.
 func NewSupporter(api *godig.API, dir string) *E {
+	fmt.Printf("\n")
+	fmt.Printf("+----------------------------------------------------------+")
+	fmt.Printf("+ NewSupporter: special version for NoLabels custom fields +")
+	fmt.Printf("+----------------------------------------------------------+")
+	fmt.Printf("\n")
+
 	f := R{
-		"Cell_Phone":              "Cell_Phone",
-		"City":                    "City",
-		"Country":                 "Country",
-		"Email":                   "Email",
-		"First_Name":              "First_Name",
-		"Language_Code":           "Language_Code",
-		"Last_Name":               "Last_Name",
-		"MI":                      "MI",
-		"Phone":                   "Phone",
-		"Receive_Email":           "Receive_Email",
-		"State":                   "State",
-		"Street":                  "Street",
-		"Street_2":                "Street_2",
-		"Suffix":                  "Suffix",
-		"Timezone":                "Timezone",
-		"Title":                   "Title",
-		"Work_Phone":              "Work_Phone",
-		"Zip":                     "Zip",
 		"supporter_KEY":           "supporter_KEY",
+		"Email":                   "Email",
 		"address":                 "address",
 		"bloomberg_a":             "bloomberg_a",
 		"bloomberg_b":             "bloomberg_b",
@@ -110,12 +99,24 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"Email IS NOT EMPTY",
 		"Email LIKE %@%.%",
 	}
-
+	h := []string{
+		"supporter_KEY",
+		"Email",
+		"address",
+		"bloomberg_a",
+		"bloomberg_b",
+		"bsd_date_created",
+		"bsd_largest_donation",
+		"bsd_last_donated",
+		"bsd_number_of_donations",
+		"bsd_total_donated",
+		"cbs",
+	}
 	e := E{
 		API:            api,
 		OutDir:         dir,
 		Fields:         f,
-		Headers:        headers(f),
+		Headers:        h,
 		Conditions:     c,
 		CsvFilename:    "supporters.csv",
 		TableName:      "supporter",
