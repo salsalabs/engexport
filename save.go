@@ -78,16 +78,12 @@ func (env *E) Save() {
 			}
 		}
 		if doWrite {
-			fmt.Printf("Save: writing %v %v\n", a[0], a[1])
 			err := w.Write(a)
 			count++
 			if err != nil {
 				panic(err)
 			}
 			w.Flush()
-		} else {
-			fmt.Printf("Save: skipping %v %v\n", a[0], a[1])
-
 		}
 	}
 	if w != nil {
