@@ -51,6 +51,8 @@ func (env *E) Save() {
 			//setting the Engage transaction type and putting Engage text into
 			//Receive_Email.
 			switch k {
+			case "State":
+				s = strings.ToUpper(s)
 			case "Transaction_Date":
 				s = date(s)
 			case "Transaction_Type":
@@ -64,6 +66,12 @@ func (env *E) Save() {
 					t = "Subscribed"
 				}
 				s = t
+			case "friend_of_a_friend_name_supporter":
+				s = friend_of_a_friend(d)
+			case "human_resources_contact":
+				s = human_resources_contact(d)
+			case "skill_to_offer":
+				s = skill_to_offer(d)
 			}
 			a = append(a, s)
 		}
@@ -82,6 +90,74 @@ func (env *E) Save() {
 	}
 }
 
+//friend_of_friend does special formatting to transform Classic custom fields
+//into a single Engage field.
+func friend_of_a_friend(d R) string {
+	keys := []string{
+		"friend_of_a_friend___first_name",
+		"friend_of_a_friend___last_name",
+		"friend_of_friend_name",
+	}
+	return catenate_values(d, keys)
+}
+
+//human_resources_contact does special formatting to transform Classic custom
+//fields into a single Engage field.
+func human_resources_contact(d R) string {
+	keys := []string{
+		"human_resources_contact___first_name",
+		"human_resources_contact___last_name",
+		"human_resources_contact_name",
+	}
+	return catenate_values(d, keys)
+}
+
+//catenate_values accepts a record and a list of keys.  The values for the keys
+//are appended and returned.
+func catenate_values(d R, keys []string) string {
+	var a []string
+	for _, k := range keys {
+		v, ok := d[k]
+		if ok {
+			v = strings.TrimSpace(v)
+			s := strings.ToLower(v)
+			if s == "n/a" || s == "test" {
+				v = ""
+			}
+			if len(v) > 0 {
+				a = append(a, v)
+			}
+		}
+	}
+	return strings.Join(a, " ")
+}
+
+//skill_to_offer accepts a record and a list of keys.  Each key is interpreted
+//as a numeric value.  The numeric value is appended to the returned value.
+//TODO: figure what to do with the actual contents of the fields.
+func skill_to_offer(d R) string {
+	keys := map[string]string{
+		"skill___health_care_provider_type": "1",
+		"skill___computer_internet_type":    "2",
+		"skill___microsoft_office_type":     "2",
+		"skill___cpa_finance_type":          "3",
+		"skill___attorney_type":             "4",
+		"skill___counseling_type":           "5",
+	}
+	var a []string
+	for k, v := range keys {
+		x, ok := d[k]
+		if ok {
+			x = strings.TrimSpace(x)
+			if len(x) > 0 {
+				a = append(a, v)
+			}
+		}
+	}
+	return strings.Join(a, " ")
+}
+
+//date formates a Classic date from the database (ick) to an Engage date.
 func date(s string) string {
 	// Date_Created, Transaction_Date, etc.  Convert dates from MySQL to Engage.
 	p := strings.Split(s, " ")
