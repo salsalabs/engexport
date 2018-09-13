@@ -47,7 +47,15 @@ func (env *E) Save() {
 			if !ok {
 				s = ""
 			}
+			//Transform fields as needed.  This includes making pretty dates,
+			//setting the Engage transaction type and putting Engage text into
+			//Receive_Email.
 			switch k {
+			case "friend_of_a_friend___first_name":
+				//merge this and friend_of_a_friend___last_name
+				//into friend_of_a_friend_name
+			case "State":
+				s = strings.ToUpper(s)
 			case "Transaction_Date":
 				s = date(s)
 			case "Transaction_Type":
