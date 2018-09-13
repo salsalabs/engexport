@@ -47,6 +47,9 @@ func (env *E) Save() {
 			if !ok {
 				s = ""
 			}
+			//Transform fields as needed.  This includes making pretty dates,
+			//setting the Engage transaction type and putting Engage text into
+			//Receive_Email.
 			switch k {
 			case "Transaction_Date":
 				s = date(s)
