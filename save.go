@@ -44,21 +44,27 @@ func (env *E) Save() {
 			}
 
 			s, ok := d[m]
-			if !ok {
+			if ok {
+				s = strings.TrimSpace(s)
+			} else {
 				s = ""
 			}
 			//Transform fields as needed.  This includes making pretty dates,
 			//setting the Engage transaction type and putting Engage text into
 			//Receive_Email.
 			switch k {
+
 			case "State":
 				s = strings.ToUpper(s)
+
 			case "Transaction_Date":
 				s = date(s)
+
 			case "Transaction_Type":
 				if s != "Recurring" {
 					s = "OneTime"
 				}
+
 			case "Receive_Email":
 				t := "Unsubscribed"
 				x, err := strconv.ParseInt(s, 10, 32)
@@ -66,10 +72,19 @@ func (env *E) Save() {
 					t = "Subscribed"
 				}
 				s = t
+
 			case "friend_of_a_friend_name_supporter":
 				s = friend_of_a_friend(d)
+
 			case "human_resources_contact":
 				s = human_resources_contact(d)
+
+			case "other_data_3_supporter":
+				s = other_data_3_supporter(d)
+
+			case "phone_secondary_type":
+				s = phone_secondary_type(d)
+
 			case "skill_to_offer":
 				s = skill_to_offer(d)
 			}
@@ -130,6 +145,29 @@ func catenate_values(d R, keys []string) string {
 		}
 	}
 	return strings.Join(a, " ")
+}
+
+//other_data_3_supporter stores data from two diverse spots into the
+//Other Data 3 field inEngage.
+func other_data_3_supporter(d R) string {
+	keys := []string{
+		"Other_Data_3",
+		"ncoa_codes",
+	}
+	return catenate_values(d, keys)
+}
+
+//phone_secondary populates the secondary phone type with "Work" as needed.
+func phone_secondary_type(d R) string {
+	v, ok := d["phone___secondary"]
+	s := ""
+	if ok {
+		v = strings.TrimSpace(v)
+		if len(v) > 0 {
+			s = "Work"
+		}
+	}
+	return s
 }
 
 //skill_to_offer accepts a record and a list of keys.  Each key is interpreted
