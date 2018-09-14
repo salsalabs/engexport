@@ -81,9 +81,8 @@ func NewGroups(api *godig.API, dir string) *E {
 //The Here to Serve data dictionary mapped Salsa fields (on the right) to Engage
 //fields (on the left).  Note that this is not a hard-and-fast rule, as we'll see
 //in a moment.
-
 // Some of the mappings involved filtering and catenation.
-//The Engage fields that need filtering and catenation have empty Salsa field
+// The Engage fields that need filtering and catenation have empty Salsa field
 //names (""). The values for the matching Engage fields are generated in
 //"save.go" using functions written for Here to Serve.
 //
@@ -103,35 +102,35 @@ func NewGroups(api *godig.API, dir string) *E {
 //folks need them to be better organized.
 func NewSupporter(api *godig.API, dir string) *E {
 	f := R{
-		"supporter_KEY":                           "supporter_KEY",
-		"person_prefix":                           "Title",
-		"person_firstname":                        "First_Name",
-		"person_middlename":                       "MI",
-		"person_lastname":                         "Last_Name",
-		"Email":                                   "Email",
-		"Receive_Email":                           "Receive_Email",
-		"Home_Phone":                              "Phone",
-		"Cell_Phone":                              "Cell_Phone",
-		"Work_Phone":                              "Work_Phone",
-		"Address_Line_1":                          "Street",
-		"Address_Line_2":                          "Street_2",
-		"City":                                    "City",
-		"State":                                   "State",
-		"Zip_Code":                                "Zip",
-		"Country":                                 "Country",
-		"alt_email_supporter":                     "Alternative_Email",
-		"other_data_1_supporter":                  "Other_Data_1",
-		"other_data_2_supporter":                  "Other_Data_2",
-		"other_data_3_supporter":                  "",
-		"Other_Data_3":                            "Other_Data_3",
-		"ncoa_codes":                              "ncoa_codes",
-		"source_supporter":                        "Source",
-		"source_supporter_details":                "Source_Details",
-		"source_supporter_tracking_code":          "Source_Tracking_Code",
-		"supporter_tracking_code":                 "Tracking_Code",
-		"how_would_you_like_to_help_other":        "contacting_on_behalf_of___other",
-		"phone_number_type_2":                     "phone___secondary_type",
-		"pref_method_contact":                     "prefered_method_of_contact",
+		"supporter_KEY":                    "supporter_KEY",
+		"person_prefix":                    "Title",
+		"person_firstname":                 "First_Name",
+		"person_middlename":                "MI",
+		"person_lastname":                  "Last_Name",
+		"Email":                            "Email",
+		"Receive_Email":                    "Receive_Email",
+		"Home_Phone":                       "Phone",
+		"Cell_Phone":                       "Cell_Phone",
+		"Work_Phone":                       "Work_Phone",
+		"Address_Line_1":                   "Street",
+		"Address_Line_2":                   "Street_2",
+		"City":                             "City",
+		"State":                            "State",
+		"Zip_Code":                         "Zip",
+		"Country":                          "Country",
+		"alt_email_supporter":              "Alternative_Email",
+		"other_data_1_supporter":           "Other_Data_1",
+		"other_data_2_supporter":           "Other_Data_2",
+		"other_data_3_supporter":           "",
+		"Other_Data_3":                     "Other_Data_3",
+		"ncoa_codes":                       "ncoa_codes",
+		"source_supporter":                 "Source",
+		"source_supporter_details":         "Source_Details",
+		"source_supporter_tracking_code":   "Source_Tracking_Code",
+		"supporter_tracking_code":          "Tracking_Code",
+		"how_would_you_like_to_help_other": "contacting_on_behalf_of___other",
+		"phone_number_type_2":              "phone___secondary_type",
+		"pref_method_contact":              "prefered_method_of_contact",
 		"Etapestry_envelope_salutation_supporter": "etapestry___envelope_salutation",
 		"Etapestry_long_salutation_supporter":     "etapestry___long_salutation",
 		"Etapestry_persona_type_supporter":        "etapestry__persona_type",

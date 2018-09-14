@@ -74,19 +74,19 @@ func (env *E) Save() {
 				s = t
 
 			case "friend_of_a_friend_name_supporter":
-				s = friend_of_a_friend(d)
+				s = friendOfAFriend(d)
 
 			case "human_resources_contact":
-				s = human_resources_contact(d)
+				s = humanResourcesContact(d)
 
 			case "other_data_3_supporter":
-				s = other_data_3_supporter(d)
+				s = otherData3Supporter(d)
 
 			case "phone_secondary_type":
-				s = phone_secondary_type(d)
+				s = phoneSecondaryType(d)
 
 			case "skill_to_offer":
-				s = skill_to_offer(d)
+				s = skillToOffer(d)
 			}
 			a = append(a, s)
 		}
@@ -107,29 +107,29 @@ func (env *E) Save() {
 
 //friend_of_friend does special formatting to transform Classic custom fields
 //into a single Engage field.
-func friend_of_a_friend(d R) string {
+func friendOfAFriend(d R) string {
 	keys := []string{
 		"friend_of_a_friend___first_name",
 		"friend_of_a_friend___last_name",
 		"friend_of_friend_name",
 	}
-	return catenate_values(d, keys)
+	return catenateValues(d, keys)
 }
 
 //human_resources_contact does special formatting to transform Classic custom
 //fields into a single Engage field.
-func human_resources_contact(d R) string {
+func humanResourcesContact(d R) string {
 	keys := []string{
 		"human_resources_contact___first_name",
 		"human_resources_contact___last_name",
 		"human_resources_contact_name",
 	}
-	return catenate_values(d, keys)
+	return catenateValues(d, keys)
 }
 
-//catenate_values accepts a record and a list of keys.  The values for the keys
+//catenateValues accepts a record and a list of keys.  The values for the keys
 //are appended and returned.
-func catenate_values(d R, keys []string) string {
+func catenateValues(d R, keys []string) string {
 	var a []string
 	for _, k := range keys {
 		v, ok := d[k]
@@ -149,16 +149,16 @@ func catenate_values(d R, keys []string) string {
 
 //other_data_3_supporter stores data from two diverse spots into the
 //Other Data 3 field inEngage.
-func other_data_3_supporter(d R) string {
+func otherData3Supporter(d R) string {
 	keys := []string{
 		"Other_Data_3",
 		"ncoa_codes",
 	}
-	return catenate_values(d, keys)
+	return catenateValues(d, keys)
 }
 
 //phone_secondary populates the secondary phone type with "Work" as needed.
-func phone_secondary_type(d R) string {
+func phoneSecondaryType(d R) string {
 	v, ok := d["phone___secondary"]
 	s := ""
 	if ok {
@@ -173,7 +173,7 @@ func phone_secondary_type(d R) string {
 //skill_to_offer accepts a record and a list of keys.  Each key is interpreted
 //as a numeric value.  The numeric value is appended to the returned value.
 //TODO: figure what to do with the actual contents of the fields.
-func skill_to_offer(d R) string {
+func skillToOffer(d R) string {
 	keys := map[string]string{
 		"skill___health_care_provider_type": "1",
 		"skill___computer_internet_type":    "2",
