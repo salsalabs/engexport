@@ -74,89 +74,105 @@ func NewGroups(api *godig.API, dir string) *E {
 //NewSupporter instantiates an environment for copying supporters to  CSV files.
 //The default behavior is to save suupporters that have valid email addresses.
 //That means that both subscribed and unsubscribed supporrters are written to CSV
-//files.  TODO: Allow a user to iverride these selections with a YAML file.
+//files.  TODO: Allow a user to override these selections with a YAML file.
+//
+//Here to Serve version notes.
+//
+//The Here to Serve data dictionary mapped Salsa fields (on the right) to Engage
+//fields (on the left).  Note that this is not a hard-and-fast rule, as we'll see
+//in a moment.
+
+// Some of the mappings involved filtering and catenation.
+//The Engage fields that need filtering and catenation have empty Salsa field
+//names (""). The values for the matching Engage fields are generated in
+//"save.go" using functions written for Here to Serve.
+//
+// The list of Engage fields can contain Salsa field names.  I had to do that
+//so that there was a way to easily retrieve the Salsa values needed for
+//filtering and catenation.
+//
+//Because of the Salsa-fields-in-the-Engage-fields column situation, the
+//headers are hard-coded.  The headers are used to import into Engage and will
+//be valid and/oor useful Engage field names.
+//
+//If this all sounds really kludgy to you, then you are correct.  It is *very*
+//kludgy.
+//One last thing.   This layout closely follows the Here to Serve data
+//dictionary.  That means that there will be Engage custom fields mixed in
+//with Engage standard fields.  We'll shuffle things around if the Conversion
+//folks need them to be better organized.
 func NewSupporter(api *godig.API, dir string) *E {
 	f := R{
-		"supporter_KEY":                  "supporter_KEY",
-		"Email":                          "Email",
-		"person_prefix":                  "Title",
-		"person_firstname":               "First_Name",
-		"person_middlename":              "MI",
-		"person_lastname":                "Last_Name",
-		"Suffix":                         "Suffix",
-		"Home_Phone":                     "Phone",
-		"Cell_Phone":                     "Cell_Phone",
-		"Work_Phone":                     "Work_Phone",
-		"Phone":                          "Phone",
-		"Receive_Email":                  "Receive_Email",
-		"Address_Line_1":                 "Street",
-		"Address_Line_2":                 "Street_2",
-		"City":                           "City",
-		"State":                          "State",
-		"Zip_Code":                       "Zip",
-		"Country":                        "Country",
-		"Timezone":                       "Timezone",
-		"Language_Code":                  "Language_Code",
-		"alt_email_supporter":            "Alternative_Email",
-		"other_data_1_supporter":         "Other_Data_1",
-		"other_data_2_supporter":         "Other_Data_2",
-		"other_data_3_supporter":         "Other_Data_3",
-		"source_supporter":               "Source",
-		"source_supporter_details":       "Source_Details",
-		"source_supporter_tracking_code": "Source_Tracking_Code",
-		"supporter_tracking_code":        "Tracking_Code",
-
-		"how_would_you_like_to_help_other": "contacting_on_behalf_of___other",
-
+		"supporter_KEY":                           "supporter_KEY",
+		"person_prefix":                           "Title",
+		"person_firstname":                        "First_Name",
+		"person_middlename":                       "MI",
+		"person_lastname":                         "Last_Name",
+		"Email":                                   "Email",
+		"Receive_Email":                           "Receive_Email",
+		"Home_Phone":                              "Phone",
+		"Cell_Phone":                              "Cell_Phone",
+		"Work_Phone":                              "Work_Phone",
+		"Address_Line_1":                          "Street",
+		"Address_Line_2":                          "Street_2",
+		"City":                                    "City",
+		"State":                                   "State",
+		"Zip_Code":                                "Zip",
+		"Country":                                 "Country",
+		"alt_email_supporter":                     "Alternative_Email",
+		"other_data_1_supporter":                  "Other_Data_1",
+		"other_data_2_supporter":                  "Other_Data_2",
+		"other_data_3_supporter":                  "",
+		"Other_Data_3":                            "Other_Data_3",
+		"ncoa_codes":                              "ncoa_codes",
+		"source_supporter":                        "Source",
+		"source_supporter_details":                "Source_Details",
+		"source_supporter_tracking_code":          "Source_Tracking_Code",
+		"supporter_tracking_code":                 "Tracking_Code",
+		"how_would_you_like_to_help_other":        "contacting_on_behalf_of___other",
 		"phone_number_type_2":                     "phone___secondary_type",
 		"pref_method_contact":                     "prefered_method_of_contact",
 		"Etapestry_envelope_salutation_supporter": "etapestry___envelope_salutation",
 		"Etapestry_long_salutation_supporter":     "etapestry___long_salutation",
 		"Etapestry_persona_type_supporter":        "etapestry__persona_type",
 		"supporter_employer_name":                 "employer_s_name",
-
-		"employer_s_phone_number": "supporter_employer_hr_contact_phone",
-		//Concatenate three fields into the top field in Save.
-		"supporter_employer_hr_contact_name":   "",
-		"human_resources_contact___first_name": "human_resources_contact___first_name",
-		"human_resources_contact___last_name":  "human_resources_contact___last_name",
-		"human_resources_contact_name":         "human_resources_contact_name",
-
-		"sub_how_do_you_know_this_person": "how_do_you_know_this_person_",
-		//Concatenate
-		"friend_of_a_friend_name_supporter": "",
-		"friend_of_a_friend___first_name":   "friend_of_a_friend___first_name",
-		"friend_of_a_friend___last_name":    "friend_of_a_friend___last_name",
-		"friend_of_friend_name":             "friend_of_friend_name",
-
-		"family_being_helped":               "family_being_helped",
-		"primary_phone_number":              "primary_phone",
-		"supporter_org_worship_name":        "name_of_organization_or_house_of_worship",
-		"supporter_org_worship_phone":       "organization_or_house_of_worship___phone_number",
-		"supporter_org_worship_address_1":   "organization_or_house_of_worship___address",
-		"supporter_org_worship_city":        "organization_or_house_of_worship___city",
-		"supporter_org_worship_state":       "organization_or_house_of_worship___state",
-		"supporter_org_worship_zip":         "organization_or_house_of_worship___postal_code",
-		"account_type_supporter":            "account_type",
-		"ncoa_codes":                        "ncoa_codes",
-		"gender":                            "gender_supporter",
-		"marital_status":                    "martial_status_supporter",
-		"people_helped":                     "family_being_helped_other_1",
-		"phone_secondary":                   "phone___secondary",
-		"phone_secondary_type":              "Work",
-		"account_name":                      "account_name_supporter",
-		"care_community_comments":           "who_would_you_like_to_help____comments",
-		"primary_phone_type":                "phone_number_type_1",
-		"how_would_you_like_to_help":        "how_would_you_like_to_help",
-		"contacting_on_behalf_of":           "supporter_contact_reason",
-		"skill_to_offer":                    "",
-		"skill___health_care_provider_type": "skill___health_care_provider_type", //1
-		"skill___computer_internet_type":    "skill___computer_internet_type",    //2
-		"skill___microsoft_office_type":     "skill___microsoft_office_type",     //2
-		"skill___cpa_finance_type":          "skill___cpa_finance_type",          //3
-		"skill___attorney_type":             "skill___attorney_type",             //4
-		"skill___counseling_type":           "skill___counseling_type",           //5
-		"skill___other_type":                "skill___other_type",                //6, 7, 8, 9, 10, 11
+		"supporter_employer_hr_contact_phone":     "employer_s_phone_number",
+		"supporter_employer_hr_contact_name":      "",
+		"human_resources_contact___first_name":    "human_resources_contact___first_name",
+		"human_resources_contact___last_name":     "human_resources_contact___last_name",
+		"human_resources_contact_name":            "human_resources_contact_name",
+		"sub_how_do_you_know_this_person":         "how_do_you_know_this_person_",
+		"friend_of_a_friend_name_supporter":       "",
+		"friend_of_a_friend___first_name":         "friend_of_a_friend___first_name",
+		"friend_of_a_friend___last_name":          "friend_of_a_friend___last_name",
+		"friend_of_friend_name":                   "friend_of_friend_name",
+		"family_being_helped":                     "family_being_helped",
+		"primary_phone_number":                    "primary_phone",
+		"supporter_org_worship_name":              "name_of_organization_or_house_of_worship",
+		"supporter_org_worship_phone":             "organization_or_house_of_worship___phone_number",
+		"supporter_org_worship_address_1":         "organization_or_house_of_worship___address",
+		"supporter_org_worship_city":              "organization_or_house_of_worship___city",
+		"supporter_org_worship_state":             "organization_or_house_of_worship___state",
+		"supporter_org_worship_zip":               "organization_or_house_of_worship___postal_code",
+		"account_type_supporter":                  "account_type",
+		"gender_supporter":                        "gender",
+		"martial_status_supporter":                "marital_status",
+		"family_being_helped_other_1":             "people_helped",
+		"phone_secondary":                         "phone___secondary",
+		"phone_secondary_type":                    "",
+		"account_name":                            "account_name_supporter",
+		"care_community_comments":                 "who_would_you_like_to_help____comments",
+		"phone_number_type_1":                     "primary_phone_type",
+		"how_would_you_like_to_help":              "how_would_you_like_to_help",
+		"supporter_contact_reason":                "contacting_on_behalf_of",
+		"skill_to_offer":                          "",
+		"skill___health_care_provider_type":       "skill___health_care_provider_type", //1
+		"skill___computer_internet_type":          "skill___computer_internet_type",    //2
+		"skill___microsoft_office_type":           "skill___microsoft_office_type",     //2
+		"skill___cpa_finance_type":                "skill___cpa_finance_type",          //3
+		"skill___attorney_type":                   "skill___attorney_type",             //4
+		"skill___counseling_type":                 "skill___counseling_type",           //5
+		"skill___other_type":                      "skill___other_type",                //6, 7, 8, 9, 10, 11
 	}
 
 	c := []string{
