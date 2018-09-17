@@ -21,6 +21,7 @@ func (env *E) Drive(id int) {
 	//the "&include=" can cause errors even though the URL is clearly well-formed.
 
 	fmt.Printf("drive_%02d: begin\n", id)
+	fmt.Printf("drive_%02d: table is %v\n", id, env.TableName)
 	fmt.Printf("drive_%02d: cond is %v\n", id, cond)
 	for {
 		offset, ok := <-env.OffsetChan
@@ -30,6 +31,7 @@ func (env *E) Drive(id int) {
 		}
 		var a []map[string]string
 		var err error
+
 		if strings.Index(env.TableName, ")") != -1 {
 			a, err = t.LeftJoinMap(offset, 500, cond)
 		} else {
@@ -38,6 +40,8 @@ func (env *E) Drive(id int) {
 		if err != nil {
 			panic(err)
 		}
+		fmt.Printf("drive_%02d: offset %6d records %3d\n", id, offset, len(a))
+
 		if math.Mod(float64(offset), 10e3) == 0 {
 			fmt.Printf("drive_%02d: %6d\n", id, offset)
 		}
@@ -46,6 +50,7 @@ func (env *E) Drive(id int) {
 			break
 		}
 		for _, r := range a {
+			fmt.Printf("drive_%02d: sending %v\n", id, r["supporter_KEY"])
 			env.RecordChan <- r
 		}
 	}

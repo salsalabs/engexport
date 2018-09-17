@@ -135,6 +135,10 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"Etapestry_envelope_salutation_supporter": "etapestry___envelope_salutation",
 		"Etapestry_long_salutation_supporter":     "etapestry___long_salutation",
 		"Etapestry_persona_type_supporter":        "etapestry__persona_type",
+		"company":                                 "company",
+		"job_title":                               "job_title",
+		"spouse_prefered_phone":                   "phone__spouse_prefered_phone",
+		"spouse_secondary_phone":                  "phone___spouse_secondary_phone",
 		"supporter_employer_name":                 "employer_s_name",
 		"supporter_employer_hr_contact_phone":     "employer_s_phone_number",
 		"supporter_employer_hr_contact_name":      "",
@@ -166,6 +170,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"how_would_you_like_to_help":              "how_would_you_like_to_help",
 		"supporter_contact_reason":                "contacting_on_behalf_of",
 		"skill_to_offer":                          "",
+		"skill_to_offer_other":                    "",
 		"skill___health_care_provider_type":       "skill___health_care_provider_type", //1
 		"skill___computer_internet_type":          "skill___computer_internet_type",    //2
 		"skill___microsoft_office_type":           "skill___microsoft_office_type",     //2
