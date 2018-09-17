@@ -170,7 +170,6 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"how_would_you_like_to_help":              "how_would_you_like_to_help",
 		"supporter_contact_reason":                "contacting_on_behalf_of",
 		"skill_to_offer":                          "",
-		"skill_to_offer_other":                    "",
 		"skill___health_care_provider_type":       "skill___health_care_provider_type", //1
 		"skill___computer_internet_type":          "skill___computer_internet_type",    //2
 		"skill___microsoft_office_type":           "skill___microsoft_office_type",     //2
@@ -178,6 +177,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"skill___attorney_type":                   "skill___attorney_type",             //4
 		"skill___counseling_type":                 "skill___counseling_type",           //5
 		"skill___other_type":                      "skill___other_type",                //6, 7, 8, 9, 10, 11
+		"skill_to_offer_other":                    "",
 	}
 
 	c := []string{
@@ -221,6 +221,10 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"Etapestry_persona_type_supporter",
 		"supporter_employer_name",
 		"employer_s_phone_number",
+		"company",
+		"job_title",
+		"spouse_prefered_phone",
+		"spouse_secondary_phone",
 		"supporter_employer_hr_contact_name",
 		"sub_how_do_you_know_this_person",
 		"friend_of_a_friend_name_supporter",
@@ -238,14 +242,15 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"gender",
 		"marital_status",
 		"people_helped",
-		"phone___secondary",
-		"phone___secondary_type",
+		"phone__secondary",
+		"phone__secondary_type",
 		"account_name",
 		"care_community_comments",
 		"primary_phone_type",
 		"how_would_you_like_to_help",
 		"contacting_on_behalf_of",
 		"skill_to_offer",
+		"skill_to_offer_other",
 	}
 
 	e := E{
