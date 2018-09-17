@@ -67,7 +67,7 @@ func (env *E) Save() {
 			case "Receive_Email":
 				t := "Unsubscribed"
 				x, err := strconv.ParseInt(s, 10, 32)
-				if err == nil && x > 1 {
+				if err == nil && x > 0 {
 					t = "Subscribed"
 				}
 				s = t
@@ -90,7 +90,7 @@ func (env *E) Save() {
 			}
 			a = append(a, s)
 		}
-		fmt.Printf("Save: a=%v\n", a)
+		//fmt.Printf("Save: a=%v\n", a)
 		err := w.Write(a)
 		count++
 		if err != nil {
@@ -198,7 +198,7 @@ func skillToOffer(d R) string {
 			}
 		}
 	}
-	return strings.Join(a, " ")
+	return strings.Join(a, ", ")
 }
 
 //date formates a Classic date from the database (ick) to an Engage date.
