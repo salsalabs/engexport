@@ -67,6 +67,7 @@ func NewGroups(api *godig.API, dir string) *E {
 		OffsetChan:     make(chan int32, queueSize),
 		RecordChan:     make(chan R, queueSize),
 		DoneChan:       make(chan bool, queueSize),
+		DisableInclude: true,
 	}
 	return &e
 }

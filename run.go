@@ -8,7 +8,6 @@ import (
 	"time"
 )
 
-
 //Run starts all of the parts of a processor as goroutines.  It then waits
 //for the goroutines to complete.
 func (env *E) Run(Threads int, start int32) {
@@ -56,13 +55,14 @@ func (env *E) Run(Threads int, start int32) {
 	}
 	m = m - int64(start)
 	fmt.Printf("run: Using %d records from %v\n", m, env.CountTableName)
-	for i := int64(start); i < m + 499; i += 500 {
+	for i := int64(start); i < m+499; i += 500 {
+		fmt.Printf("pushing %v\n", i)
 		env.OffsetChan <- int32(i)
 	}
-	close(env.OffsetChan)
 
 	fmt.Println("run waiting")
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
+	close(env.OffsetChan)
 	wg.Wait()
 	fmt.Println("run done")
 }
