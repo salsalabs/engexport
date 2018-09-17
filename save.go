@@ -23,7 +23,6 @@ func (env *E) Save() {
 			fmt.Println("save done")
 			break
 		}
-
 		if count >= RecordsPerFile {
 			count = 0
 			f, w, err = env.Open(f, w)
@@ -87,9 +86,11 @@ func (env *E) Save() {
 
 			case "skill_to_offer":
 				s = skillToOffer(d)
+
 			}
 			a = append(a, s)
 		}
+		fmt.Printf("Save: a=%v\n", a)
 		err := w.Write(a)
 		count++
 		if err != nil {
@@ -172,7 +173,7 @@ func phoneSecondaryType(d R) string {
 
 //skill_to_offer accepts a record and a list of keys.  Each key is interpreted
 //as a numeric value.  The numeric value is appended to the returned value.
-//TODO: figure what to do with the actual contents of the fields.
+//SIDE-EFFECT: Field "skill_to_offer_other" has any non-empty values appended.
 func skillToOffer(d R) string {
 	keys := map[string]string{
 		"skill___health_care_provider_type": "1",
@@ -189,6 +190,11 @@ func skillToOffer(d R) string {
 			x = strings.TrimSpace(x)
 			if len(x) > 0 {
 				a = append(a, v)
+				s := d["skill_to_offer_other"]
+				if len(s) > 0 {
+					s = s + ", "
+				}
+				d["skill_to_offer_other"] = s + x
 			}
 		}
 	}
