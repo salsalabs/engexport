@@ -9,16 +9,9 @@ import (
 	"time"
 )
 
-//skillHash is indexed by supproter_KEY ahd holds true if the supporter's "skill_to_offer"
-//has been field at some point.
-var skillHash map[string]bool
-
 //Save waits for records to arrive on a queue and saves them to a CSV file.  CSV files
 //are created as needed and are replaces when they get full.
 func (env *E) Save() {
-	if skillHash == nil {
-		skillHash = make(map[string]bool)
-	}
 	count := RecordsPerFile
 	var f *os.File
 	var w *csv.Writer
@@ -97,18 +90,14 @@ func (env *E) Save() {
 				s = phoneSecondaryType(d)
 
 			case "skill_to_offer":
-				sOther := ""
-				s, sOther = skillToOffer(d)
-				if len(sOther) > 0 {
-					skillsOther = sOther
-				}
+				s, skillsOther = skillToOffer(d)
 
 			case "skill_to_offer_other":
 				s = skillsOther
 			}
 			a = append(a, s)
 			if len(s) != 0 {
-				fmt.Printf("Save: %7v %v='%v'\n", d["supporter_KEY"], k, s)
+				//fmt.Printf("Save: %7v %v='%v'\n", d["supporter_KEY"], k, s)
 			}
 		}
 		//fmt.Printf("Save: a=%v\n", a)
@@ -204,26 +193,32 @@ func skillToOffer(d R) (string, string) {
 		"skill___counseling_type":           "professional counseling",
 		"skill___other_type":                "other",
 	}
+	keyOrder := []string{
+		"skill___health_care_provider_type",
+		"skill___computer_internet_type",
+		"skill___microsoft_office_type",
+		"skill___cpa_finance_type",
+		"skill___attorney_type",
+		"skill___counseling_type",
+		"skill___other_type",
+	}
+
 	var b []string
-	sk := d["supporter_KEY"]
-	_, skillFound := skillHash[sk]
 	c := ""
 
-	for k, v := range keys {
+	for _, k := range keyOrder {
+		// Retrieve the value for the current key from the supporter.
 		x, ok := d[k]
 		if ok {
 			x = strings.TrimSpace(x)
-			// If the value for the current key is not empty...
+			// Separate returns for skill 1 and skills 2..n.
 			if len(x) > 0 {
-				// If this supporter already has a "skill_to_offer", then append any other skils
-				// (from other supporter records) to "skill_to_offer_other".  Note that we are discarding
-				// the contents of the skill fields (provided by supporters) and replacing them with skill
-				// descriptions.
-				if skillFound {
-					b = append(b, v)
-				} else {
+				// Skill description
+				v := keys[k]
+				if len(c) == 0 {
 					c = v
-					skillHash[sk] = true
+				} else {
+					b = append(b, v)
 				}
 			}
 		}
