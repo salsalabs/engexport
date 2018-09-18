@@ -9,9 +9,16 @@ import (
 	"time"
 )
 
+//skillHash is indexed by supproter_KEY ahd holds true if the supporter's "skill_to_offer"
+//has been field at some point.
+var skillHash map[string]bool
+
 //Save waits for records to arrive on a queue and saves them to a CSV file.  CSV files
 //are created as needed and are replaces when they get full.
 func (env *E) Save() {
+	if skillHash == nil {
+		skillHash = make(map[string]bool)
+	}
 	count := RecordsPerFile
 	var f *os.File
 	var w *csv.Writer
@@ -31,6 +38,7 @@ func (env *E) Save() {
 			}
 		}
 
+		fmt.Println()
 		var a []string
 		skillsOther := ""
 		for _, k := range env.Headers {
@@ -55,6 +63,9 @@ func (env *E) Save() {
 			switch k {
 
 			case "State":
+				s = strings.ToUpper(s)
+
+			case "supporter_org_worship_state":
 				s = strings.ToUpper(s)
 
 			case "Transaction_Date":
@@ -86,10 +97,19 @@ func (env *E) Save() {
 				s = phoneSecondaryType(d)
 
 			case "skill_to_offer":
-				s = skillToOffer(d)
+				sOther := ""
+				s, sOther = skillToOffer(d)
+				if len(sOther) > 0 {
+					skillsOther = sOther
+				}
 
+			case "skill_to_offer_other":
+				s = skillsOther
 			}
 			a = append(a, s)
+			if len(s) != 0 {
+				fmt.Printf("Save: %7v %v='%v'\n", d["supporter_KEY"], k, s)
+			}
 		}
 		//fmt.Printf("Save: a=%v\n", a)
 		err := w.Write(a)
@@ -137,12 +157,11 @@ func catenateValues(d R, keys []string) string {
 		v, ok := d[k]
 		if ok {
 			v = strings.TrimSpace(v)
-			s := strings.ToLower(v)
-			if s == "n/a" || s == "test" {
-				v = ""
-			}
 			if len(v) > 0 {
-				a = append(a, v)
+				s := strings.ToLower(v)
+				if s != "n/a" && s != "test" {
+					a = append(a, v)
+				}
 			}
 		}
 	}
@@ -175,31 +194,41 @@ func phoneSecondaryType(d R) string {
 //skill_to_offer accepts a record and a list of keys.  Each key is interpreted
 //as a numeric value.  The numeric value is appended to the returned value.
 //SIDE-EFFECT: Field "skill_to_offer_other" has any non-empty values appended.
-func skillToOffer(d R) string {
+func skillToOffer(d R) (string, string) {
 	keys := map[string]string{
-		"skill___health_care_provider_type": "1",
-		"skill___computer_internet_type":    "2",
-		"skill___microsoft_office_type":     "2",
-		"skill___cpa_finance_type":          "3",
-		"skill___attorney_type":             "4",
-		"skill___counseling_type":           "5",
+		"skill___health_care_provider_type": "healthcare provider",
+		"skill___computer_internet_type":    "computer, technology, social media",
+		"skill___microsoft_office_type":     "computer, technology, social media",
+		"skill___cpa_finance_type":          "accounting, financial services",
+		"skill___attorney_type":             "legal, attorney",
+		"skill___counseling_type":           "professional counseling",
+		"skill___other_type":                "other",
 	}
-	var a []string
+	var b []string
+	sk := d["supporter_KEY"]
+	_, skillFound := skillHash[sk]
+	c := ""
+
 	for k, v := range keys {
 		x, ok := d[k]
 		if ok {
 			x = strings.TrimSpace(x)
+			// If the value for the current key is not empty...
 			if len(x) > 0 {
-				a = append(a, v)
-				s := d["skill_to_offer_other"]
-				if len(s) > 0 {
-					s = s + ", "
+				// If this supporter already has a "skill_to_offer", then append any other skils
+				// (from other supporter records) to "skill_to_offer_other".  Note that we are discarding
+				// the contents of the skill fields (provided by supporters) and replacing them with skill
+				// descriptions.
+				if skillFound {
+					b = append(b, v)
+				} else {
+					c = v
+					skillHash[sk] = true
 				}
-				d["skill_to_offer_other"] = s + x
 			}
 		}
 	}
-	return strings.Join(a, ", ")
+	return c, strings.Join(b, ",")
 }
 
 //date formates a Classic date from the database (ick) to an Engage date.
