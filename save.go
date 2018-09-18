@@ -32,6 +32,7 @@ func (env *E) Save() {
 		}
 
 		var a []string
+		skillsOther := ""
 		for _, k := range env.Headers {
 			m := env.Fields[k]
 			//KLUDGE:  Salsa wants to see supporter.supporter_KEY/supporter.Email
