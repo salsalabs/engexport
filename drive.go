@@ -50,7 +50,6 @@ func (env *E) Drive(id int) {
 			break
 		}
 		for _, r := range a {
-			fmt.Printf("drive_%02d: sending %v\n", id, r["supporter_KEY"])
 			env.RecordChan <- r
 		}
 	}
