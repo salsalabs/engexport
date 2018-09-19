@@ -13,24 +13,23 @@ func (env *E) Drive(id int) {
 	cond := strings.Join(c, "&condition=")
 	var f []string
 	for _, v := range env.Fields {
-		f = append(f, v)
+		if len(v) != 0 {
+			f = append(f, v)
+		}
 	}
 	//Salsa doesn't react will to some include queries in some calls.  Adding
 	//the "&include=" can cause errors even though the URL is clearly well-formed.
-	if !env.DisableInclude {
-		incl := strings.Join(f, ",")
-		cond = fmt.Sprintf("%v&include=%v", cond, incl)
-	}
 
 	fmt.Printf("drive_%02d: begin\n", id)
-	for offset := range env.OffsetChan {
-		//offset, ok := <-env.OffsetChan
-		//if !ok {
-		//	fmt.Printf("drive_%02d: end of queue\n", id)
-		//	break
-		//}
+	for {
+		offset, ok := <-env.OffsetChan
+		if !ok {
+			fmt.Printf("drive_%02d: end of queue\n", id)
+			break
+		}
 		var a []map[string]string
 		var err error
+
 		if strings.Index(env.TableName, ")") != -1 {
 			a, err = t.LeftJoinMap(offset, 500, cond)
 		} else {
@@ -39,6 +38,7 @@ func (env *E) Drive(id int) {
 		if err != nil {
 			panic(err)
 		}
+
 		if math.Mod(float64(offset), 10e3) == 0 {
 			fmt.Printf("drive_%02d: %6d\n", id, offset)
 		}
