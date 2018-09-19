@@ -31,7 +31,6 @@ func (env *E) Save() {
 			}
 		}
 
-		fmt.Println()
 		var a []string
 		skillsOther := ""
 		for _, k := range env.Headers {
@@ -90,7 +89,6 @@ func (env *E) Save() {
 				s = phoneSecondaryType(d)
 
 			case "volunteer_skill_to_offer":
-				fmt.Printf("calling skillToOffer with\n%+v\n", d)
 				s, skillsOther, err = skillToOffer(env, d)
 				if err != nil {
 					fmt.Printf("SkillToOffer %v, %v %v\n", d["supporter_KEY"], d["Email"], err)
@@ -255,21 +253,17 @@ func skillToOffer(env *E, d R) (string, string, error) {
 		"database_table_KEY=142",
 		fmt.Sprintf("table_KEY=%v", d["supporter_KEY"]),
 		fmt.Sprintf("tag_KEY IN %v", inString),
-		"include=tag_KEY",
 	}
 	crit := strings.Join(conditions, "&condition=")
+	crit = crit + "include=tag_KEY"
 	//Only reading once because there are so few keys and
 	//even fewer potential matches.
 	a, err := t.ManyMap(0, 500, crit)
 	if err != nil {
 		return "", "", err
 	}
-	fmt.Printf("\nsupporter_KEY %v\n", d["supporter_KEY"])
 	//Do for all matching tag_data records
-	fmt.Printf("%d tag_data matches", len(a))
-	fmt.Printf("tag_data\n%+v\n", a)
 	for _, r := range a {
-		fmt.Printf("tag_data: %+v", r)
 		//retrieve the tag_KEY
 		k, ok := r["tag_KEY"]
 		if ok {
@@ -282,14 +276,11 @@ func skillToOffer(env *E, d R) (string, string, error) {
 					//If this is the first skill then set the
 					//default skill
 					if len(skill) == 0 {
-						fmt.Printf("skill set to %v\n", s)
 						skill = s
-
 					} else {
 						//Not the first skill.
 						s := fmt.Sprintf("Skill:%v", s)
 						other = append(other, s)
-						fmt.Printf("other is %v\n", other)
 					}
 				} else {
 					//Not an engage skill.
