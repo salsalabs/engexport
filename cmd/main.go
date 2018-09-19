@@ -46,7 +46,7 @@ func main() {
 		e = engexport.NewInactiveDonors(api, *outDir)
 	}
 	if e == nil {
-		fmt.Println("Error: you *must* choose a table to engexport!")
+		fmt.Println("Error: you *must* choose a table to export!")
 		return
 	}
 
