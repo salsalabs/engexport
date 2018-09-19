@@ -61,7 +61,7 @@ func (env *E) Run(Threads int, start int32) {
 	}
 
 	fmt.Println("run waiting")
-	time.Sleep(5 * time.Second)
+	time.Sleep(20 * time.Second)
 	close(env.OffsetChan)
 	wg.Wait()
 	fmt.Println("run done")
