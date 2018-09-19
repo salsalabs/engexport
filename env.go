@@ -169,7 +169,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"phone_number_type_1":                     "primary_phone_type",
 		"how_would_you_like_to_help":              "how_would_you_like_to_help",
 		"supporter_contact_reason":                "contacting_on_behalf_of",
-		"skill_to_offer":                          "",
+		"volunteer_skill_to_offer":                "",
 		"skill___health_care_provider_type":       "skill___health_care_provider_type", //1
 		"skill___computer_internet_type":          "skill___computer_internet_type",    //2
 		"skill___microsoft_office_type":           "skill___microsoft_office_type",     //2
@@ -177,7 +177,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"skill___attorney_type":                   "skill___attorney_type",             //4
 		"skill___counseling_type":                 "skill___counseling_type",           //5
 		"skill___other_type":                      "skill___other_type",                //6, 7, 8, 9, 10, 11
-		"skill_to_offer_other":                    "",
+		"volunteer_skill_to_offer_other":          "",
 	}
 
 	c := []string{
@@ -237,7 +237,6 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"supporter_org_worship_state",
 		"supporter_org_worship_zip",
 		"account_type_supporter",
-		"other_data_3_supporter",
 		"human_resources_contact_name",
 		"gender",
 		"marital_status",
@@ -249,8 +248,8 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"primary_phone_type",
 		"how_would_you_like_to_help",
 		"contacting_on_behalf_of",
-		"skill_to_offer",
-		"skill_to_offer_other",
+		"volunteer_skill_to_offer",
+		"volunteer_skill_to_offer_other",
 	}
 
 	e := E{
