@@ -65,7 +65,7 @@ func (env *E) Save() {
 			case "Receive_Email":
 				t := "Unsubscribed"
 				x, err := strconv.ParseInt(s, 10, 32)
-				if err == nil && x > 1 {
+				if err == nil && x > 0 {
 					t = "Subscribed"
 				}
 				s = t
