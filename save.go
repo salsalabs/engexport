@@ -89,10 +89,15 @@ func (env *E) Save() {
 			case "phone_secondary_type":
 				s = phoneSecondaryType(d)
 
-			case "skill_to_offer":
-				s, skillsOther = skillToOffer(d)
+			case "volunteer_skill_to_offer":
+				fmt.Printf("calling skillToOffer with\n%+v\n", d)
+				s, skillsOther, err = skillToOffer(env, d)
+				if err != nil {
+					fmt.Printf("SkillToOffer %v, %v %v\n", d["supporter_KEY"], d["Email"], err)
+					s = ""
+				}
 
-			case "skill_to_offer_other":
+			case "volunteer_skill_to_offer_other":
 				s = skillsOther
 			}
 			a = append(a, s)
@@ -180,20 +185,60 @@ func phoneSecondaryType(d R) string {
 	return s
 }
 
-//skill_to_offer accepts a record and a list of keys.  Each key is interpreted
-//as a numeric value.  The numeric value is appended to the returned value.
-//SIDE-EFFECT: Field "skill_to_offer_other" has any non-empty values appended.
-func skillToOffer(d R) (string, string) {
-	keys := map[string]string{
-		"skill___health_care_provider_type": "healthcare provider",
-		"skill___computer_internet_type":    "computer, technology, social media",
-		"skill___microsoft_office_type":     "computer, technology, social media",
-		"skill___cpa_finance_type":          "accounting, financial services",
-		"skill___attorney_type":             "legal, attorney",
-		"skill___counseling_type":           "professional counseling",
-		"skill___other_type":                "other",
+//skillTags scans for skill tag records for the provided supporter.  It returns
+//a somewhat ordered list of skills that a supporter selected.  The function uses
+//an internal list of tag_KEYs and their descriptions.  The descriptions are derived
+//from the data dictionary.
+func skillToOffer(env *E, d R) (string, string, error) {
+	skill := ""
+	var other []string
+
+	tagKeys := map[string]string{
+		"260050": "healthcare provider",
+		"260051": "computer, technology, social media",
+		"260141": "accounting, financial services",
+		//Not in Engage, goes to other
+		"260142": "microsoft office proficient",
+		"260145": "legal, attorney",
+		"260146": "professional counseling",
+		"260147": "skilled in complex health insurance issues",
+		"260144": "provided licensed child care",
+		"260047": "I have cared for someone with a life-threatening illness",
+		"260048": "I have had a life-threatening illness",
+		"260049": "other",
 	}
+
+	isSkill := map[string]bool{
+		"260050": true,
+		"260051": true,
+		"260141": true,
+		//Not in Engage, goes to other
+		"260142": false,
+		"260145": true,
+		"260146": true,
+		"260147": true,
+		"260144": true,
+		"260047": true,
+		"260048": true,
+		"260049": true,
+	}
+
 	keyOrder := []string{
+		"260050",
+		"260051",
+		"260141",
+		//Not in Engage, goes to other
+		"260142",
+		"260145",
+		"260146",
+		"260147",
+		"260144",
+		"260047",
+		"260048",
+		"260049",
+	}
+
+	fields := []string{
 		"skill___health_care_provider_type",
 		"skill___computer_internet_type",
 		"skill___microsoft_office_type",
@@ -203,27 +248,74 @@ func skillToOffer(d R) (string, string) {
 		"skill___other_type",
 	}
 
-	var b []string
-	c := ""
+	t := env.API.NewTable("tag_data")
+	inString := strings.Join(keyOrder, ",")
 
-	for _, k := range keyOrder {
-		// Retrieve the value for the current key from the supporter.
-		x, ok := d[k]
+	conditions := []string{
+		"database_table_KEY=142",
+		fmt.Sprintf("table_KEY=%v", d["supporter_KEY"]),
+		fmt.Sprintf("tag_KEY IN %v", inString),
+		"include=tag_KEY",
+	}
+	crit := strings.Join(conditions, "&condition=")
+	//Only reading once because there are so few keys and
+	//even fewer potential matches.
+	a, err := t.ManyMap(0, 500, crit)
+	if err != nil {
+		return "", "", err
+	}
+	fmt.Printf("\nsupporter_KEY %v\n", d["supporter_KEY"])
+	//Do for all matching tag_data records
+	fmt.Printf("%d tag_data matches", len(a))
+	fmt.Printf("tag_data\n%+v\n", a)
+	for _, r := range a {
+		fmt.Printf("tag_data: %+v", r)
+		//retrieve the tag_KEY
+		k, ok := r["tag_KEY"]
 		if ok {
-			x = strings.TrimSpace(x)
-			// Separate returns for skill 1 and skills 2..n.
-			if len(x) > 0 {
-				// Skill description
-				v := keys[k]
-				if len(c) == 0 {
-					c = v
+			//retrieve the official skill description
+			s, ok := tagKeys[k]
+			if ok {
+				//see if this is an Engage skill
+				t, _ := isSkill[k]
+				if t {
+					//If this is the first skill then set the
+					//default skill
+					if len(skill) == 0 {
+						fmt.Printf("skill set to %v\n", s)
+						skill = s
+
+					} else {
+						//Not the first skill.
+						s := fmt.Sprintf("Skill:%v", s)
+						other = append(other, s)
+						fmt.Printf("other is %v\n", other)
+					}
 				} else {
-					b = append(b, v)
+					//Not an engage skill.
+					other = append(other, s)
 				}
+			} else {
+				//The key is there but it's not an Engage skill.
+				other = append(other, s)
+			}
+		} else {
+			//No tag KEY.  Whine...
+			fmt.Printf("%v %v, no tag_KEY in %d records of tag data.\n%v\n\n", d["supporter_KEY"], d["Email"], len(a), a)
+		}
+	}
+	// append all non-empty skill fields to the other array.
+	for _, s := range fields {
+		v, ok := d[s]
+		if ok {
+			v = strings.TrimSpace(v)
+			if len(v) > 0 {
+				other = append(other, v)
 			}
 		}
 	}
-	return c, strings.Join(b, ",")
+	x := strings.Join(other, ", ")
+	return skill, x, nil
 }
 
 //date formates a Classic date from the database (ick) to an Engage date.
