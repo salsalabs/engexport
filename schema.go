@@ -2,11 +2,12 @@ package engexport
 
 import (
 	"encoding/csv"
-	"github.com/salsalabs/godig"
 	"os"
+
+	"github.com/salsalabs/godig"
 )
 
-//ParseFmt is used to parse a Salsa database mesasge.  NOote that the only
+//ParseFmt is used to parse a Salsa database mesasge.  Note that the only
 //way to do that is to remove the hour offset before parsing.  See `date()`.
 const ParseFmt = "Mon Jan 2 2006 15:04:05 (MST)"
 
@@ -20,7 +21,7 @@ const RecordsPerFile = 50000
 //Threads is the number of Drive threads.  That's the one that is the
 //"slowest".  WaitFor is responsible for shutting things down wihen
 //this number of Drives had pushed a "done" message.
-const Threads = 25
+const Threads = 10
 
 //R is a record from the database.  It's a basic map of strings pointing to
 //strings.  Oddly enough, Go makes a distrinction between the two.  When in
