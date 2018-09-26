@@ -2,8 +2,9 @@ package engexport
 
 import (
 	"encoding/csv"
-	"github.com/salsalabs/godig"
 	"os"
+
+	"github.com/salsalabs/godig"
 )
 
 //ParseFmt is used to parse a Salsa database mesasge.  NOote that the only
@@ -22,9 +23,12 @@ const RecordsPerFile = 50000
 //this number of Drives had pushed a "done" message.
 const Threads = 25
 
-//R is a record from the database.  It's a basic map of strings pointing to
-//strings.  Oddly enough, Go makes a distrinction between the two.  When in
-//doubt, use this. TODO: Given this type a better name.
+//R is a map between output columns and supporters table columns.
+//
+//Oddly enough, Go makes a distrinction thie type and a map[string]string.
+//When indoubt, use this.
+//
+//TODO: Given this type a better name.
 type R map[string]string
 
 //E is a runtime environment for a single application.  It contains

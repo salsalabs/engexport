@@ -1,9 +1,12 @@
 package engexport
 
 import (
+	"fmt"
+	"io/ioutil"
 	"sort"
 
 	"github.com/salsalabs/godig"
+	"gopkg.in/yaml.v2"
 )
 
 const queueSize = 100
@@ -75,36 +78,40 @@ func NewGroups(api *godig.API, dir string) *E {
 //The default behavior is to save suupporters that have valid email addresses.
 //That means that both subscribed and unsubscribed supporrters are written to CSV
 //files.  TODO: Allow a user to iverride these selections with a YAML file.
-func NewSupporter(api *godig.API, dir string) *E {
-	f := R{
-		"Cell_Phone":              "Cell_Phone",
-		"City":                    "City",
-		"Country":                 "Country",
-		"Email":                   "Email",
-		"First_Name":              "First_Name",
-		"Language_Code":           "Language_Code",
-		"Last_Name":               "Last_Name",
-		"MI":                      "MI",
-		"Phone":                   "Phone",
-		"Receive_Email":           "Receive_Email",
-		"State":                   "State",
-		"Street":                  "Street",
-		"Street_2":                "Street_2",
-		"Suffix":                  "Suffix",
-		"Timezone":                "Timezone",
-		"Title":                   "Title",
-		"Work_Phone":              "Work_Phone",
-		"Zip":                     "Zip",
-		"supporter_KEY":           "supporter_KEY",
-		"address":                 "address",
-		"bloomberg_a":             "bloomberg_a",
-		"bloomberg_b":             "bloomberg_b",
-		"bsd_date_created":        "bsd_date_created",
-		"bsd_largest_donation":    "bsd_largest_donation",
-		"bsd_last_donated":        "bsd_last_donated",
-		"bsd_number_of_donations": "bsd_number_of_donations",
-		"bsd_total_donated":       "bsd_total_donated",
-		"cbs":                     "cbs",
+func NewSupporter(api *godig.API, dir string, fn *string) *E {
+	var f R
+	if fn != nil {
+		type field struct {
+			fields R
+		}
+		b, err := ioutil.ReadFile(*fn)
+		var x field
+		err = yaml.Unmarshal(b, &x)
+		if err != nil {
+			panic(err)
+		}
+		f = x.fields
+	} else {
+		f = R{
+			"Cell_Phone":    "Cell_Phone",
+			"City":          "City",
+			"Country":       "Country",
+			"Email":         "Email",
+			"First_Name":    "First_Name",
+			"Language_Code": "Language_Code",
+			"Last_Name":     "Last_Name",
+			"MI":            "MI",
+			"Phone":         "Phone",
+			"Receive_Email": "Receive_Email",
+			"State":         "State",
+			"Street":        "Street",
+			"Street_2":      "Street_2",
+			"Suffix":        "Suffix",
+			"Timezone":      "Timezone",
+			"Title":         "Title",
+			"Work_Phone":    "Work_Phone",
+			"Zip":           "Zip",
+		}
 	}
 	c := []string{
 		"Email IS NOT EMPTY",
@@ -124,6 +131,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		RecordChan:     make(chan R, queueSize),
 		DoneChan:       make(chan bool, queueSize),
 	}
+	fmt.Printf("R is %+v\n", f)
 	// Just a reminder...
 	e.API.Verbose = false
 	return &e
@@ -132,8 +140,8 @@ func NewSupporter(api *godig.API, dir string) *E {
 //NewActiveSupporter instantiates an envionrment to copy active supportes to
 //CSV files.  Active supporters have a good email address and have not opted out
 //or been opted out (i.e. Receive_Email > 0).
-func NewActiveSupporter(api *godig.API, dir string) *E {
-	e := NewSupporter(api, dir)
+func NewActiveSupporter(api *godig.API, dir string, fn *string) *E {
+	e := NewSupporter(api, dir, fn)
 	c := e.Conditions
 	c = append(c, "Receive_Email>0")
 	e.Conditions = c
@@ -143,8 +151,8 @@ func NewActiveSupporter(api *godig.API, dir string) *E {
 //NewInactiveSupporter instantiates an envionrment to copy inactive supporters to
 //CSV files.  Inactive supporters have a good email address but have either opted
 // out or been opted out (i.e. Receive_Email < 1).
-func NewInactiveSupporter(api *godig.API, dir string) *E {
-	e := NewSupporter(api, dir)
+func NewInactiveSupporter(api *godig.API, dir string, fn *string) *E {
+	e := NewSupporter(api, dir, fn)
 	c := e.Conditions
 	c = append(c, "Receive_Email<1")
 	e.Conditions = c
@@ -156,8 +164,8 @@ func NewInactiveSupporter(api *godig.API, dir string) *E {
 //donation history to CSV files.  Inctive supporters have a good email address but
 //have either opted out or been opted out (i.e. Receive_Email < 1).  Processing uses
 //the donation table as a guide to find inactive supporters.
-func NewInactiveDonors(api *godig.API, dir string) *E {
-	e := NewSupporter(api, dir)
+func NewInactiveDonors(api *godig.API, dir string, fn *string) *E {
+	e := NewSupporter(api, dir, fn)
 
 	//Salsa gets confused with the contents of the "&uinclude=" in selective places.
 	//This is one of those times.
