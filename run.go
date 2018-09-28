@@ -1,7 +1,7 @@
 package engexport
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"sync"
@@ -54,15 +54,15 @@ func (env *E) Run(Threads int, start int32) {
 		panic(err)
 	}
 	m = m - int64(start)
-	fmt.Printf("run: Using %d records from %v\n", m, env.CountTableName)
+	log.Printf("run: Using %d records from %v\n", m, env.CountTableName)
 	for i := int64(start); i < m+499; i += 500 {
-		fmt.Printf("pushing %v\n", i)
+		log.Printf("run: pushing %v\n", i)
 		env.OffsetChan <- int32(i)
 	}
 
-	fmt.Println("run waiting")
+	log.Println("run waiting")
 	time.Sleep(5 * time.Second)
 	close(env.OffsetChan)
 	wg.Wait()
-	fmt.Println("run done")
+	log.Println("run done")
 }

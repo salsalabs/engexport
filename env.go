@@ -1,8 +1,8 @@
 package engexport
 
 import (
-	"fmt"
 	"io/ioutil"
+	"log"
 	"sort"
 
 	"github.com/salsalabs/godig"
@@ -153,7 +153,7 @@ func NewSupporter(api *godig.API, dir string, fn *string) *E {
 		RecordChan:     make(chan R, queueSize),
 		DoneChan:       make(chan bool, queueSize),
 	}
-	fmt.Printf("R is %+v\n", f)
+	log.Printf("R is %+v\n", f)
 	// Just a reminder...
 	e.API.Verbose = false
 	return &e

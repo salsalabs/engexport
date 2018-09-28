@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -51,11 +50,11 @@ func main() {
 		e = engexport.NewInactiveDonors(api, *outDir, fn)
 	}
 	if e == nil {
-		fmt.Println("Error: you *must* choose a table to export!")
+		log.Println("Error: you *must* choose a table to export!")
 		return
 	}
 
 	e.Run(engexport.Threads, *start)
-	fmt.Println("main: done")
+	log.Println("main: done")
 	return
 }

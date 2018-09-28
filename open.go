@@ -3,6 +3,7 @@ package engexport
 import (
 	"encoding/csv"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"strings"
@@ -43,6 +44,6 @@ func (env *E) Open(f *os.File, w *csv.Writer) (*os.File, *csv.Writer, error) {
 	}
 	w = csv.NewWriter(f)
 	err = w.Write(env.Headers)
-	fmt.Printf("open: %v\n", fn)
+	log.Printf("open: %v\n", fn)
 	return f, w, err
 }

@@ -2,6 +2,7 @@ package engexport
 
 import (
 	"fmt"
+	"log"
 	"math"
 	"strings"
 )
@@ -23,11 +24,11 @@ func (env *E) Drive(id int) {
 		incl := strings.Join(f, ",")
 		cond = fmt.Sprintf("%v&include=%v", cond, incl)
 	}
-	fmt.Printf("drive_%02d: begin\n", id)
+	log.Printf("drive_%02d: begin\n", id)
 	for {
 		offset, ok := <-env.OffsetChan
 		if !ok {
-			fmt.Printf("drive_%02d: end of queue\n", id)
+			log.Printf("drive_%02d: end of queue\n", id)
 			break
 		}
 		var a []map[string]string
@@ -41,12 +42,12 @@ func (env *E) Drive(id int) {
 		if err != nil {
 			panic(err)
 		}
-
+		log.Printf("drive_%02d: %6d, %d records\n", id, offset, len(a))
 		if math.Mod(float64(offset), 10e3) == 0 {
-			fmt.Printf("drive_%02d: %6d\n", id, offset)
+			log.Printf("drive_%02d: %6d\n", id, offset)
 		}
 		if len(a) == 0 {
-			fmt.Printf("drive_%02d: end of data\n", id)
+			log.Printf("drive_%02d: end of data\n", id)
 			break
 		}
 		for _, r := range a {
@@ -54,5 +55,5 @@ func (env *E) Drive(id int) {
 		}
 	}
 	env.DoneChan <- true
-	fmt.Printf("drive_%02d: signaled done\n", id)
+	log.Printf("drive_%02d: signaled done\n", id)
 }

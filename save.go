@@ -2,7 +2,7 @@ package engexport
 
 import (
 	"encoding/csv"
-	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -20,7 +20,7 @@ func (env *E) Save() {
 	for {
 		d, ok := <-env.RecordChan
 		if !ok {
-			fmt.Println("save done")
+			log.Println("save done")
 			break
 		}
 
@@ -96,7 +96,7 @@ func date(s string) string {
 		x := strings.Join(p, " ")
 		t, err := time.Parse(ParseFmt, x)
 		if err != nil {
-			fmt.Printf("Warning: parsing %v returned %v\n", s, err)
+			log.Printf("Warning: parsing %v returned %v\n", s, err)
 		} else {
 			s = t.Format(LayoutFmt)
 		}

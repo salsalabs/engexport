@@ -1,8 +1,6 @@
 package engexport
 
-import (
-	"fmt"
-)
+import "log"
 
 //WaitFor is responsible for getting a number of "done" notifications, then closing
 //the save queue.
@@ -14,7 +12,7 @@ func (env *E) WaitFor(c int) {
 		}
 		c--
 		if c == 0 {
-			fmt.Println("waitFor done")
+			log.Println("waitFor done")
 			break
 		}
 	}
