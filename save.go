@@ -50,7 +50,7 @@ func (env *E) Save() {
 			//Transform fields as needed.  This includes making pretty dates,
 			//setting the Engage transaction type and putting Engage text into
 			//Receive_Email.
-			switch k {
+			switch m {
 			case "friend_of_a_friend___first_name":
 				//merge this and friend_of_a_friend___last_name
 				//into friend_of_a_friend_name
