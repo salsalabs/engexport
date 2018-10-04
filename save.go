@@ -47,6 +47,8 @@ func (env *E) Save() {
 			if !ok {
 				s = ""
 			}
+			//Remove tabs.
+			s = strings.Replace(s, "\t", " ", -1)
 			//Transform fields as needed.  This includes making pretty dates,
 			//setting the Engage transaction type and putting Engage text into
 			//Receive_Email.
