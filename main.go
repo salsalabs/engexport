@@ -57,3 +57,21 @@ type Processor interface {
 	Run(Threads int, start int32)
 	Open(f *os.File, w *csv.Writer) (*os.File, *csv.Writer, error)
 }
+
+//Tables defines the mapping of Classic fields to CSV output.
+//Note that the app expects to have a YAML table to provide
+//field map and heading details.
+type Tables struct {
+	Supporter struct {
+		Fields  map[string]string `yaml:"fieldmap"`
+		Headers []string          `yaml:"headers"`
+	} `yaml:"supporter"`
+	Donation struct {
+		Fields  map[string]string `yaml:"fieldmap"`
+		Headers []string          `yaml:"headers"`
+	} `yaml:"donation"`
+	Groups struct {
+		Fields  map[string]string `yaml:"fieldmap"`
+		Headers []string          `yaml:"headers"`
+	} `yaml:"groups"`
+}
