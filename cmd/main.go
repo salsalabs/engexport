@@ -15,7 +15,7 @@ func main() {
 		login    = app.Flag("login", "YAML file with login credentials").Required().String()
 		config   = app.Flag("schema", `Classic table schema.`).Default("schema.yaml").String()
 		outDir   = app.Flag("dir", "Directory to use to store results").Default("./data").String()
-		tag      = app.Flag("tagged", "Retrieve records with this tag").String()
+		tag      = app.Flag("tag", "Retrieve records with this tag").String()
 		start    = app.Flag("start", "start processing at this offset").Default("0").Int32()
 		supp     = app.Command("supporters", "process supporters")
 		_        = supp.Command("all", "process all supporters")

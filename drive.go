@@ -37,7 +37,11 @@ func (env *E) Drive(id int) {
 		if strings.Index(env.TableName, ")") != -1 {
 			a, err = t.LeftJoinMap(offset, 500, cond)
 		} else {
-			a, err = t.ManyMap(offset, 500, cond)
+			if env.Tag != nil {
+				a, err = t.ManyMapTagged(offset, 500, cond, *env.Tag)
+			} else {
+				a, err = t.ManyMap(offset, 500, cond)
+			}
 		}
 		if err != nil {
 			panic(err)
