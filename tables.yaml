@@ -1,0 +1,110 @@
+supporter:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic supporter
+    # table field name.  You can use both standard fields
+    # and custom fields.
+    #
+    # This file is the default mapping for transferring
+    # supporter information from Salsa Classic to Engage.
+    #
+    # Note that tabs can confuse things.  Please use spaces.
+    fieldmap:
+        "email":           "Email"
+        "title":           "Title"
+        "firstName":       "First_Name"
+        "middleName":      "MI"
+        "lastName":        "Last_Name"
+        "suffix":          "Suffix"
+        "status":          "Receive_Email"
+        "addressLine1":    "Street"
+        "addressLine2":    "Street_2"
+        "city":            "City"
+        "state":           "State"
+        "country":         "Country"
+        "postalCode":      "Zip"
+        "homePhone":       "Phone"
+        "cellPhone":       "Cell_Phone"
+        "workPhone":       "Work_Phone"
+        "timezone":        "Timezone"
+        "languageCode":    "Language_Code"
+        "exernalSystemId": "supporter_KEY"
+    
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "externalSystemId"
+        - "email"
+        - "status"
+        - "title"
+        - "firstName"
+        - "middleName"
+        - "lastName"
+        - "suffix"
+        - "addressLine1"
+        - "addressLine2"
+        - "city"
+        - "state"
+        - "country"
+        - "postalCode"
+        - "homePhone"
+        - "cellPhone"
+        - "workPhone"
+        - "timezone"
+        - "languageCode"
+
+donation:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic donation
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is 
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # donation information from Salsa Classic to Engage.
+    fieldmap:
+        "supporter_KEY":    "supporter.supporter_KEY"
+        "Email":            "supporter.Email"
+        "donation_KEY":     "donation_KEY"
+        "Transaction_Date": "Transaction_Date"
+        "Amount":           "amount"
+        "Transaction_Type": "Transaction_Type"
+        "RESULT":           "RESULT"
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "supporter_KEY"
+        - "Email"
+        - "donation_KEY"
+        - "Transaction_Date"
+        - "Amount"
+        - "Transaction_Type"
+        - "RESULT"
+
+groups:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is 
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # groups information from Salsa Classic to Engage.
+    fieldmap:
+        "Group": "Group_Name"
+        "Email": "supporter.Email"
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "Group"
+        - "Email"
