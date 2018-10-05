@@ -11,31 +11,40 @@ Go application to export the usual data necessary to convert a client form Class
 All output files are CSV.
 
 ## Prerequisites
+
 1. A [recent version of Go](https://golang.org/doc/install) installed.  You should use the googles
 if you are installing on Windows.  Really. Trust me on this.
 
 1. The correct Go directory structure.  Believe it or not, this is _very_ inportant.  Here's a sample.
-```
+
+```text
 $(HOME)
   +- go
     +- bin
     +- pkg
     +- src
 ```
+
 ## Installation
-```
+
+```bash
 go get github.com/salsalabs/engexport
 go install
+go build -o engexport cmd/main.go
 ```
 
 ## Setup
+
 Put your Salsa Classic login credentials into a YAML file.
+
 ```yaml
 host: hostname
 email: you@yours.com
 password: super-secret-password
 ```
+
 Where
+
 * `host` is the [API Host](https://help.salsalabs.com/hc/en-us/articles/115000341773-Salsa-Application-Program-Interface-API-#api_host)
 * `email` is the email address that you use to login
 * `password` is the password that you use to login
@@ -43,13 +52,24 @@ Where
 *Remember to remove this file after you're done!*
 
 ## Configuration
+
 The default behavior for this app is to export Classic data for Engage.
 Only the standard supporter fields are exported.  Custom fields are ignored.
 
-The standard behavior can be modified by creating a copy of `table.yaml`.
-File `table.yaml` describes the field mapping for target fields (e.g. Engage fields)
-to Classic fields.  The file also contains the CSV headers.  Here's a sample 
-from `schema.yaml`.
+You can change this behavior to
+
+* Change the field names in the CSV file.
+* Change the fields that are exported.
+* Add custom fields.
+* Remove fields that the client doesn't need.
+* Set up an export to another system besides Engage.
+
+The standard field mappings and headings are stored in `schema.yaml`.  YOu can create
+new file mappings and headings by copying `schema.haml` and then editing the copy.
+(You can also edit `schema.yaml`, but that would Not Be A Good Thing.)
+
+The comments in `schema.yaml` are a good guideline for editing.  Here's a sample
+from `schema.yaml` for the "groups" table.
 
 ```yaml
 groups:
@@ -77,29 +97,31 @@ groups:
 
 Some things you need to know.
 
-1. The table name is always in column one. `supporter`, `donation` or `groups`.
+1. `supporter`, `donation` and `groups` *must* be in column 1.
 1. Indents are four spaces.  Don't use tabs.  Using two spaces also works.  Mostly.
+2. Quotations are required for name with a space.
 1. The name before the colon is for the target system.
 1. The name after the colon must be a Salsa Classic field name.
 1. If the Classic field name starts `supporter.`, then leave it alone.
-2. Headers appear on the first line of the CSV file in the order shown in `schema.yaml`.
-1. You can specify your own `schema.yaml` file in the command line (below).
+2. Headers will appear on the first line of the CSV file in the order shown. Feel free to change the order as you see fit.
 
+If you cceate your own version of `schema.yaml`, then you can add it to the command 
+line when you invoke the app.  See below.
 
 ## Execution
 
-* Help
+```bash
+usage: ./engexport --login=LOGIN [<flags>] <command> [<args> ...]
 
-```
-usage: engexport --login=LOGIN [<flags>] <command> [<args> ...]
 
 Classic-to-Engage exporter.
 
 Flags:
   --help                  Show context-sensitive help (also try --help-long and --help-man).
   --login=LOGIN           YAML file with login credentials
-  --tables="schema.yaml"  Optional table layout spec. See "schema.yaml".
+  --schema="schema.yaml"  Classic table schema.
   --dir="./data"          Directory to use to store results
+  --tag=TAG               Retrieve records tagged with TAG
   --start=0               start processing at this offset
 
 Commands:
@@ -125,29 +147,43 @@ Commands:
     process donations for active and inactive supporters
 
 ```
-* Active supporters
-```
+### Examples
+
+#### Active supporters
+
+```bash
 go run cmd/main.go --login YOUR_YAML_FILE supporters active
 ```
-* Donations by all active and inactive supporters.  This is the most common
+
+#### Donations by all active and inactive supporters.
+
+This is the most common
 variant that clients ask for.  See "TODO" section for others.
-```
+
+```bash
 go run cmd/main.go --login YOUR_YAML_FILE donations
 ```
-* Group names and emails for all active supporters.
-```
+
+#### Group names and emails for all active supporters.
+
+```bash
 go run cmd/main.go --login YOUR_YAML_FILE groups
 ```
-* Inactive supporters.
-```
+
+#### Inactive supporters.
+
+```bash
 go run cmd/main.go --login YOUR_YAML_FILE supporters inactive
 ```
-* Inactive supporters that have donation history.
-```
+
+#### Inactive supporters that have donation history.
+
+```bash
 go run cmd/main.go --login YOUR_YAML_FILE supporters inactive donors
 ```
 
 ## Output
+
 Output goes to a directory of our choosing.  The default is `./data`.  The output
  directory contains one or more files for each of the exports that the app runs.
  The filenames have a sequence number in them.  Each file will contain, at most,
@@ -171,6 +207,7 @@ for the last file in that series, then increments `NNN` to create a new file.
 |`groups_NNN.csv`|(group, email) duples|
 
 ### Performance
+
 * You can expect Salsa to provide records at a rate of about 10,000 per minute.
 * A PC or Mac will get really slow overall.  Run this off-peak if you expect to do your day job.
 * I use a small AWS instance in an IDE.  That does the work and lets my little old MacBook have some breathing room.
@@ -181,6 +218,7 @@ for the last file in that series, then increments `NNN` to create a new file.
 1. One pass through the supporter data that genrerates all of the requied CSV files.
 2. One pass through the database that updates everyting in Engage automatically
 1. Retrieve donations just for active supporters.
+2. Retrieve supporters who are not donors.
 1. (Optional) Retrieve action names and supporters.
 1. (Optional) Retrieve tags and supporters/donations/other.
 1. (Optional) Retrieve custom fields separately using `supporter_KEY` and `Email`
