@@ -29,7 +29,7 @@ supporter:
         "workPhone":       "Work_Phone"
         "timezone":        "Timezone"
         "languageCode":    "Language_Code"
-        "exernalSystemId": "supporter_KEY"
+        "externalSystemId": "supporter_KEY"
     
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers

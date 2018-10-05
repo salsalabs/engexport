@@ -63,15 +63,15 @@ type Processor interface {
 //field map and heading details.
 type Tables struct {
 	Supporter struct {
-		Fields  map[string]string `yaml:"fieldmap"`
-		Headers []string          `yaml:"headers"`
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
 	} `yaml:"supporter"`
 	Donation struct {
-		Fields  map[string]string `yaml:"fieldmap"`
-		Headers []string          `yaml:"headers"`
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
 	} `yaml:"donation"`
 	Groups struct {
-		Fields  map[string]string `yaml:"fieldmap"`
-		Headers []string          `yaml:"headers"`
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
 	} `yaml:"groups"`
 }
