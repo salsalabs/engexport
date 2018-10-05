@@ -3,7 +3,6 @@ package engexport
 import (
 	"errors"
 	"io/ioutil"
-	"log"
 
 	"github.com/salsalabs/godig"
 	"gopkg.in/yaml.v2"
