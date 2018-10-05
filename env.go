@@ -84,7 +84,6 @@ func NewSupporter(api *godig.API, t Tables, dir string) *E {
 		RecordChan:     make(chan R, queueSize),
 		DoneChan:       make(chan bool, queueSize),
 	}
-	log.Printf("R is %+v\n", e.Fields)
 	// Just a reminder...
 	e.API.Verbose = false
 	return &e
