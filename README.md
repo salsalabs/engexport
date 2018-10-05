@@ -49,7 +49,7 @@ Only the standard supporter fields are exported.  Custom fields are ignored.
 The standard behavior can be modified by creating a copy of `table.yaml`.
 File `table.yaml` describes the field mapping for target fields (e.g. Engage fields)
 to Classic fields.  The file also contains the CSV headers.  Here's a sample 
-from `tables.yaml`.
+from `schema.yaml`.
 
 ```yaml
 groups:
@@ -82,8 +82,8 @@ Some things you need to know.
 1. The name before the colon is for the target system.
 1. The name after the colon must be a Salsa Classic field name.
 1. If the Classic field name starts `supporter.`, then leave it alone.
-2. Headers appear on the first line of the CSV file in the order shown in `tables.yaml`.
-1. You can specify your own `tables.yaml` file in the command line (below).
+2. Headers appear on the first line of the CSV file in the order shown in `schema.yaml`.
+1. You can specify your own `schema.yaml` file in the command line (below).
 
 
 ## Execution
@@ -98,7 +98,7 @@ Classic-to-Engage exporter.
 Flags:
   --help                  Show context-sensitive help (also try --help-long and --help-man).
   --login=LOGIN           YAML file with login credentials
-  --tables="tables.yaml"  Optional table layout spec. See "tables.yaml".
+  --tables="schema.yaml"  Optional table layout spec. See "schema.yaml".
   --dir="./data"          Directory to use to store results
   --start=0               start processing at this offset
 

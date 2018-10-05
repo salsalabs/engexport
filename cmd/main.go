@@ -13,7 +13,7 @@ func main() {
 	var (
 		app      = kingpin.New("engexport", "Classic-to-Engage exporter.")
 		login    = app.Flag("login", "YAML file with login credentials").Required().String()
-		config   = app.Flag("tables", `Optional table layout spec.  See "tables.yaml".`).Default("tables.yaml").String()
+		config   = app.Flag("tables", `Optional table layout spec.  See "schema.yaml".`).Default("schema.yaml").String()
 		outDir   = app.Flag("dir", "Directory to use to store results").Default("./data").String()
 		start    = app.Flag("start", "start processing at this offset").Default("0").Int32()
 		supp     = app.Command("supporters", "process supporters")
@@ -30,7 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
-	t, err := engexport.LoadTables(config)
+	t, err := engexport.LoadSchema(config)
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
