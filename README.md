@@ -42,6 +42,50 @@ Where
 
 *Remember to remove this file after you're done!*
 
+## Configuration
+The default behavior for this app is to export Classic data for Engage.
+Only the standard supporter fields are exported.  Custom fields are ignored.
+
+The standard behavior can be modified by creating a copy of `table.yaml`.
+File `table.yaml` describes the field mapping for target fields (e.g. Engage fields)
+to Classic fields.  The file also contains the CSV headers.  Here's a sample 
+from `tables.yaml`.
+
+```yaml
+groups:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is 
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # groups information from Salsa Classic to Engage.
+    fieldmap:
+        "Group": "Group_Name"
+        "Email": "supporter.Email"
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "Group"
+        - "Email"
+```
+
+Some things you need to know.
+
+1. The table name is always in column one. `supporter`, `donation` or `groups`.
+1. Indents are four spaces.  Don't use tabs.  Using two spaces also works.  Mostly.
+1. The name before the colon is for the target system.
+1. The name after the colon must be a Salsa Classic field name.
+1. If the Classic field name starts `supporter.`, then leave it alone.
+2. Headers appear on the first line of the CSV file in the order shown in `tables.yaml`.
+1. You can specify your own `tables.yaml` file in the command line (below).
+
+
 ## Execution
 
 * Help
@@ -52,13 +96,13 @@ usage: engexport --login=LOGIN [<flags>] <command> [<args> ...]
 Classic-to-Engage exporter.
 
 Flags:
-  --help          Show context-sensitive help (also try --help-long and --help-man).
-  --login=LOGIN   YAML file with login credentials
-  --dir="./data"  Directory to use to store results
-  --start=0       start processing at this offset
+  --help                  Show context-sensitive help (also try --help-long and --help-man).
+  --login=LOGIN           YAML file with login credentials
+  --tables="tables.yaml"  Optional table layout spec. See "tables.yaml".
+  --dir="./data"          Directory to use to store results
+  --start=0               start processing at this offset
 
 Commands:
-
   help [<command>...]
     Show help.
 
@@ -78,7 +122,8 @@ Commands:
     process groups for active supporters
 
   donations
-    process donations for all active and inactive supporters
+    process donations for active and inactive supporters
+
 ```
 * Active supporters
 ```
