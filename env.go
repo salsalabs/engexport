@@ -4,7 +4,6 @@ import (
 	"errors"
 	"io/ioutil"
 
-	"github.com/salsalabs/godig"
 	"gopkg.in/yaml.v2"
 )
 
@@ -12,17 +11,18 @@ const queueSize = 100
 
 //NewDonation instantiates an environment for copying donations to CSV files.
 //TODO: Allow a user to iverride these selections with a YAML file.
-func NewDonation(api *godig.API, t Schema, dir string) *E {
+func NewDonation(p P) *E {
 	c := []string{
 		"RESULT IN 0,-1",
 		"supporter.Email IS NOT EMPTY",
 		"supporter.Email LIKE %@%.%"}
 
 	e := E{
-		API:            api,
-		OutDir:         dir,
-		Fields:         t.Donation.Fields,
-		Headers:        t.Donation.Headers,
+		API:            p.API,
+		Tag:            p.Tag,
+		OutDir:         p.Dir,
+		Fields:         p.T.Donation.Fields,
+		Headers:        p.T.Donation.Headers,
 		Conditions:     c,
 		CsvFilename:    "donations.csv",
 		TableName:      "donation(supporter_KEY)supporter",
@@ -36,7 +36,7 @@ func NewDonation(api *godig.API, t Schema, dir string) *E {
 
 //NewGroups instantiates an environment for copying Gruups and Emails
 //t CSV files.
-func NewGroups(api *godig.API, t Schema, dir string) *E {
+func NewGroups(p P) *E {
 	c := []string{
 		"groups.Group_Name IS NOT EMPTY",
 		"supporter.Email IS NOT EMPTY",
@@ -45,10 +45,11 @@ func NewGroups(api *godig.API, t Schema, dir string) *E {
 	}
 
 	e := E{
-		API:            api,
-		OutDir:         dir,
-		Fields:         t.Groups.Fields,
-		Headers:        t.Groups.Headers,
+		API:            p.API,
+		Tag:            p.Tag,
+		OutDir:         p.Dir,
+		Fields:         p.T.Groups.Fields,
+		Headers:        p.T.Groups.Headers,
 		Conditions:     c,
 		CsvFilename:    "groups.csv",
 		TableName:      "groups(groups_KEY)supporter_groups(supporter_KEY)supporter",
@@ -64,17 +65,18 @@ func NewGroups(api *godig.API, t Schema, dir string) *E {
 //The default behavior is to save suupporters that have valid email addresses.
 //That means that both subscribed and unsubscribed supporrters are written to CSV
 //files.  TODO: Allow a user to iverride these selections with a YAML file.
-func NewSupporter(api *godig.API, t Schema, dir string) *E {
+func NewSupporter(p P) *E {
 	c := []string{
 		"Email IS NOT EMPTY",
 		"Email LIKE %@%.%",
 	}
 
 	e := E{
-		API:            api,
-		OutDir:         dir,
-		Fields:         t.Supporter.Fields,
-		Headers:        t.Supporter.Headers,
+		API:            p.API,
+		Tag:            p.Tag,
+		OutDir:         p.Dir,
+		Fields:         p.T.Supporter.Fields,
+		Headers:        p.T.Supporter.Headers,
 		Conditions:     c,
 		CsvFilename:    "supporters.csv",
 		TableName:      "supporter",
@@ -91,8 +93,8 @@ func NewSupporter(api *godig.API, t Schema, dir string) *E {
 //NewActiveSupporter instantiates an envionrment to copy active supportes to
 //CSV files.  Active supporters have a good email address and have not opted out
 //or been opted out (i.e. Receive_Email > 0).
-func NewActiveSupporter(api *godig.API, t Schema, dir string) *E {
-	e := NewSupporter(api, t, dir)
+func NewActiveSupporter(p P) *E {
+	e := NewSupporter(p)
 	c := e.Conditions
 	c = append(c, "Receive_Email>0")
 	e.Conditions = c
@@ -101,8 +103,8 @@ func NewActiveSupporter(api *godig.API, t Schema, dir string) *E {
 
 //NewAllSupporters instantiates an environment to copy all supporter to
 //CSV files.  Not a good idea for Engage, but useful for other vendors.
-func NewAllSupporters(api *godig.API, t Schema, dir string) *E {
-	e := NewSupporter(api, t, dir)
+func NewAllSupporters(p P) *E {
+	e := NewSupporter(p)
 	e.Conditions = []string{
 		"supporter_KEY>0",
 	}
@@ -112,8 +114,8 @@ func NewAllSupporters(api *godig.API, t Schema, dir string) *E {
 //NewInactiveSupporter instantiates an envionrment to copy inactive supporters to
 //CSV files.  Inactive supporters have a good email address but have either opted
 // out or been opted out (i.e. Receive_Email < 1).
-func NewInactiveSupporter(api *godig.API, t Schema, dir string) *E {
-	e := NewSupporter(api, t, dir)
+func NewInactiveSupporter(p P) *E {
+	e := NewSupporter(p)
 	c := e.Conditions
 	c = append(c, "Receive_Email<1")
 	e.Conditions = c
@@ -125,8 +127,8 @@ func NewInactiveSupporter(api *godig.API, t Schema, dir string) *E {
 //donation history to CSV files.  Inctive supporters have a good email address but
 //have either opted out or been opted out (i.e. Receive_Email < 1).  Processing uses
 //the donation table as a guide to find inactive supporters.
-func NewInactiveDonors(api *godig.API, t Schema, dir string) *E {
-	e := NewSupporter(api, t, dir)
+func NewInactiveDonors(p P) *E {
+	e := NewSupporter(p)
 
 	//Salsa gets confused with the contents of the "&include=" in selective places.
 	//This is one of those times.

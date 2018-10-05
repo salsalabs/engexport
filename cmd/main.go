@@ -15,6 +15,7 @@ func main() {
 		login    = app.Flag("login", "YAML file with login credentials").Required().String()
 		config   = app.Flag("schema", `Classic table schema.`).Default("schema.yaml").String()
 		outDir   = app.Flag("dir", "Directory to use to store results").Default("./data").String()
+		tag      = app.Flag("tagged", "Retrieve records with this tag").String()
 		start    = app.Flag("start", "start processing at this offset").Default("0").Int32()
 		supp     = app.Command("supporters", "process supporters")
 		_        = supp.Command("all", "process all supporters")
@@ -35,20 +36,26 @@ func main() {
 		log.Fatalf("Main: %v\n", err)
 	}
 
+	p := engexport.P{
+		API: api,
+		T:   t,
+		Tag: tag,
+		Dir: *outDir,
+	}
 	var e *engexport.E
 	switch args {
 	case "groups":
-		e = engexport.NewGroups(api, t, *outDir)
+		e = engexport.NewGroups(p)
 	case "donations":
-		e = engexport.NewDonation(api, t, *outDir)
+		e = engexport.NewDonation(p)
 	case "supporters all":
-		e = engexport.NewAllSupporters(api, t, *outDir)
+		e = engexport.NewAllSupporters(p)
 	case "supporters active":
-		e = engexport.NewActiveSupporter(api, t, *outDir)
+		e = engexport.NewActiveSupporter(p)
 	case "supporters inactive all":
-		e = engexport.NewInactiveSupporter(api, t, *outDir)
+		e = engexport.NewInactiveSupporter(p)
 	case "supporters inactive donors":
-		e = engexport.NewInactiveDonors(api, t, *outDir)
+		e = engexport.NewInactiveDonors(p)
 	}
 	if e == nil {
 		log.Println("Error: you *must* choose a table to export!")

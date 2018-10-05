@@ -36,6 +36,7 @@ type R map[string]string
 //write CSV files. TODO: Given this type a better name.
 type E struct {
 	API            *godig.API
+	Tag            *string
 	OutDir         string
 	Fields         R
 	Headers        []string
@@ -47,6 +48,14 @@ type E struct {
 	OffsetChan     chan int32
 	RecordChan     chan R
 	DoneChan       chan bool
+}
+
+//P passes arguments from main() to the rest of the app.
+type P struct {
+	API *godig.API
+	T   Schema
+	Tag *string
+	Dir string
 }
 
 //Processor defines the tools that an engexport processor needs.
