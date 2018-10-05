@@ -216,7 +216,6 @@ for the last file in that series, then increments `NNN` to create a new file.
 ### TODO
 
 1. One pass through the supporter data that genrerates all of the requied CSV files.
-2. One pass through the database that updates everyting in Engage automatically
 1. Retrieve donations just for active supporters.
 2. Retrieve supporters who are not donors.
 1. (Optional) Retrieve action names and supporters.
