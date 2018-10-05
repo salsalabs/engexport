@@ -177,6 +177,16 @@ func NewActiveSupporter(api *godig.API, dir string, fn *string) *E {
 	return e
 }
 
+//NewAllSupporters instantiates an environment to copy all supporter to
+//CSV files.  Not a good idea for Engage, but useful for other vendors.
+func NewAllSupporters(api *godig.API, dir string, fn *string) *E {
+	e := NewSupporter(api, dir, fn)
+	e.Conditions = []string{
+		"supporter_KEY>0",
+	}
+	return e
+}
+
 //NewInactiveSupporter instantiates an envionrment to copy inactive supporters to
 //CSV files.  Inactive supporters have a good email address but have either opted
 // out or been opted out (i.e. Receive_Email < 1).
