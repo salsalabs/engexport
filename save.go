@@ -42,7 +42,6 @@ func (env *E) Save() {
 			if i != -1 {
 				m = strings.Split(m, ".")[1]
 			}
-
 			s, ok := d[m]
 			if ok {
 				s = strings.TrimSpace(s)
@@ -79,7 +78,7 @@ func (env *E) Save() {
 			case "friend_of_a_friend_name_supporter":
 				s = friendOfAFriend(d)
 
-			case "human_resources_contact":
+			case "human_resources_contact_name":
 				s = humanResourcesContact(d)
 
 			case "other_data_3_supporter":
@@ -157,7 +156,9 @@ func catenateValues(d R, keys []string) string {
 			}
 		}
 	}
-	return strings.Join(a, " ")
+	s := strings.Join(a, " ")
+	s = strings.TrimSpace(s)
+	return s
 }
 
 //other_data_3_supporter stores data from two diverse spots into the
