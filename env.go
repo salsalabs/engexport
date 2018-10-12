@@ -140,7 +140,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"spouse_prefered_phone":                   "phone___spouse_prefered_phone",
 		"spouse_secondary_phone":                  "phone___spouse_secondary_phone",
 		"supporter_employer_name":                 "employer_s_name",
-		"supporter_employer_hr_contact_phone":     "employer_s_phone_number",
+		"supporter_employer_phone":                "employer_s_phone_number",
 		"supporter_employer_hr_contact_name":      "",
 		"human_resources_contact___first_name":    "human_resources_contact___first_name",
 		"human_resources_contact___last_name":     "human_resources_contact___last_name",
