@@ -21,9 +21,7 @@ func NewDonation(api *godig.API, dir string) *E {
 		"RESULT":           "RESULT",
 	}
 	c := []string{
-		"RESULT IN 0,-1",
-		"supporter.Email IS NOT EMPTY",
-		"supporter.Email LIKE %@%.%"}
+		"RESULT IN 0,-1"}
 
 	e := E{
 		API:            api,
@@ -51,8 +49,6 @@ func NewGroups(api *godig.API, dir string) *E {
 	c := []string{
 		"groups.Group_Name IS NOT EMPTY",
 		"supporter.Email IS NOT EMPTY",
-		"supporter.Email LIKE %@%.%",
-		"supporter.Receive_Email>0",
 	}
 
 	e := E{
