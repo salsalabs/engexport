@@ -78,7 +78,7 @@ func (env *E) Save() {
 			case "friend_of_a_friend_name_supporter":
 				s = friendOfAFriend(d)
 
-			case "human_resources_contact_name":
+			case "supporter_employer_hr_contact_name":
 				s = humanResourcesContact(d)
 
 			case "other_data_3_supporter":
