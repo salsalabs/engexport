@@ -105,17 +105,15 @@ go run cmd/main.go --login YOUR_YAML_FILE supporters inactive donors
 ## Output
 Output goes to a directory of your choosing.  The default is `./data`.  The output
  directory contains one or more files for each of the exports that the app runs.
- The filenames have a sequence number in them.  Each file will contain, at most,
- 50,001 records.  There will be one record for the CSV header and up to 50,000
- data records.
+ 
+ The filenames have a sequence number.  The sequence number is there to avoid confusion in the application.  There is no implied or specified order of the output files.
+ 
+ Each file will contain, at most,
+ 50,001 records.  There will be one record for the CSV header and up to 50,000 data records.
 
-* The CSV files contain information in comma-separated file format.
-* The CSV headers are guaranteed to be in the same order from run to run.
-* The CSV files contain `NNN` in their names.  For example `supporter_010.csv`.
-* The app uses `NNN` so that older
-files are not overwritten. Any time that a new file is needed, the app searches
-for the last file in that series, then increments `NNN` to create a new file.
-* The filenames indicate the kind of data that they contain.
+The CSV headers are guaranteed to be in the same order from run to run.  
+
+The filenames indicate the kind of data that they contain.
 
 |Name|Contents|
 | --- | --- |
