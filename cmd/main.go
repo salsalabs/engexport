@@ -37,7 +37,7 @@ func main() {
 	case "donations":
 		e = engexport.NewDonation(api, *outDir)
 	case "supporters all":
-		e = engexport.NewSupporter(api, *outDir)
+		e = engexport.NewAllSupporter(api, *outDir)
 	case "supporters active":
 		e = engexport.NewActiveSupporter(api, *outDir)
 	case "supporters inactive all":
