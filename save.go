@@ -150,7 +150,7 @@ func catenateValues(d R, keys []string) string {
 			v = strings.TrimSpace(v)
 			if len(v) > 0 {
 				s := strings.ToLower(v)
-				if s != "n/a" && s != "test" {
+				if s != "na" && s != "n/a" && s != "test" {
 					a = append(a, v)
 				}
 			}
