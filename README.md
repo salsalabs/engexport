@@ -103,7 +103,7 @@ go run cmd/main.go --login YOUR_YAML_FILE supporters inactive donors
 ```
 
 ## Output
-Output goes to a directory of our choosing.  The default is `./data`.  The output
+Output goes to a directory of your choosing.  The default is `./data`.  The output
  directory contains one or more files for each of the exports that the app runs.
  The filenames have a sequence number in them.  Each file will contain, at most,
  50,001 records.  There will be one record for the CSV header and up to 50,000
