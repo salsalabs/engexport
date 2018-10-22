@@ -13,7 +13,6 @@
 
 # Logins and schemas
 logins
-*.yaml
 
 # Output dirs
 data*
