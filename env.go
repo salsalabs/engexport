@@ -34,8 +34,8 @@ func NewDonation(p P) *E {
 	return &e
 }
 
-//NewGroups instantiates an environment for copying Gruups and Emails
-//t CSV files.
+//NewGroups instantiates an environment for copying Groups and Emails
+//to CSV files.
 func NewGroups(p P) *E {
 	c := []string{
 		"groups.Group_Name IS NOT EMPTY",
@@ -61,8 +61,22 @@ func NewGroups(p P) *E {
 	return &e
 }
 
+//NewEmailOnlyGroups instantiates an environment for copying Groups and Emails
+//to CSV files where the only requirement is that a supporter has an email.
+//There is no requirement for being able to deliver to the supporter.
+func NewEmailOnlyGroups(p P) *E {
+	e := NewGroups(p)
+	c := []string{
+		"groups.Group_Name IS NOT EMPTY",
+		"supporter.Email IS NOT EMPTY",
+		"supporter.Email LIKE %@%.%",
+	}
+	e.Conditions = c
+	return e
+}
+
 //NewSupporter instantiates an environment for copying supporters to CSV files.
-//The default behavior is to save suupporters that have valid email addresses.
+//The default behavior is to save supporters that have valid email addresses.
 //That means that both subscribed and unsubscribed supporrters are written to CSV
 //files.  TODO: Allow a user to iverride these selections with a YAML file.
 func NewSupporter(p P) *E {
