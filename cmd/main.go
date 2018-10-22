@@ -27,6 +27,9 @@ func main() {
 		_        = app.Command("donations", "process donations for active and inactive supporters")
 	)
 	args, _ := app.Parse(os.Args[1:])
+	if tag != nil && len(*tag) == 0 {
+		tag = nil
+	}
 	api, err := (godig.YAMLAuth(*login))
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
