@@ -61,7 +61,7 @@ func NewGroups(p P) *E {
 	return &e
 }
 
-//NewSupporter instantiates an environment for copying supporters to  CSV files.
+//NewSupporter instantiates an environment for copying supporters to CSV files.
 //The default behavior is to save suupporters that have valid email addresses.
 //That means that both subscribed and unsubscribed supporrters are written to CSV
 //files.  TODO: Allow a user to iverride these selections with a YAML file.
