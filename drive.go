@@ -28,7 +28,6 @@ func (env *E) Drive(id int) {
 	for {
 		offset, ok := <-env.OffsetChan
 		if !ok {
-			log.Printf("drive_%02d: end of queue\n", id)
 			break
 		}
 		var a []map[string]string
@@ -51,7 +50,6 @@ func (env *E) Drive(id int) {
 			log.Printf("drive_%02d: %6d\n", id, offset)
 		}
 		if len(a) == 0 {
-			log.Printf("drive_%02d: end of data\n", id)
 			break
 		}
 		for _, r := range a {
