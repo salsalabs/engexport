@@ -73,7 +73,7 @@ func (env *E) Save() {
 
 			// Convert tabs to spaces. Remove leading/trailing spaces.
 			// Append the cleaned-up value to the output.
-			s = strings.Replace(s, "\t", "", -1)
+			s = strings.Replace(s, "\t", " ", -1)
 			s = strings.TrimSpace(s)
 			a = append(a, s)
 		}
