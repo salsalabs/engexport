@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -24,8 +25,9 @@ func main() {
 		inactive = supp.Command("inactive", "process inactive supporters")
 		_        = inactive.Command("all", "process all inactive supporters")
 		_        = inactive.Command("donors", "process inactive supporters with donation history")
-		groups   = app.Command("groups", "process groups for active supporters")
-		_        = groups.Command("only_email", "process grups for supporters that have emails only")
+		groups   = app.Command("groups", "process groups")
+		_        = groups.Command("all", "process groups for active supporters")
+		_        = groups.Command("only_email", "process groups for supporters that have emails only")
 		_        = app.Command("donations", "process donations for active and inactive supporters")
 	)
 	args, _ := app.Parse(os.Args[1:])
@@ -48,8 +50,9 @@ func main() {
 		Dir: *outDir,
 	}
 	var e *engexport.E
+	fmt.Printf("Args is %v\n", args)
 	switch args {
-	case "groups":
+	case "groups all":
 		e = engexport.NewGroups(p)
 	case "groups only_email":
 		e = engexport.NewEmailOnlyGroups(p)
