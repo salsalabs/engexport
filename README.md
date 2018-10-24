@@ -56,7 +56,7 @@ Where
 
 ## Execution
 
-* Help
+### Help
 
 ```
 usage: engexport --login=LOGIN [<flags>] <command> [<args> ...]
@@ -92,27 +92,14 @@ Commands:
   donations
     process donations for all active and inactive supporters
 ```
-* Active supporters
+### Extraction commands for Here to Serve
 ```
-go run cmd/main.go --login YOUR_YAML_FILE supporters active
-```
-* Donations by all active and inactive supporters.  This is the most common
-variant that clients ask for.  See "TODO" section for others.
-```
+go run cmd/main.go --login YOUR_YAML_FILE supporters all
 go run cmd/main.go --login YOUR_YAML_FILE donations
-```
-* Group names and emails for all active supporters.
-```
 go run cmd/main.go --login YOUR_YAML_FILE groups
 ```
-* Inactive supporters.
-```
-go run cmd/main.go --login YOUR_YAML_FILE supporters inactive
-```
-* Inactive supporters that have donation history.
-```
-go run cmd/main.go --login YOUR_YAML_FILE supporters inactive donors
-```
+### Other commands
+Other commands exist but do not apply to Here to Serve.
 
 ## Output
 Output goes to a directory of your choosing.  The default is `./data`.  The output
