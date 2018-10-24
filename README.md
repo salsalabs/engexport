@@ -10,6 +10,18 @@ Go application to export the usual data necessary to convert a client form Class
 
 All output files are CSV.
 
+## Read this!
+
+This is the "Here to Serve" version of engexport.  The process
+that reads and transmogrifies data does a lot of special
+work that is only for Here to Serve.  
+
+If you're doing another org and you have this version installed, then go get "master".
+
+```bash
+git checkout master
+```
+
 ## Prerequisites
 1. A [recent version of Go](https://golang.org/doc/install) installed.  You should use the googles
 if you are installing on Windows.  Really. Trust me on this.
