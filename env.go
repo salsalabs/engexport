@@ -165,15 +165,8 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"care_community_comments":                 "who_would_you_like_to_help____comments",
 		"how_would_you_like_to_help":              "how_would_you_like_to_help",
 		"supporter_contact_reason":                "contacting_on_behalf_of",
-		"volunteer_skill_to_offer":                "",
-		"skill___health_care_provider_type":       "skill___health_care_provider_type", //1
-		"skill___computer_internet_type":          "skill___computer_internet_type",    //2
-		"skill___microsoft_office_type":           "skill___microsoft_office_type",     //2
-		"skill___cpa_finance_type":                "skill___cpa_finance_type",          //3
-		"skill___attorney_type":                   "skill___attorney_type",             //4
-		"skill___counseling_type":                 "skill___counseling_type",           //5
-		"skill___other_type":                      "skill___other_type",                //6, 7, 8, 9, 10, 11
-		"volunteer_skill_to_offer_other":          "",
+		"skill_to_offer":                          "",
+		"skill_to_offer_other":                    "",
 	}
 
 	c := []string{
@@ -247,15 +240,8 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"care_community_comments",
 		"how_would_you_like_to_help",
 		"supporter_contact_reason",
-		"volunteer_skill_to_offer",
-		"skill___health_care_provider_type",
-		"skill___computer_internet_type",
-		"skill___microsoft_office_type",
-		"skill___cpa_finance_type",
-		"skill___attorney_type",
-		"skill___counseling_type",
-		"skill___other_type",
-		"volunteer_skill_to_offer_other",
+		"skill_to_offer",
+		"skill_to_offer_other",
 	}
 
 	e := E{
@@ -315,7 +301,7 @@ func NewInactiveSupporter(api *godig.API, dir string) *E {
 func NewInactiveDonors(api *godig.API, dir string) *E {
 	e := NewSupporter(api, dir)
 
-	//Salsa gets confused with the contents of the "&uinclude=" in selective places.
+	//Salsa gets confused with the contents of the "&include=" in selective places.
 	//This is one of those times.
 	e.DisableInclude = true
 
