@@ -87,22 +87,18 @@ func (env *E) Save() {
 			case "phone_secondary_type":
 				s = phoneSecondaryType(d)
 
-			case "volunteer_skill_to_offer":
+			case "skill_to_offer":
 				s, skillsOther, err = skillToOffer(env, d)
 				if err != nil {
 					fmt.Printf("SkillToOffer %v, %v %v\n", d["supporter_KEY"], d["Email"], err)
 					s = ""
 				}
 
-			case "volunteer_skill_to_offer_other":
+			case "skill_to_offer_other":
 				s = skillsOther
 			}
 			a = append(a, s)
-			if len(s) != 0 {
-				//fmt.Printf("Save: %7v %v='%v'\n", d["supporter_KEY"], k, s)
-			}
 		}
-		//fmt.Printf("Save: a=%v\n", a)
 		err := w.Write(a)
 		count++
 		if err != nil {
@@ -188,19 +184,27 @@ func phoneSecondaryType(d R) string {
 //a somewhat ordered list of skills that a supporter selected.  The function uses
 //an internal list of tag_KEYs and their descriptions.  The descriptions are derived
 //from the data dictionary.
+//
+//The rules are...
+//
+//If "family_being_helped" is not empty, then
+//  "skills_to_offer" is the list of tagged skills
+//  "skills_to_offer_other" is the list of "skill___.+_type" values
+//Else
+//  "skills_to_offer_other" is any unmapped skill
 func skillToOffer(env *E, d R) (string, string, error) {
-	skill := ""
+	var skills []string
 	var other []string
 
 	tagKeys := map[string]string{
 		"260050": "healthcare provider",
 		"260051": "computer, technology, social media",
 		"260141": "accounting, financial services",
-		//Not in Engage, goes to other
 		"260142": "microsoft office proficient",
 		"260145": "legal, attorney",
 		"260146": "professional counseling",
 		"260147": "skilled in complex health insurance issues",
+		//The rest are not in Engage. They are are stored in "other".
 		"260144": "provided licensed child care",
 		"260047": "I have cared for someone with a life-threatening illness",
 		"260048": "I have had a life-threatening illness",
@@ -211,22 +215,21 @@ func skillToOffer(env *E, d R) (string, string, error) {
 		"260050": true,
 		"260051": true,
 		"260141": true,
-		//Not in Engage, goes to other
-		"260142": false,
+		"260142": true,
 		"260145": true,
 		"260146": true,
 		"260147": true,
-		"260144": true,
-		"260047": true,
-		"260048": true,
-		"260049": true,
+		//The rest are not in Engage, are stored in "other".
+		"260144": false,
+		"260047": false,
+		"260048": false,
+		"260049": false,
 	}
 
 	keyOrder := []string{
 		"260050",
 		"260051",
 		"260141",
-		//Not in Engage, goes to other
 		"260142",
 		"260145",
 		"260146",
@@ -256,7 +259,8 @@ func skillToOffer(env *E, d R) (string, string, error) {
 		fmt.Sprintf("tag_KEY IN %v", inString),
 	}
 	crit := strings.Join(conditions, "&condition=")
-	crit = crit + "include=tag_KEY"
+	crit = crit + "&include=tag_KEY"
+
 	//Only reading once because there are so few keys and
 	//even fewer potential matches.
 	a, err := t.ManyMap(0, 500, crit)
@@ -274,29 +278,17 @@ func skillToOffer(env *E, d R) (string, string, error) {
 				//see if this is an Engage skill
 				t, _ := isSkill[k]
 				if t {
-					//If this is the first skill then set the
-					//default skill
-					if len(skill) == 0 {
-						skill = s
-					} else {
-						//Not the first skill.
-						s := fmt.Sprintf("Skill:%v", s)
-						other = append(other, s)
-					}
+					skills = append(skills, s)
 				} else {
-					//Not an engage skill.
 					other = append(other, s)
 				}
-			} else {
-				//The key is there but it's not an Engage skill.
-				other = append(other, s)
 			}
 		} else {
 			//No tag KEY.  Whine...
 			fmt.Printf("%v %v, no tag_KEY in %d records of tag data.\n%v\n\n", d["supporter_KEY"], d["Email"], len(a), a)
 		}
 	}
-	// append all non-empty skill fields to the other array.
+	// append all "skill___*" fields to the other array.
 	for _, s := range fields {
 		v, ok := d[s]
 		if ok {
@@ -306,8 +298,9 @@ func skillToOffer(env *E, d R) (string, string, error) {
 			}
 		}
 	}
+	s := strings.Join(skills, ", ")
 	x := strings.Join(other, ", ")
-	return skill, x, nil
+	return s, x, nil
 }
 
 //date formates a Classic date from the database (ick) to an Engage date.
