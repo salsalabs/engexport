@@ -7,7 +7,7 @@ import (
 	"github.com/salsalabs/godig"
 )
 
-//ParseFmt is used to parse a Salsa database mesasge.  NOote that the only
+//ParseFmt is used to parse a Salsa database message.  NOote that the only
 //way to do that is to remove the hour offset before parsing.  See `date()`.
 const ParseFmt = "Mon Jan 2 2006 15:04:05 (MST)"
 
