@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -54,7 +53,6 @@ func main() {
 		Dir: *outDir,
 	}
 	var e *engexport.E
-	fmt.Printf("Args is %v\n", args)
 	switch args {
 	case "groups all":
 		e = engexport.NewGroups(p)
