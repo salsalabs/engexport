@@ -83,4 +83,8 @@ type Schema struct {
 		Fields  R        `yaml:"fieldmap"`
 		Headers []string `yaml:"headers"`
 	} `yaml:"groups"`
+	Tag struct {
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
+	} `yaml:"tag"`
 }

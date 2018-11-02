@@ -33,7 +33,7 @@ func (env *E) Run(Threads int, start int32) {
 	}
 
 	//KLUDGE: Salsa's API does not have a way to count for a LeftJoin.  We'll
-	//use the whole donations table as a guide.  Drivers will get zero
+	//use the whole "count" table as a guide.  Drivers will get zero
 	//records at some point.  That causes a graceful shutdown.
 
 	t := env.API.NewTable(env.CountTableName)
@@ -41,6 +41,7 @@ func (env *E) Run(Threads int, start int32) {
 	switch env.CountTableName {
 	case "donation":
 	case "supporter_groups":
+	case "tag_data":
 		break
 	default:
 		cond = strings.Join(env.Conditions, "&condition=")

@@ -61,6 +61,34 @@ func NewGroups(p P) *E {
 	return &e
 }
 
+//NewTagGroups instantiates an environment for copying tag names and Emails
+//to CSV files.  The CSV files will be imported as groups in Engage.
+func NewTagGroups(p P) *E {
+	c := []string{
+		"tag.tag IS NOT EMPTY",
+		"supporter.Email IS NOT EMPTY",
+		"supporter.Email LIKE %@%.%",
+		"supporter.Receive_Email>0",
+		"tag_data.database_table_KEY=142",
+	}
+
+	e := E{
+		API:            p.API,
+		Tag:            p.Tag,
+		OutDir:         p.Dir,
+		Fields:         p.T.Tag.Fields,
+		Headers:        p.T.Tag.Headers,
+		Conditions:     c,
+		CsvFilename:    "tag_groups.csv",
+		TableName:      "tag(tag_KEY)tag_data(tag_data.table_key=supporter.supporter_KEY)supporter",
+		CountTableName: "tag_data",
+		OffsetChan:     make(chan int32, queueSize),
+		RecordChan:     make(chan R, queueSize),
+		DoneChan:       make(chan bool, queueSize),
+	}
+	return &e
+}
+
 //NewEmailOnlyGroups instantiates an environment for copying Groups and Emails
 //to CSV files where the only requirement is that a supporter has an email.
 //There is no requirement for being able to deliver to the supporter.
