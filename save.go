@@ -84,8 +84,8 @@ func (env *E) Save() {
 			case "other_data_3_supporter":
 				s = otherData3Supporter(d)
 
-			case "phone_secondary_type":
-				s = phoneSecondaryType(d)
+			case "phone_number_type_2":
+				s = phoneNumberType2(d)
 
 			case "skill_to_offer":
 				s, skillsOther, err = skillToOffer(env, d)
@@ -167,14 +167,32 @@ func otherData3Supporter(d R) string {
 	return catenateValues(d, keys)
 }
 
-//phone_secondary populates the secondary phone type with "Work" as needed.
-func phoneSecondaryType(d R) string {
-	v, ok := d["phone___secondary"]
+//phoneNumberType2 fills in phone_number_type_2 with the secondary phone
+//number type.  If the secondary phone number type is "0" and there is a
+//secondary phone, then phone_number_type_2 is "Work".  If the secondary
+//phone number type is "0" and there's no secondary phone, then
+//phone_number_type_2 is empty.
+//
+//whew.
+func phoneNumberType2(d R) string {
 	s := ""
+	_, ok := d["phone__secondary"]
 	if ok {
-		v = strings.TrimSpace(v)
-		if len(v) > 0 {
+		// Have a secondary phone.  Default the type to "Work".
+		v, ok := d["phone___secondary_type"]
+		if !ok {
 			s = "Work"
+		} else {
+			v = strings.TrimSpace(v)
+			// Have a phone number, type is None.  Make it "Work".
+			if v == "None" {
+				s = "Work"
+			} else {
+				s = v
+				if v == "0" {
+					s = "Work"
+				}
+			}
 		}
 	}
 	return s
@@ -206,7 +224,7 @@ func skillToOffer(env *E, d R) (string, string, error) {
 		"260147": "skilled in complex health insurance issues",
 		//The rest are not in Engage. They are are stored in "other".
 		"260144": "provided licensed child care",
-		"260047": "I have cared for someone with a life-threatening illness",
+		"260047": "cared for a loved one through a life-threatening health crisis",
 		"260048": "I have had a life-threatening illness",
 		"260049": "other",
 	}
