@@ -9,6 +9,21 @@ import (
 
 const queueSize = 100
 
+//NewEnv instantiances the non-varying part of an enviroonment object.
+func NewEnv(p P) *E {
+	e := E{
+		API:        p.API,
+		Schema:     p.T,
+		Tag:        p.Tag,
+		OutDir:     p.Dir,
+		OffsetChan: make(chan int32, queueSize),
+		RecordChan: make(chan R, queueSize),
+		DoneChan:   make(chan bool),
+	}
+	return &e
+
+}
+
 //NewDonation instantiates an environment for copying donations to CSV files.
 //TODO: Allow a user to iverride these selections with a YAML file.
 func NewDonation(p P) *E {
@@ -16,22 +31,16 @@ func NewDonation(p P) *E {
 		"RESULT IN 0,-1",
 		"supporter.Email IS NOT EMPTY",
 		"supporter.Email LIKE %@%.%"}
-
-	e := E{
-		API:            p.API,
-		Tag:            p.Tag,
-		OutDir:         p.Dir,
-		Fields:         p.T.Donation.Fields,
-		Headers:        p.T.Donation.Headers,
-		Conditions:     c,
-		CsvFilename:    "donations.csv",
-		TableName:      "donation(supporter_KEY)supporter",
-		CountTableName: "donation",
-		OffsetChan:     make(chan int32, queueSize),
-		RecordChan:     make(chan R, queueSize),
-		DoneChan:       make(chan bool),
-	}
-	return &e
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Donation.Fields
+	e.Headers = p.T.Donation.Headers
+	e.Keys = p.T.Donation.Keys
+	e.CsvFilename = "donations.csv"
+	e.TableName = "donation(supporter_KEY)supporter"
+	e.CountTableName = "donation"
+	e.PrimaryKey = "donation_KEY"
+	return e
 }
 
 //NewGroups instantiates an environment for copying Groups and Emails
@@ -44,21 +53,16 @@ func NewGroups(p P) *E {
 		"supporter.Receive_Email>0",
 	}
 
-	e := E{
-		API:            p.API,
-		Tag:            p.Tag,
-		OutDir:         p.Dir,
-		Fields:         p.T.Groups.Fields,
-		Headers:        p.T.Groups.Headers,
-		Conditions:     c,
-		CsvFilename:    "groups.csv",
-		TableName:      "groups(groups_KEY)supporter_groups(supporter_KEY)supporter",
-		CountTableName: "supporter_groups",
-		OffsetChan:     make(chan int32, queueSize),
-		RecordChan:     make(chan R, queueSize),
-		DoneChan:       make(chan bool, queueSize),
-	}
-	return &e
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Groups.Fields
+	e.Headers = p.T.Groups.Headers
+	e.Keys = p.T.Groups.Keys
+	e.CsvFilename = "groups.csv"
+	e.TableName = "groups(groups_KEY)supporter_groups(supporter_KEY)supporter"
+	e.CountTableName = "supporter_groups"
+	e.PrimaryKey = "groups_KEY"
+	return e
 }
 
 //NewTagGroups instantiates an environment for copying tag names and Emails
@@ -72,21 +76,16 @@ func NewTagGroups(p P) *E {
 		"tag_data.database_table_KEY=142",
 	}
 
-	e := E{
-		API:            p.API,
-		Tag:            p.Tag,
-		OutDir:         p.Dir,
-		Fields:         p.T.Tag.Fields,
-		Headers:        p.T.Tag.Headers,
-		Conditions:     c,
-		CsvFilename:    "tag_groups.csv",
-		TableName:      "tag(tag_KEY)tag_data(tag_data.table_key=supporter.supporter_KEY)supporter",
-		CountTableName: "tag_data",
-		OffsetChan:     make(chan int32, queueSize),
-		RecordChan:     make(chan R, queueSize),
-		DoneChan:       make(chan bool, queueSize),
-	}
-	return &e
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Tag.Fields
+	e.Headers = p.T.Tag.Headers
+	e.Keys = p.T.Tag.Keys
+	e.CsvFilename = "tag_groups.csv"
+	e.TableName = "tag(tag_KEY)tag_data(tag_data.table_key=supporter.supporter_KEY)supporter"
+	e.CountTableName = "tag_data"
+	e.PrimaryKey = "tag.tag_KEY"
+	return e
 }
 
 //NewEmailOnlyGroups instantiates an environment for copying Groups and Emails
@@ -113,23 +112,16 @@ func NewSupporter(p P) *E {
 		"Email LIKE %@%.%",
 	}
 
-	e := E{
-		API:            p.API,
-		Tag:            p.Tag,
-		OutDir:         p.Dir,
-		Fields:         p.T.Supporter.Fields,
-		Headers:        p.T.Supporter.Headers,
-		Conditions:     c,
-		CsvFilename:    "supporters.csv",
-		TableName:      "supporter",
-		CountTableName: "supporter",
-		OffsetChan:     make(chan int32, queueSize),
-		RecordChan:     make(chan R, queueSize),
-		DoneChan:       make(chan bool, queueSize),
-	}
-	// Just a reminder...
-	e.API.Verbose = false
-	return &e
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Supporter.Fields
+	e.Headers = p.T.Supporter.Headers
+	e.Keys = p.T.Supporter.Keys
+	e.CsvFilename = "supporters.csv"
+	e.TableName = "supporter"
+	e.CountTableName = "supporter"
+	e.PrimaryKey = "supporter_KEY"
+	return e
 }
 
 //NewActiveSupporter instantiates an envionrment to copy active supportes to
