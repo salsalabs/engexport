@@ -85,6 +85,7 @@ func NewTagGroups(p P) *E {
 	e.TableName = "tag(tag_KEY)tag_data(tag_data.table_key=supporter.supporter_KEY)supporter"
 	e.CountTableName = "tag_data"
 	e.PrimaryKey = "tag.tag_KEY"
+	e.PrimaryKeyMatchFills = "tag"
 	return e
 }
 
