@@ -11,16 +11,29 @@ import (
 func (env *E) Drive(id int) {
 	t := env.API.NewTable(env.TableName)
 	c := env.Conditions
-	cond := strings.Join(c, "&condition=")
-	var f []string
-	for _, v := range env.Fields {
-		if len(v) != 0 {
-			f = append(f, v)
+
+	//If there are keys in the schema then we'll need to add an "IN"
+	//clause to the API call to filter down to just those keys.
+	if len(env.PrimaryKey) != 0 && len(env.Keys) != 0 {
+		var keys []string
+		for k := range env.Keys {
+			keys = append(keys, k)
 		}
+		k := strings.Join(keys, ",")
+		kc := fmt.Sprintf("%v IN %v", env.PrimaryKey, k)
+		c = append(c, kc)
 	}
-	//Salsa doesn't react will to some include queries in some calls.  Adding
+	cond := strings.Join(c, "&condition=")
+
+	//Salsa doesn't react well to some include queries in some calls.  Adding
 	//the "&include=" can cause errors even though the URL is clearly well-formed.
 	if !env.DisableInclude {
+		var f []string
+		for _, v := range env.Fields {
+			if len(v) != 0 {
+				f = append(f, v)
+			}
+		}
 		incl := strings.Join(f, ",")
 		cond = fmt.Sprintf("%v&include=%v", cond, incl)
 	}

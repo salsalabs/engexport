@@ -31,23 +31,15 @@ func (env *E) Save() {
 				panic(err)
 			}
 		}
-		//If there are keys in the environment then this record can be skipped if its primary
-		//key is not in the list.
-		v, keep := keepRecord(env, d)
-		if keep {
-			var a []string
-			for _, k := range env.Headers {
-				m := env.Fields[k]
-				if k == "Name" && v != nil {
-					d[m] = *v
-				}
-				s := transform(m, d)
-				a = append(a, s)
-			}
-			err := w.Write(a)
-			if err != nil {
-				panic(err)
-			}
+		var a []string
+		for _, k := range env.Headers {
+			m := env.Fields[k]
+			s := transform(m, d)
+			a = append(a, s)
+		}
+		err := w.Write(a)
+		if err != nil {
+			panic(err)
 		}
 		count++
 		w.Flush()
@@ -58,27 +50,6 @@ func (env *E) Save() {
 	if f != nil {
 		f.Close()
 	}
-}
-
-//keepRecord determins if the primary key for this record
-//is in the (potentially empty) list of keys.  If it is,
-//then the matching key has a name associated with it.  The
-//name and a true are returned.  Otherwise?  A nil and a
-//false go back.
-func keepRecord(env *E, d R) (*string, bool) {
-	var v *string
-	if env.Keys == nil {
-		return v, true
-	}
-	pkey := env.PrimaryKey
-	//Salsa needs tag.tag_KEY (for example). We do not.
-	pkey = strings.Split(pkey, ".")[1]
-	x := d[pkey]
-	s, ok := env.Keys[x]
-	if ok {
-		return &s, true
-	}
-	return nil, false
 }
 
 //transform cleans up the value and returns it.
