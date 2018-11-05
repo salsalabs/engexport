@@ -35,22 +35,23 @@ type R map[string]string
 //everything that an application needs to read stuff from Salsa and
 //write CSV files. TODO: Given this type a better name.
 type E struct {
-	API            *godig.API
-	Schema         Schema
-	Tag            *string
-	OutDir         string
-	Fields         R
-	Headers        []string
-	Keys           R
-	DisableInclude bool
-	Conditions     []string
-	CsvFilename    string
-	TableName      string
-	CountTableName string
-	PrimaryKey     string
-	OffsetChan     chan int32
-	RecordChan     chan R
-	DoneChan       chan bool
+	API                  *godig.API
+	Schema               Schema
+	Tag                  *string
+	OutDir               string
+	Fields               R
+	Headers              []string
+	Keys                 R
+	DisableInclude       bool
+	Conditions           []string
+	CsvFilename          string
+	TableName            string
+	CountTableName       string
+	PrimaryKey           string
+	PrimaryKeyMatchFills string
+	OffsetChan           chan int32
+	RecordChan           chan R
+	DoneChan             chan bool
 }
 
 //P passes arguments from main() to the rest of the app.
