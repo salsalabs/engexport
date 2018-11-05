@@ -11,10 +11,12 @@ import (
 func (env *E) Drive(id int) {
 	t := env.API.NewTable(env.TableName)
 	c := env.Conditions
+	checkPrimaryKey := false
 
 	//If there are keys in the schema then we'll need to add an "IN"
 	//clause to the API call to filter down to just those keys.
-	if len(env.PrimaryKey) != 0 && len(env.Keys) != 0 {
+	if len(env.PrimaryKey) != 0 && len(env.PrimaryKeyMatchFills) != 0 && len(env.Keys) != 0 {
+		checkPrimaryKey = true
 		var keys []string
 		for k := range env.Keys {
 			keys = append(keys, k)
@@ -66,7 +68,24 @@ func (env *E) Drive(id int) {
 			break
 		}
 		for _, r := range a {
-			env.RecordChan <- r
+			// Massage the data if the primary key in the record
+			//is one of the primary keys in the schema.
+			//
+			if checkPrimaryKey {
+				pk := strings.Split(env.PrimaryKey, ".")[1]
+				k, ok := r[pk]
+				if ok {
+					n, ok := env.Keys[k]
+					fmt.Printf("Drive name is %v, okay is %v, record is %+v\n", n, ok, r)
+					if ok {
+						r["tag"] = n
+					}
+					fmt.Printf("Drive name is %v, okay is %v, record is %+v\n", n, ok, r)
+					env.RecordChan <- r
+				}
+			} else {
+				env.RecordChan <- r
+			}
 		}
 	}
 	env.DoneChan <- true
