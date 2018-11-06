@@ -102,7 +102,7 @@ groups:
     fieldmap:
         "Group": "Group_Name"
         "Email": "supporter.Email"
-        "groups_KEY": "groups_KEY"
+        "groups_KEY": "groups.groups_KEY"
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
@@ -132,3 +132,7 @@ tag:
         - "tag_KEY"
         - "Group"
         - "Email"
+    # Optional key map.  The key is a tag_KEY, the name is the
+    # Engage group to which tagged supporters will be added.
+    # "Optional" means that this map can be left out.
+    keymap:
