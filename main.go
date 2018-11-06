@@ -35,19 +35,23 @@ type R map[string]string
 //everything that an application needs to read stuff from Salsa and
 //write CSV files. TODO: Given this type a better name.
 type E struct {
-	API            *godig.API
-	Tag            *string
-	OutDir         string
-	Fields         R
-	Headers        []string
-	DisableInclude bool
-	Conditions     []string
-	CsvFilename    string
-	TableName      string
-	CountTableName string
-	OffsetChan     chan int32
-	RecordChan     chan R
-	DoneChan       chan bool
+	API                  *godig.API
+	Schema               Schema
+	Tag                  *string
+	OutDir               string
+	Fields               R
+	Headers              []string
+	Keys                 R
+	DisableInclude       bool
+	Conditions           []string
+	CsvFilename          string
+	TableName            string
+	CountTableName       string
+	PrimaryKey           string
+	PrimaryKeyMatchFills string
+	OffsetChan           chan int32
+	RecordChan           chan R
+	DoneChan             chan bool
 }
 
 //P passes arguments from main() to the rest of the app.
@@ -68,19 +72,28 @@ type Processor interface {
 }
 
 //Schema defines the mapping of Classic fields to CSV output.
-//Note that the app expects to have a YAML table to provide
-//field map and heading details.
+//Note that the app expects to have a YAML file that provides
+//field map and heading details.  Note, too, that Keys are
+//optional.  If not provided, then YAML returns an empty map.
 type Schema struct {
 	Supporter struct {
 		Fields  R        `yaml:"fieldmap"`
 		Headers []string `yaml:"headers"`
+		Keys    R        `yaml:"keymap"`
 	} `yaml:"supporter"`
 	Donation struct {
 		Fields  R        `yaml:"fieldmap"`
 		Headers []string `yaml:"headers"`
+		Keys    R        `yaml:"keymap"`
 	} `yaml:"donation"`
 	Groups struct {
 		Fields  R        `yaml:"fieldmap"`
 		Headers []string `yaml:"headers"`
+		Keys    R        `yaml:"keymap"`
 	} `yaml:"groups"`
+	Tag struct {
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
+		Keys    R        `yaml:"keymap"`
+	} `yaml:"tag"`
 }

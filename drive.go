@@ -11,16 +11,31 @@ import (
 func (env *E) Drive(id int) {
 	t := env.API.NewTable(env.TableName)
 	c := env.Conditions
-	cond := strings.Join(c, "&condition=")
-	var f []string
-	for _, v := range env.Fields {
-		if len(v) != 0 {
-			f = append(f, v)
+	checkPrimaryKey := false
+
+	//If there are keys in the schema then we'll need to add an "IN"
+	//clause to the API call to filter down to just those keys.
+	if len(env.PrimaryKey) != 0 && len(env.PrimaryKeyMatchFills) != 0 && len(env.Keys) != 0 {
+		checkPrimaryKey = true
+		var keys []string
+		for k := range env.Keys {
+			keys = append(keys, k)
 		}
+		k := strings.Join(keys, ",")
+		kc := fmt.Sprintf("%v IN %v", env.PrimaryKey, k)
+		c = append(c, kc)
 	}
-	//Salsa doesn't react will to some include queries in some calls.  Adding
+	cond := strings.Join(c, "&condition=")
+
+	//Salsa doesn't react well to some include queries in some calls.  Adding
 	//the "&include=" can cause errors even though the URL is clearly well-formed.
 	if !env.DisableInclude {
+		var f []string
+		for _, v := range env.Fields {
+			if len(v) != 0 {
+				f = append(f, v)
+			}
+		}
 		incl := strings.Join(f, ",")
 		cond = fmt.Sprintf("%v&include=%v", cond, incl)
 	}
@@ -53,7 +68,22 @@ func (env *E) Drive(id int) {
 			break
 		}
 		for _, r := range a {
-			env.RecordChan <- r
+			// Massage the data if the primary key in the record
+			//is one of the primary keys in the schema.
+			//
+			if checkPrimaryKey {
+				pk := strings.Split(env.PrimaryKey, ".")[1]
+				k, ok := r[pk]
+				if ok {
+					n, ok := env.Keys[k]
+					if ok {
+						r["tag"] = n
+					}
+					env.RecordChan <- r
+				}
+			} else {
+				env.RecordChan <- r
+			}
 		}
 	}
 	env.DoneChan <- true
