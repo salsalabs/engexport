@@ -4,7 +4,7 @@ Go application to export the usual data necessary to convert a client form Class
 * Active supporter data
 * Inactive supporters that are donors
 * Selected group names and supporter emails.
-* (Future) Selected tag and supporter emails.
+* Selected tag and supporter emails.
 * (Future) Actions and supporter emails.
 * (Future) Events and supporter emails.
 
@@ -93,6 +93,12 @@ groups:
     headers:
         - "Group"
         - "Email"
+    # Key maps.  A record has a primary key.  If the primary
+    # key is in this list of keys, then the record is saved.
+    # If this list of keys is empty, or does not exist, then
+    # the record is saved anyway.
+    keymap:
+
 ```
 
 Some things you need to know.
@@ -105,12 +111,12 @@ Some things you need to know.
 1. If the Classic field name starts `supporter.`, then leave it alone.
 2. Headers will appear on the first line of the CSV file in the order shown. Feel free to change the order as you see fit.
 
-If you cceate your own version of `schema.yaml`, then you can add it to the command 
+If you ceate your own version of `schema.yaml`, then you can add it to the command 
 line when you invoke the app.  See below.
 
 ## Execution
 
-```bash
+```text
 usage: ./engexport --login=LOGIN [<flags>] <command> [<args> ...]
 
 
@@ -145,6 +151,9 @@ Commands:
 
   donations
     process donations for active and inactive supporters
+  
+  tags all
+    process tags to get data for importing as Engage groups
 
 ```
 ### Examples
@@ -243,6 +252,19 @@ Run that in a separate window.  You should see output like this.
 17:14:07   153435 total
 17:15:07   163983 total
 17:16:07   173560 total
+```
+
+Here's a command that finds all of the groups names and
+puts them into a file called `group_names.txt`.  Having a 
+list of group names can be helpful when creating the groups
+on the target system.
+```bash
+cat data/groups*.csv | \
+cut -f 1 -d, | \
+sort | \
+uniq | \
+grep -v ^Group$ \
+> group_names.txt
 ```
 ## Questions?  Comments?
 Use the [Issues](https://github.com/salsalabs/exporter/issues) link in the repository.  Don't waste your time bothering
