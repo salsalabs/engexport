@@ -56,13 +56,16 @@ func (env *E) Run(Threads int, start int32) {
 	}
 	m = m - int64(start)
 	log.Printf("run: Using %d records from %v\n", m, env.CountTableName)
-	for i := int64(start); i < m+499; i += 500 {
-		env.OffsetChan <- int32(i)
-	}
+	go (func(wg *sync.WaitGroup, env *E, start int32) {
+		wg.Add(1)
+		defer wg.Done()
+		for i := int64(start); i < m+499; i += 500 {
+			env.OffsetChan <- int32(i)
+		}
+		close(env.OffsetChan)
+	})(&wg, env, start)
 
-	log.Println("run waiting")
 	time.Sleep(5 * time.Second)
-	close(env.OffsetChan)
 	wg.Wait()
 	log.Println("run done")
 }
