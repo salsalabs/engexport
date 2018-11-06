@@ -152,7 +152,7 @@ Commands:
   donations
     process donations for active and inactive supporters
   
-  tags all
+  tags
     process tags to get data for importing as Engage groups
 
 ```
