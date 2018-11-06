@@ -39,7 +39,6 @@ func (env *E) Drive(id int) {
 		incl := strings.Join(f, ",")
 		cond = fmt.Sprintf("%v&include=%v", cond, incl)
 	}
-	log.Printf("drive_%02d: begin\n", id)
 	for {
 		offset, ok := <-env.OffsetChan
 		if !ok {
@@ -60,7 +59,6 @@ func (env *E) Drive(id int) {
 		if err != nil {
 			panic(err)
 		}
-		log.Printf("drive_%02d: %6d, %d records\n", id, offset, len(a))
 		if math.Mod(float64(offset), 10e3) == 0 {
 			log.Printf("drive_%02d: %6d\n", id, offset)
 		}
