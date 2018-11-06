@@ -61,10 +61,6 @@ func transform(m string, d R) string {
 	if i != -1 {
 		m = strings.Split(m, ".")[1]
 	}
-
-	//If this is the primary key AND there are keys in the schema
-	//AND the key is not in the key list, then we'll skip the record.
-
 	s, ok := d[m]
 	if !ok {
 		s = ""
