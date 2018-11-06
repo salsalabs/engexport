@@ -76,11 +76,9 @@ func (env *E) Drive(id int) {
 				k, ok := r[pk]
 				if ok {
 					n, ok := env.Keys[k]
-					fmt.Printf("Drive name is %v, okay is %v, record is %+v\n", n, ok, r)
 					if ok {
 						r["tag"] = n
 					}
-					fmt.Printf("Drive name is %v, okay is %v, record is %+v\n", n, ok, r)
 					env.RecordChan <- r
 				}
 			} else {
