@@ -29,8 +29,7 @@ func main() {
 		_          = groups.Command("all", "process groups for active supporters")
 		_          = groups.Command("only_email", "process groups for supporters that have emails only")
 		_          = app.Command("donations", "process donations for active and inactive supporters")
-		tags       = app.Command("tags", "process tags")
-		_          = tags.Command("all", "process tags to get data for importing as Engage groups")
+		_          = app.Command("tags", "process tags as groups")
 	)
 	args, _ := app.Parse(os.Args[1:])
 	if tag != nil && len(*tag) == 0 {
@@ -70,7 +69,7 @@ func main() {
 		e = engexport.NewInactiveSupporter(p)
 	case "supporters inactive donors":
 		e = engexport.NewInactiveDonors(p)
-	case "tags all":
+	case "tags":
 		e = engexport.NewTagGroups(p)
 	}
 	if e == nil {
