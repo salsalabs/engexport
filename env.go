@@ -50,7 +50,7 @@ func NewGroups(p P) *E {
 		"groups.Group_Name IS NOT EMPTY",
 		"supporter.Email IS NOT EMPTY",
 		"supporter.Email LIKE %@%.%",
-		//Left join munges Receive_Eamail, see SCT-969.
+		//Left join munges Receive_Email, see SCT-969.
 		//"supporter.Receive_Email>0",
 	}
 
@@ -73,7 +73,7 @@ func NewTagGroups(p P) *E {
 		"tag.tag IS NOT EMPTY",
 		"supporter.Email IS NOT EMPTY",
 		"supporter.Email LIKE %@%.%",
-		//Left join munges Receive_Eamail, see SCT-969.
+		//Left join munges Receive_Email, see SCT-969.
 		//"supporter.Receive_Email>0",
 		"tag_data.database_table_KEY=142",
 	}
