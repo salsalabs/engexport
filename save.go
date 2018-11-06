@@ -6,7 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/salsalabs/godig"
 )
 
 //Save waits for records to arrive on a queue and saves them to a CSV file.  CSV files
@@ -60,7 +61,7 @@ func (env *E) Save() {
 				s = strings.ToUpper(s)
 
 			case "Transaction_Date":
-				s = date(s)
+				s = godig.EngageDate(s)
 
 			case "Transaction_Type":
 				if s != "Recurring" {
@@ -319,22 +320,4 @@ func skillToOffer(env *E, d R) (string, string, error) {
 	s := strings.Join(skills, ", ")
 	x := strings.Join(other, ", ")
 	return s, x, nil
-}
-
-//date formates a Classic date from the database (ick) to an Engage date.
-func date(s string) string {
-	// Date_Created, Transaction_Date, etc.  Convert dates from MySQL to Engage.
-	p := strings.Split(s, " ")
-	if len(p) >= 7 {
-		//Pull out the timezone.
-		p = append(p[0:5], p[6])
-		x := strings.Join(p, " ")
-		t, err := time.Parse(ParseFmt, x)
-		if err != nil {
-			fmt.Printf("Warning: parsing %v returned %v\n", s, err)
-		} else {
-			s = t.Format(LayoutFmt)
-		}
-	}
-	return s
 }
