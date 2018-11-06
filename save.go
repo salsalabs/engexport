@@ -86,8 +86,10 @@ func transform(m string, d R) string {
 		s = t
 	}
 	// Convert tabs to spaces. Remove leading/trailing spaces.
+	// Remove any quotation marks.
 	// Append the cleaned-up value to the output.
 	s = strings.Replace(s, "\t", " ", -1)
+	s = strings.Replace(s, "\"", "", -1)
 	s = strings.TrimSpace(s)
 
 	return s
