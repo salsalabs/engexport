@@ -50,7 +50,8 @@ func NewGroups(p P) *E {
 		"groups.Group_Name IS NOT EMPTY",
 		"supporter.Email IS NOT EMPTY",
 		"supporter.Email LIKE %@%.%",
-		"supporter.Receive_Email>0",
+		//Left join munges Receive_Eamail, see SCT-969.
+		//"supporter.Receive_Email>0",
 	}
 
 	e := NewEnv(p)
