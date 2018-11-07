@@ -5,6 +5,8 @@ import (
 	"log"
 	"math"
 	"strings"
+
+	"github.com/dustin/go-humanize"
 )
 
 //Drive reads qualified records from Salsa and writes them to a save queue.
@@ -60,7 +62,9 @@ func (env *E) Drive(id int) {
 			panic(err)
 		}
 		if math.Mod(float64(offset), 10e3) == 0 {
-			log.Printf("drive_%02d: %6d\n", id, offset)
+			x := float64(offset)
+			m := humanize.FormatFloat("###,###,###", x)
+			log.Printf("drive_%02d: %s\n", id, m)
 		}
 		if len(a) == 0 {
 			break
