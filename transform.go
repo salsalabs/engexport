@@ -42,9 +42,6 @@ func Transform(m string, d R) string {
 			t = "Subscribed"
 		}
 		s = t
-	case "milleniumid":
-		// Numeric field that needs to be quoted to get around Excel.
-		s = fmt.Sprintf(`"%v"`, s)
 	}
 	// Convert tabs to spaces. Remove leading/trailing spaces.
 	// Remove any quotation marks.
