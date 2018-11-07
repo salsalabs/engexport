@@ -1,7 +1,6 @@
 package engexport
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -29,7 +28,12 @@ func Transform(m string, d R) string {
 	case "State":
 		s = strings.ToUpper(s)
 	case "Date_Created":
+		fallthrough
 	case "Transaction_Date":
+		fallthrough
+	case "joindate":
+		fallthrough
+	case "dateonlyexpirationdate":
 		s = godig.EngageDate(s)
 	case "Transaction_Type":
 		if s != "Recurring" {
@@ -42,9 +46,6 @@ func Transform(m string, d R) string {
 			t = "Subscribed"
 		}
 		s = t
-	case "milleniumid":
-		// Numeric field that needs to be quoted to get around Excel.
-		s = fmt.Sprintf(`"%v"`, s)
 	}
 	// Convert tabs to spaces. Remove leading/trailing spaces.
 	// Remove any quotation marks.
