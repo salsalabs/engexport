@@ -58,7 +58,7 @@ func (env *E) Run(Threads int, start int32) {
 	}
 	m = m - int64(start)
 	r := float64(m)
-	s := humanize.FormatFloat("###,###,###", r)
+	s := humanize.FormatFloat("###,###", r)
 	log.Printf("run: Using %s records from %v\n", s, env.CountTableName)
 	go (func(wg *sync.WaitGroup, env *E, start int32) {
 		wg.Add(1)

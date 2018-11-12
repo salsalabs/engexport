@@ -63,7 +63,7 @@ func (env *E) Drive(id int) {
 		}
 		if math.Mod(float64(offset), 10e3) == 0 {
 			x := float64(offset)
-			m := humanize.FormatFloat("###,###,###", x)
+			m := humanize.FormatFloat("###,###", x)
 			log.Printf("drive_%02d: %s\n", id, m)
 		}
 		if len(a) == 0 {
