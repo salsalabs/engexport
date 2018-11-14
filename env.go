@@ -160,6 +160,18 @@ func NewInactiveSupporter(p P) *E {
 	return e
 }
 
+//NewSubscribedSupporter instantiates an envionrment to copy subscribed supporters
+//to CSV files whether there is a valid email or not.  Subscribed supporters have
+//a number greater than zero in Receive_Email.
+func NewSubscribedSupporter(p P) *E {
+	e := NewSupporter(p)
+	e.Conditions = []string{
+		"Receive_Email>0",
+	}
+	e.CsvFilename = "subscribed_" + e.CsvFilename
+	return e
+}
+
 //NewInactiveDonors instantiates an envionrment to copy inactive supporters with
 //donation history to CSV files.  Inctive supporters have a good email address but
 //have either opted out or been opted out (i.e. Receive_Email < 1).  Processing uses
