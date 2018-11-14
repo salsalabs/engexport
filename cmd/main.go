@@ -22,7 +22,7 @@ func main() {
 		_          = supp.Command("all", "process all supporters")
 		_          = supp.Command("active", "process active supporters")
 		_          = supp.Command("only_email", "process supporters that have emails")
-		_          = supp.Command("subscribed_only", "process subscribed emails without regard to emails")
+		_          = supp.Command("subscribed", "process subscribed emails without regard to emails")
 		inactive   = supp.Command("inactive", "process inactive supporters")
 		_          = inactive.Command("all", "process all inactive supporters")
 		_          = inactive.Command("donors", "process inactive supporters with donation history")
@@ -66,7 +66,7 @@ func main() {
 		e = engexport.NewActiveSupporter(p)
 	case "supporters only_email":
 		e = engexport.NewSupporter(p)
-	case "supporters subscribed_only":
+	case "supporters subscribed":
 		e = engexport.NewSubscribedSupporter(p)
 	case "supporters inactive all":
 		e = engexport.NewInactiveSupporter(p)
