@@ -30,6 +30,10 @@ func Transform(m string, d R) string {
 	case "Date_Created":
 	case "Transaction_Date":
 		s = godig.EngageDate(s)
+	case "dream_date_of_birth":
+		s = godig.EngageDate(s)
+	case "daca_expiration_date":
+		s = godig.EngageDate(s)
 	case "Transaction_Type":
 		if s != "Recurring" {
 			s = "OneTime"
