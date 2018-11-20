@@ -125,6 +125,19 @@ func NewEmailOnlyGroups(p P) *E {
 	return e
 }
 
+//NewSubscribedGroups instantiates an environment for copying Groups and Emails
+//to CSV files where the only requirement is that Receive_Email is greater than zero.
+//There is no requirement for being able to deliver to the supporter.
+func NewSubscribedGroups(p P) *E {
+	e := NewGroups(p)
+	c := []string{
+		"groups.Group_Name IS NOT EMPTY",
+		"supporter.Receive_Email>0",
+	}
+	e.Conditions = c
+	return e
+}
+
 //NewSupporter instantiates an environment for copying supporters to CSV files.
 //The default behavior is to save supporters that have valid email addresses.
 //That means that both subscribed and unsubscribed supporrters are written to CSV

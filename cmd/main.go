@@ -29,6 +29,7 @@ func main() {
 		groups     = app.Command("groups", "process groups")
 		_          = groups.Command("all", "process groups for active supporters")
 		_          = groups.Command("only_email", "process groups for supporters that have emails only")
+		_          = groups.Command("subscribed", "process groups for subscribed supporters")
 		donations  = app.Command("donations", "process donations ")
 		_          = donations.Command("standard", "process donations for active and inactive supporters")
 		_          = donations.Command("subscribed", "process donations for subscribed supporters")
@@ -60,6 +61,8 @@ func main() {
 		e = engexport.NewGroups(p)
 	case "groups only_email":
 		e = engexport.NewEmailOnlyGroups(p)
+	case "groups subscribed":
+		e = engexport.NewSubscribedGroups(p)
 	case "donations standard":
 		e = engexport.NewDonation(p)
 	case "donations subscribed":
