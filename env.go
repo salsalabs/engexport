@@ -43,6 +43,26 @@ func NewDonation(p P) *E {
 	return e
 }
 
+//NewSubscribedDonation instantiates an environment for copying donations
+//to CSV files.  This instance accepts donations from any supporter whose
+//Receive_Email > 0.
+//TODO: Allow a user to iverride these selections with a YAML file.
+func NewSubscribedDonation(p P) *E {
+	c := []string{
+		"RESULT IN 0,-1",
+		"supporter.Receive_Email>0"}
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Donation.Fields
+	e.Headers = p.T.Donation.Headers
+	e.Keys = p.T.Donation.Keys
+	e.CsvFilename = "donations.csv"
+	e.TableName = "donation(supporter_KEY)supporter"
+	e.CountTableName = "donation"
+	e.PrimaryKey = "donation_KEY"
+	return e
+}
+
 //NewGroups instantiates an environment for copying Groups and Emails
 //to CSV files.
 func NewGroups(p P) *E {
@@ -168,7 +188,6 @@ func NewSubscribedSupporter(p P) *E {
 	e.Conditions = []string{
 		"Receive_Email>0",
 	}
-	e.CsvFilename = "subscribed_" + e.CsvFilename
 	return e
 }
 
