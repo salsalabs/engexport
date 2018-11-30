@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -17,7 +18,7 @@ func (env *E) Save() {
 	var f *os.File
 	var w *csv.Writer
 	var err error
-
+	var cleanLines = regexp.MustCompile("[\\n\\r\\t]+")
 	for {
 		d, ok := <-env.RecordChan
 		if !ok {
@@ -98,6 +99,8 @@ func (env *E) Save() {
 			case "skill_to_offer_other":
 				s = skillsOther
 			}
+			s = cleanLines.ReplaceAllString(s, " ")
+			s = strings.TrimSpace(s)
 			a = append(a, s)
 		}
 		err := w.Write(a)
