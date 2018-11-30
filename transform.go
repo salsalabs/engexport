@@ -1,6 +1,7 @@
 package engexport
 
 import (
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -10,6 +11,7 @@ import (
 //Transform cleans up the value and returns it.  Separated from Save so
 //that save can be the same and clients can differ with just the Transform.
 func Transform(m string, d R) string {
+	cleanLines := regexp.MustCompile("[\\n\\r\\t]+")
 	//KLUDGE:  Salsa wants to see supporter.supporter_KEY/supporter.Email
 	// in the conditions and included fields.  However, the data is stored
 	// simply as "supporter_KEY" or "Email"...
@@ -45,8 +47,8 @@ func Transform(m string, d R) string {
 	// Convert tabs to spaces. Remove leading/trailing spaces.
 	// Remove any quotation marks.
 	// Append the cleaned-up value to the output.
-	s = strings.Replace(s, "\t", " ", -1)
 	s = strings.Replace(s, "\"", "", -1)
+	s = cleanLines.ReplaceAllString(s, " ")
 	s = strings.TrimSpace(s)
 	return s
 }
