@@ -63,15 +63,34 @@ func NewSubscribedDonation(p P) *E {
 	return e
 }
 
-//NewGroups instantiates an environment for copying Groups and Emails
+//NewActiveGroups instantiates an environment for copying Groups and Emails
 //to CSV files.
-func NewGroups(p P) *E {
+func NewActiveGroups(p P) *E {
 	c := []string{
 		"groups.Group_Name IS NOT EMPTY",
 		"supporter.Email IS NOT EMPTY",
 		"supporter.Email LIKE %@%.%",
 		//Left join munges Receive_Email, see SCT-969.
 		//"supporter.Receive_Email>0",
+	}
+
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Groups.Fields
+	e.Headers = p.T.Groups.Headers
+	e.Keys = p.T.Groups.Keys
+	e.CsvFilename = "groups.csv"
+	e.TableName = "groups(groups_KEY)supporter_groups(supporter_KEY)supporter"
+	e.CountTableName = "supporter_groups"
+	e.PrimaryKey = "groups_KEY"
+	return e
+}
+
+//NewAllGroups instantiates an environment for copying Groups and Emails
+//to CSV files for all supporters, email or not.
+func NewAllGroups(p P) *E {
+	c := []string{
+		"groups.Group_Name IS NOT EMPTY",
 	}
 
 	e := NewEnv(p)
@@ -115,7 +134,7 @@ func NewTagGroups(p P) *E {
 //to CSV files where the only requirement is that a supporter has an email.
 //There is no requirement for being able to deliver to the supporter.
 func NewEmailOnlyGroups(p P) *E {
-	e := NewGroups(p)
+	e := NewActiveGroups(p)
 	c := []string{
 		"groups.Group_Name IS NOT EMPTY",
 		"supporter.Email IS NOT EMPTY",
@@ -129,7 +148,7 @@ func NewEmailOnlyGroups(p P) *E {
 //to CSV files where the only requirement is that Receive_Email is greater than zero.
 //There is no requirement for being able to deliver to the supporter.
 func NewSubscribedGroups(p P) *E {
-	e := NewGroups(p)
+	e := NewActiveGroups(p)
 	c := []string{
 		"groups.Group_Name IS NOT EMPTY",
 		"supporter.Receive_Email>0",
