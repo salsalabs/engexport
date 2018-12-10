@@ -6,8 +6,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	humanize "github.com/dustin/go-humanize"
 )
 
 //Run starts all of the parts of a processor as goroutines.  It then waits
@@ -58,8 +56,7 @@ func (env *E) Run(Threads int, start int32) {
 	}
 	m = m - int64(start)
 	r := float64(m)
-	s := humanize.FormatFloat("###,###,###", r)
-	log.Printf("run: Using %s records from %v\n", s, env.CountTableName)
+	log.Printf("run: Using %10.0f records from %v\n", r, env.CountTableName)
 	go (func(wg *sync.WaitGroup, env *E, start int32) {
 		wg.Add(1)
 		defer wg.Done()
