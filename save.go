@@ -61,6 +61,12 @@ func (env *E) Save() {
 			case "supporter_org_worship_state":
 				s = strings.ToUpper(s)
 
+			case "Date_Created":
+				s = godig.EngageDate(s)
+
+			case "Last_Modified":
+				s = godig.EngageDate(s)
+
 			case "Transaction_Date":
 				s = godig.EngageDate(s)
 

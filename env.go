@@ -166,6 +166,8 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"supporter_contact_reason":                "contacting_on_behalf_of",
 		"skill_to_offer":                          "",
 		"skill_to_offer_other":                    "",
+		"Last_Modified":                           "Last_Modified",
+		"Date_Created":                            "Date_Created",
 	}
 
 	c := []string{
@@ -232,6 +234,8 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"supporter_contact_reason",
 		"skill_to_offer",
 		"skill_to_offer_other",
+		"Last_Modified",
+		"Date_Created"
 	}
 
 	e := E{
