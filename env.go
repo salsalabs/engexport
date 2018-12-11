@@ -235,7 +235,7 @@ func NewSupporter(api *godig.API, dir string) *E {
 		"skill_to_offer",
 		"skill_to_offer_other",
 		"Last_Modified",
-		"Date_Created"
+		"Date_Created",
 	}
 
 	e := E{
