@@ -136,3 +136,65 @@ tag:
     # Engage group to which tagged supporters will be added.
     # "Optional" means that this map can be left out.
     keymap:
+
+action:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is 
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # groups information from Salsa Classic to Engage.
+    fieldmap:
+        "supporter_KEY": "supporter.supporter_KEY"
+        "Email": "supporter.Email"
+        "Reference Name": "Reference_Name"
+        "Title": "action.Title"
+        "action_KEY": "action.action_KEY"
+        "DateActinCreated": "action.Date_Created"
+
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "supporter_KEY"
+        - "Email"
+        - "Reference Name"
+        - "Title"
+        - "action_KEY"
+        - "DateActionCreated"
+
+event:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is 
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # groups information from Salsa Classic to Engage.
+    fieldmap:
+        "supporter_KEY": "supporter.supporter_KEY"
+        "Email": "supporter.Email"
+        "Reference Name": "Reference_Name"
+        "Title": "Event_Name"
+        "event_KEY": "event.event_KEY"
+        "DateActinCreated": "event.Date_Created"
+
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "supporter_KEY"
+        - "Email"
+        - "Reference Name"
+        - "Title"
+        - "event_KEY"
+        - "DateActionCreated"
