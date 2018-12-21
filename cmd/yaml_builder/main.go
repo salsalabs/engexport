@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/salsalabs/godig"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
@@ -19,10 +20,12 @@ func one(a *godig.API, table string) {
 	fmt.Printf("%v:\n", table)
 	fmt.Printf("    fieldmap:\n")
 	for _, r := range target {
+		r.Label = strings.Replace(r.Label, " ", "_", -1)
 		fmt.Printf("        \"%v\": \"%v\"\n", r.Label, r.Name)
 	}
 	fmt.Printf("    headers:\n")
 	for _, r := range target {
+		r.Label = strings.Replace(r.Label, " ", "_", -1)
 		fmt.Printf("        - \"%v\"\n", r.Label)
 	}
 	fmt.Printf("\n")
