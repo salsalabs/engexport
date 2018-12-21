@@ -42,6 +42,7 @@ func (env *E) Run(Threads int, start int32) {
 	case "donation":
 	case "supporter_groups":
 	case "supporter_action":
+	case "supporter_event":
 	case "tag_data":
 		break
 	default:

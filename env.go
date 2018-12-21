@@ -274,6 +274,25 @@ func NewAllActions(p P) *E {
 	return e
 }
 
+//NewAllEvents instantiates an environment for copying Emails and Actions
+//to CSV files for all supporters, email or not.
+func NewAllEvents(p P) *E {
+	c := []string{
+		"event.event_KEY IS NOT EMPTY",
+	}
+
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Event.Fields
+	e.Headers = p.T.Event.Headers
+	e.Keys = p.T.Event.Keys
+	e.CsvFilename = "supporter_events.csv"
+	e.TableName = "event(event_KEY)supporter_event(supporter_KEY)supporter"
+	e.CountTableName = "supporter_event"
+	e.PrimaryKey = "event_KEY"
+	return e
+}
+
 //LoadSchema accepts a pointer to a YAML filename and loads the contents
 //into a Table object.
 func LoadSchema(fn *string) (Schema, error) {

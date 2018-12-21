@@ -36,6 +36,7 @@ func main() {
 		_          = donations.Command("subscribed", "process donations for subscribed supporters")
 		_          = app.Command("tags", "process tags as groups")
 		_          = app.Command("actions", "process supporters and actions")
+		_          = app.Command("events", "process supporters and events")
 	)
 	args, _ := app.Parse(os.Args[1:])
 	if tag != nil && len(*tag) == 0 {
@@ -87,6 +88,8 @@ func main() {
 		e = engexport.NewTagGroups(p)
 	case "actions":
 		e = engexport.NewAllActions(p)
+	case "events":
+		e = engexport.NewAllEvents(p)
 	}
 	if e == nil {
 		log.Println("Error: you *must* choose a table to export!")
