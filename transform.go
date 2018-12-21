@@ -30,6 +30,7 @@ func Transform(m string, d R) string {
 	case "State":
 		s = strings.ToUpper(s)
 	case "Date_Created":
+		s = godig.EngageDate(s)
 	case "Transaction_Date":
 		s = godig.EngageDate(s)
 	case "Transaction_Type":
