@@ -155,7 +155,7 @@ action:
         "Reference Name": "Reference_Name"
         "Title": "action.Title"
         "action_KEY": "action.action_KEY"
-        "DateActinCreated": "action.Date_Created"
+        "DateActionTaken": "supporter_action.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
@@ -166,7 +166,7 @@ action:
         - "Reference Name"
         - "Title"
         - "action_KEY"
-        - "DateActionCreated"
+        - "DateActionTaken"
 
 event:
     # Field map.  The column on the left is the target.
