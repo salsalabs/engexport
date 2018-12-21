@@ -255,6 +255,25 @@ func NewInactiveDonors(p P) *E {
 	return e
 }
 
+//NewAllActions instantiates an environment for copying Emails and Actions
+//to CSV files for all supporters, email or not.
+func NewAllActions(p P) *E {
+	c := []string{
+		"action.action_KEY IS NOT EMPTY",
+	}
+
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Action.Fields
+	e.Headers = p.T.Action.Headers
+	e.Keys = p.T.Action.Keys
+	e.CsvFilename = "supporter_actions.csv"
+	e.TableName = "action(action_KEY)supporter_action(supporter_KEY)supporter"
+	e.CountTableName = "supporter_action"
+	e.PrimaryKey = "action_KEY"
+	return e
+}
+
 //LoadSchema accepts a pointer to a YAML filename and loads the contents
 //into a Table object.
 func LoadSchema(fn *string) (Schema, error) {

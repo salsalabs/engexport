@@ -41,6 +41,7 @@ func (env *E) Run(Threads int, start int32) {
 	switch env.CountTableName {
 	case "donation":
 	case "supporter_groups":
+	case "supporter_action":
 	case "tag_data":
 		break
 	default:
