@@ -293,6 +293,25 @@ func NewAllEvents(p P) *E {
 	return e
 }
 
+//NewContactHistory instantiates an environment for copying Groups and Emails
+//to CSV files for all supporters, email or not.
+func NewContactHistory(p P) *E {
+	c := []string{
+		"contact_history.contact_history_KEY>0",
+	}
+
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.ContactHistory.Fields
+	e.Headers = p.T.ContactHistory.Headers
+	e.Keys = p.T.ContactHistory.Keys
+	e.CsvFilename = "contact_history.csv"
+	e.TableName = "campaign_manager(campaign_manager_KEY)contact_history(supporter_KEY)supporter"
+	e.CountTableName = "contact_history"
+	e.PrimaryKey = "contact_history_KEY"
+	return e
+}
+
 //LoadSchema accepts a pointer to a YAML filename and loads the contents
 //into a Table object.
 func LoadSchema(fn *string) (Schema, error) {

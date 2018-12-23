@@ -106,4 +106,9 @@ type Schema struct {
 		Headers []string `yaml:"headers"`
 		Keys    R        `yaml:"keymap"`
 	} `yaml:"event"`
+	ContactHistory struct {
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
+		Keys    R        `yaml:"keymap"`
+	} `yaml:"contact_history"`
 }

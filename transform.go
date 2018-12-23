@@ -27,10 +27,14 @@ func Transform(m string, d R) string {
 	//setting the Engage transaction type and putting Engage text into
 	//Receive_Email.
 	switch m {
-	case "State":
-		s = strings.ToUpper(s)
+	case "Contact_Date":
+		s = godig.EngageDate(s)
+	case "Contact_Due_Date":
+		s = godig.EngageDate(s)
 	case "Date_Created":
 		s = godig.EngageDate(s)
+	case "State":
+		s = strings.ToUpper(s)
 	case "Transaction_Date":
 		s = godig.EngageDate(s)
 	case "Transaction_Type":
