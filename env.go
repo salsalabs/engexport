@@ -43,26 +43,6 @@ func NewDonation(p P) *E {
 	return e
 }
 
-//NewSubscribedDonation instantiates an environment for copying donations
-//to CSV files.  This instance accepts donations from any supporter whose
-//Receive_Email > 0.
-//TODO: Allow a user to iverride these selections with a YAML file.
-func NewSubscribedDonation(p P) *E {
-	c := []string{
-		"RESULT IN 0,-1",
-		"supporter.Receive_Email>0"}
-	e := NewEnv(p)
-	e.Conditions = c
-	e.Fields = p.T.Donation.Fields
-	e.Headers = p.T.Donation.Headers
-	e.Keys = p.T.Donation.Keys
-	e.CsvFilename = "donations.csv"
-	e.TableName = "donation(supporter_KEY)supporter"
-	e.CountTableName = "donation"
-	e.PrimaryKey = "donation_KEY"
-	return e
-}
-
 //NewActiveGroups instantiates an environment for copying Groups and Emails
 //to CSV files.
 func NewActiveGroups(p P) *E {
@@ -144,19 +124,6 @@ func NewEmailOnlyGroups(p P) *E {
 	return e
 }
 
-//NewSubscribedGroups instantiates an environment for copying Groups and Emails
-//to CSV files where the only requirement is that Receive_Email is greater than zero.
-//There is no requirement for being able to deliver to the supporter.
-func NewSubscribedGroups(p P) *E {
-	e := NewActiveGroups(p)
-	c := []string{
-		"groups.Group_Name IS NOT EMPTY",
-		"supporter.Receive_Email>0",
-	}
-	e.Conditions = c
-	return e
-}
-
 //NewSupporter instantiates an environment for copying supporters to CSV files.
 //The default behavior is to save supporters that have valid email addresses.
 //That means that both subscribed and unsubscribed supporrters are written to CSV
@@ -209,17 +176,6 @@ func NewInactiveSupporter(p P) *E {
 	c = append(c, "Receive_Email<1")
 	e.Conditions = c
 	e.CsvFilename = "inactive_" + e.CsvFilename
-	return e
-}
-
-//NewSubscribedSupporter instantiates an envionrment to copy subscribed supporters
-//to CSV files whether there is a valid email or not.  Subscribed supporters have
-//a number greater than zero in Receive_Email.
-func NewSubscribedSupporter(p P) *E {
-	e := NewSupporter(p)
-	e.Conditions = []string{
-		"Receive_Email>0",
-	}
 	return e
 }
 

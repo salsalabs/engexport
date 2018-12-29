@@ -22,7 +22,6 @@ func main() {
 		_          = supp.Command("all", "process all supporters")
 		_          = supp.Command("active", "process active supporters")
 		_          = supp.Command("only_email", "process supporters that have emails")
-		_          = supp.Command("subscribed", "process subscribed emails without regard to emails")
 		inactive   = supp.Command("inactive", "process inactive supporters")
 		_          = inactive.Command("all", "process all inactive supporters")
 		_          = inactive.Command("donors", "process inactive supporters with donation history")
@@ -30,10 +29,7 @@ func main() {
 		_          = groups.Command("active", "process groups for active supporters")
 		_          = groups.Command("only_email", "process groups for supporters that have emails only")
 		_          = groups.Command("all", "process groups for all supporters, even ones without emails")
-		_          = groups.Command("subscribed", "process groups for subscribed supporters")
-		donations  = app.Command("donations", "process donations ")
-		_          = donations.Command("standard", "process donations for active and inactive supporters")
-		_          = donations.Command("subscribed", "process donations for subscribed supporters")
+		_          = app.Command("donations", "process donations ")
 		_          = app.Command("tags", "process tags as groups")
 		_          = app.Command("actions", "process supporters and actions")
 		_          = app.Command("events", "process supporters and events")
@@ -67,12 +63,8 @@ func main() {
 		e = engexport.NewAllGroups(p)
 	case "groups only_email":
 		e = engexport.NewEmailOnlyGroups(p)
-	case "groups subscribed":
-		e = engexport.NewSubscribedGroups(p)
-	case "donations standard":
+	case "donations":
 		e = engexport.NewDonation(p)
-	case "donations subscribed":
-		e = engexport.NewSubscribedDonation(p)
 	case "supporters all":
 		e = engexport.NewAllSupporters(p)
 	case "supporters active":
@@ -80,8 +72,6 @@ func main() {
 	case "supporters only_email":
 		e = engexport.NewSupporter(p)
 	case "supporters subscribed":
-		e = engexport.NewSubscribedSupporter(p)
-	case "supporters inactive all":
 		e = engexport.NewInactiveSupporter(p)
 	case "supporters inactive donors":
 		e = engexport.NewInactiveDonors(p)
