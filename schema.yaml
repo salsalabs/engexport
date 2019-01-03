@@ -30,7 +30,7 @@ supporter:
         "languageCode":    "Language_Code"
         "externalSystemId": "supporter_KEY"
         "supporter_KEY":    "supporter_KEY"
-    
+
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
@@ -62,7 +62,7 @@ donation:
     # The column on the right is the Salsa Classic donation
     # table field name *or* fields from a joined supporter
     # record.  You can use both standard fields and custom
-    # fields.  Changing the joined supporter fields is 
+    # fields.  Changing the joined supporter fields is
     # Not A Good Idea.
     #
     # This file is the default mapping for transferring
@@ -94,7 +94,7 @@ groups:
     # The column on the right is the Salsa Classic groups
     # table field name *or* fields from a joined supporter
     # record.  You can use both standard fields and custom
-    # fields.  Changing the joined supporter fields is 
+    # fields.  Changing the joined supporter fields is
     # Not A Good Idea.
     #
     # This file is the default mapping for transferring
@@ -116,7 +116,7 @@ tag:
     # The column on the right is the Salsa Classic groups
     # table field name *or* fields from a joined supporter
     # record.  You can use both standard fields and custom
-    # fields.  Changing the joined supporter fields is 
+    # fields.  Changing the joined supporter fields is
     # Not A Good Idea.
     #
     # This file is the default mapping for transferring
@@ -144,7 +144,7 @@ action:
     # The column on the right is the Salsa Classic groups
     # table field name *or* fields from a joined supporter
     # record.  You can use both standard fields and custom
-    # fields.  Changing the joined supporter fields is 
+    # fields.  Changing the joined supporter fields is
     # Not A Good Idea.
     #
     # This file is the default mapping for transferring
@@ -175,7 +175,7 @@ event:
     # The column on the right is the Salsa Classic groups
     # table field name *or* fields from a joined supporter
     # record.  You can use both standard fields and custom
-    # fields.  Changing the joined supporter fields is 
+    # fields.  Changing the joined supporter fields is
     # Not A Good Idea.
     #
     # This file is the default mapping for transferring
@@ -232,3 +232,24 @@ contact_history:
         - "Codes"
         - "Notes"
         - "Status"
+supporter_email_statistics:
+    fieldmap:
+        "supporter_KEY": "supporter.supporter_KEY"
+        "Email": "supporter.Email"
+        "emails_sent": "emails_sent"
+        "emails_opened": "emails_opened"
+        "emails_clicked": "emails_clicked"
+        "last_open": "last_open"
+        "last_click": "last_click"
+        "open_percentage": "open_percentage"
+        "click_percentage": "click_percentage"
+    headers:
+        - "supporter_KEY"
+        - 'Email'
+        - "emails_sent"
+        - "emails_opened"
+        - "open_percentage"
+        - "click_percentage"
+        - "emails_clicked"
+        - "last_open"
+        - "last_click"

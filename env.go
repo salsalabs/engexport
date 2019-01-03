@@ -211,7 +211,7 @@ func NewInactiveDonors(p P) *E {
 	return e
 }
 
-//NewAllActions instantiates an environment for copying Emails and Actions
+//NewAllActions instantiates an environment for copying supporters and actions
 //to CSV files for all supporters, email or not.
 func NewAllActions(p P) *E {
 	c := []string{
@@ -230,7 +230,7 @@ func NewAllActions(p P) *E {
 	return e
 }
 
-//NewAllEvents instantiates an environment for copying Emails and Actions
+//NewAllEvents instantiates an environment for copying supporters and events
 //to CSV files for all supporters, email or not.
 func NewAllEvents(p P) *E {
 	c := []string{
@@ -249,7 +249,7 @@ func NewAllEvents(p P) *E {
 	return e
 }
 
-//NewContactHistory instantiates an environment for copying Groups and Emails
+//NewContactHistory instantiates an environment for copying contact history
 //to CSV files for all supporters, email or not.
 func NewContactHistory(p P) *E {
 	c := []string{
@@ -265,6 +265,25 @@ func NewContactHistory(p P) *E {
 	e.TableName = "campaign_manager(campaign_manager_KEY)contact_history(supporter_KEY)supporter"
 	e.CountTableName = "contact_history"
 	e.PrimaryKey = "contact_history_KEY"
+	return e
+}
+
+//NewEmailStatistics instantiates an environment for copying email statistics
+//to CSV files for all supporters.
+func NewEmailStatistics(p P) *E {
+	c := []string{
+		"supporter_email_statistics.supporter_KEY>0",
+	}
+
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.EmailStatistics.Fields
+	e.Headers = p.T.EmailStatistics.Headers
+	e.Keys = p.T.EmailStatistics.Keys
+	e.CsvFilename = "supporter_email_statistics.csv"
+	e.TableName = "supporter_email_statistics(supporter_KEY)supporter"
+	e.CountTableName = "supporter_email_statistics"
+	e.PrimaryKey = "supporter_email_statistics_KEY"
 	return e
 }
 

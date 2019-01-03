@@ -48,4 +48,5 @@ func main() {
 	one(a, "event")
 	one(a, "supporter_action")
 	one(a, "contact_history")
+	one(a, "supporter_email_statistics")
 }

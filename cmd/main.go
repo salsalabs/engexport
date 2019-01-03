@@ -34,6 +34,7 @@ func main() {
 		_          = app.Command("actions", "process supporters and actions")
 		_          = app.Command("events", "process supporters and events")
 		_          = app.Command("contact_history", "contact history for all supporters")
+		_          = app.Command("email_statistics", "email statistics for all supporters")
 	)
 	args, _ := app.Parse(os.Args[1:])
 	if tag != nil && len(*tag) == 0 {
@@ -83,6 +84,8 @@ func main() {
 		e = engexport.NewAllEvents(p)
 	case "contact_history":
 		e = engexport.NewContactHistory(p)
+	case "email_statistics":
+		e = engexport.NewEmailStatistics(p)
 	}
 	if e == nil {
 		log.Println("Error: you *must* choose a table to export!")
