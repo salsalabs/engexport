@@ -164,6 +164,7 @@ func NewAllSupporters(p P) *E {
 	e.Conditions = []string{
 		"supporter_KEY>0",
 	}
+	e.DisableInclude = true
 	return e
 }
 
