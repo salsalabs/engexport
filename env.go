@@ -12,13 +12,14 @@ const queueSize = 100
 //NewEnv instantiances the non-varying part of an enviroonment object.
 func NewEnv(p P) *E {
 	e := E{
-		API:        p.API,
-		Schema:     p.T,
-		Tag:        p.Tag,
-		OutDir:     p.Dir,
-		OffsetChan: make(chan int32, queueSize),
-		RecordChan: make(chan R, queueSize),
-		DoneChan:   make(chan bool),
+		API:            p.API,
+		Schema:         p.T,
+		Tag:            p.Tag,
+		OutDir:         p.Dir,
+		OffsetChan:     make(chan int32, queueSize),
+		RecordChan:     make(chan R, queueSize),
+		DoneChan:       make(chan bool),
+		DisableInclude: true,
 	}
 	return &e
 
@@ -164,7 +165,6 @@ func NewAllSupporters(p P) *E {
 	e.Conditions = []string{
 		"supporter_KEY>0",
 	}
-	e.DisableInclude = true
 	return e
 }
 
