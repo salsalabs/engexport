@@ -11,30 +11,31 @@ import (
 
 func main() {
 	var (
-		app        = kingpin.New("engexport", "Classic-to-Engage exporter.")
-		login      = app.Flag("login", "YAML file with login credentials").Required().String()
-		config     = app.Flag("schema", `Classic table schema.`).Default("schema.yaml").String()
-		outDir     = app.Flag("dir", "Directory to use to store results").Default("./data").String()
-		tag        = app.Flag("tag", "Retrieve records tagged with TAG").String()
-		start      = app.Flag("start", "start processing at this offset").Default("0").Int32()
-		apiVerbose = app.Flag("apiVerbose", "each api call and response is displayed if true").Default("false").Bool()
-		supp       = app.Command("supporters", "process supporters")
-		_          = supp.Command("all", "process all supporters")
-		_          = supp.Command("active", "process active supporters")
-		_          = supp.Command("only_email", "process supporters that have emails")
-		inactive   = supp.Command("inactive", "process inactive supporters")
-		_          = inactive.Command("all", "process all inactive supporters")
-		_          = inactive.Command("donors", "process inactive supporters with donation history")
-		groups     = app.Command("groups", "process groups")
-		_          = groups.Command("active", "process groups for active supporters")
-		_          = groups.Command("only_email", "process groups for supporters that have emails only")
-		_          = groups.Command("all", "process groups for all supporters, even ones without emails")
-		_          = app.Command("donations", "process donations ")
-		_          = app.Command("tags", "process tags as groups")
-		_          = app.Command("actions", "process supporters and actions")
-		_          = app.Command("events", "process supporters and events")
-		_          = app.Command("contact_history", "contact history for all supporters")
-		_          = app.Command("email_statistics", "email statistics for all supporters")
+		app            = kingpin.New("engexport", "Classic-to-Engage exporter.")
+		login          = app.Flag("login", "YAML file with login credentials").Required().String()
+		config         = app.Flag("schema", `Classic table schema.`).Default("schema.yaml").String()
+		outDir         = app.Flag("dir", "Directory to use to store results").Default("./data").String()
+		tag            = app.Flag("tag", "Retrieve records tagged with TAG").String()
+		start          = app.Flag("start", "start processing at this offset").Default("0").Int32()
+		apiVerbose     = app.Flag("apiVerbose", "each api call and response is displayed if true").Default("false").Bool()
+		disableInclude = app.Flag("disableInclude", "do not use &include in URls").Default("false").Bool()
+		supp           = app.Command("supporters", "process supporters")
+		_              = supp.Command("all", "process all supporters")
+		_              = supp.Command("active", "process active supporters")
+		_              = supp.Command("only_email", "process supporters that have emails")
+		inactive       = supp.Command("inactive", "process inactive supporters")
+		_              = inactive.Command("all", "process all inactive supporters")
+		_              = inactive.Command("donors", "process inactive supporters with donation history")
+		groups         = app.Command("groups", "process groups")
+		_              = groups.Command("active", "process groups for active supporters")
+		_              = groups.Command("only_email", "process groups for supporters that have emails only")
+		_              = groups.Command("all", "process groups for all supporters, even ones without emails")
+		_              = app.Command("donations", "process donations ")
+		_              = app.Command("tags", "process tags as groups")
+		_              = app.Command("actions", "process supporters and actions")
+		_              = app.Command("events", "process supporters and events")
+		_              = app.Command("contact_history", "contact history for all supporters")
+		_              = app.Command("email_statistics", "email statistics for all supporters")
 	)
 	args, _ := app.Parse(os.Args[1:])
 	if tag != nil && len(*tag) == 0 {
@@ -51,10 +52,11 @@ func main() {
 	}
 
 	p := engexport.P{
-		API: api,
-		T:   t,
-		Tag: tag,
-		Dir: *outDir,
+		API:            api,
+		T:              t,
+		Tag:            tag,
+		Dir:            *outDir,
+		DisableInclude: *disableInclude,
 	}
 	var e *engexport.E
 	switch args {

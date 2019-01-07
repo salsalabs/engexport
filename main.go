@@ -56,10 +56,11 @@ type E struct {
 
 //P passes arguments from main() to the rest of the app.
 type P struct {
-	API *godig.API
-	T   Schema
-	Tag *string
-	Dir string
+	API            *godig.API
+	T              Schema
+	Tag            *string
+	Dir            string
+	DisableInclude bool
 }
 
 //Processor defines the tools that an engexport processor needs.

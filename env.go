@@ -19,7 +19,7 @@ func NewEnv(p P) *E {
 		OffsetChan:     make(chan int32, queueSize),
 		RecordChan:     make(chan R, queueSize),
 		DoneChan:       make(chan bool),
-		DisableInclude: true,
+		DisableInclude: p.DisableInclude,
 	}
 	return &e
 
