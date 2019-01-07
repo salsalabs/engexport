@@ -11,9 +11,6 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Logins and schemas
-logins
-
 # Output dirs
 data*
 *.csv
