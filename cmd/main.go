@@ -18,7 +18,7 @@ func main() {
 		tag            = app.Flag("tag", "Retrieve records tagged with TAG").String()
 		start          = app.Flag("start", "start processing at this offset").Default("0").Int32()
 		apiVerbose     = app.Flag("apiVerbose", "each api call and response is displayed if true").Default("false").Bool()
-		disableInclude = app.Flag("disableInclude", "do not use &include in URls").Default("false").Bool()
+		disableInclude = app.Flag("disableInclude", "do not use &include in URLs").Default("false").Bool()
 		supp           = app.Command("supporters", "process supporters")
 		_              = supp.Command("all", "process all supporters")
 		_              = supp.Command("active", "process active supporters")
