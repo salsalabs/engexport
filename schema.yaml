@@ -186,7 +186,7 @@ event:
         "Reference Name": "Reference_Name"
         "Title": "Event_Name"
         "event_KEY": "event.event_KEY"
-        "DateActinCreated": "event.Date_Created"
+        "DateActionCreated": "event.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
@@ -232,6 +232,7 @@ contact_history:
         - "Codes"
         - "Notes"
         - "Status"
+
 supporter_email_statistics:
     fieldmap:
         "supporter_KEY": "supporter.supporter_KEY"
