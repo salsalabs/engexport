@@ -33,6 +33,8 @@ func Transform(m string, d R) string {
 		s = godig.EngageDate(s)
 	case "Date_Created":
 		s = godig.EngageDate(s)
+	case "Last_Modified":
+		s = godig.EngageDate(s)
 	case "last_open":
 		s = godig.EngageDate(s)
 	case "last_click":
