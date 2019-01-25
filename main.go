@@ -21,7 +21,7 @@ const RecordsPerFile = 50000
 //Threads is the number of Drive threads.  That's the one that is the
 //"slowest".  WaitFor is responsible for shutting things down wihen
 //this number of Drives had pushed a "done" message.
-const Threads = 25
+const Threads = 10
 
 //R is a map between output columns and supporters table columns.
 //
