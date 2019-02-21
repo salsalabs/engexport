@@ -6,7 +6,7 @@ import (
 
 	"github.com/salsalabs/engexport"
 	"github.com/salsalabs/godig"
-	"gopkg.in/alecthomas/kingpin.v2"
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 func main() {
@@ -30,7 +30,9 @@ func main() {
 		_              = groups.Command("active", "process groups for active supporters")
 		_              = groups.Command("only_email", "process groups for supporters that have emails only")
 		_              = groups.Command("all", "process groups for all supporters, even ones without emails")
-		_              = app.Command("donations", "process donations ")
+		donations      = app.Command("donations", "process donations")
+		_              = donations.Command("active", "process donatoins for active supporters")
+		_              = donations.Command("all", "process all successful donations")
 		_              = app.Command("tags", "process tags as groups")
 		_              = app.Command("actions", "process supporters and actions")
 		_              = app.Command("events", "process supporters and events")
@@ -60,24 +62,27 @@ func main() {
 	}
 	var e *engexport.E
 	switch args {
-	case "groups active":
-		e = engexport.NewActiveGroups(p)
-	case "groups all":
-		e = engexport.NewAllGroups(p)
-	case "groups only_email":
-		e = engexport.NewEmailOnlyGroups(p)
-	case "donations":
-		e = engexport.NewDonation(p)
 	case "supporters all":
 		e = engexport.NewAllSupporters(p)
 	case "supporters active":
 		e = engexport.NewActiveSupporter(p)
 	case "supporters only_email":
 		e = engexport.NewSupporter(p)
-	case "supporters subscribed":
-		e = engexport.NewInactiveSupporter(p)
 	case "supporters inactive donors":
 		e = engexport.NewInactiveDonors(p)
+
+	case "groups active":
+		e = engexport.NewActiveGroups(p)
+	case "groups all":
+		e = engexport.NewAllGroups(p)
+	case "groups only_email":
+		e = engexport.NewEmailOnlyGroups(p)
+
+	case "donations active":
+		e = engexport.NewDonation(p)
+	case "donations all":
+		e = engexport.NewAllDonations(p)
+
 	case "tags":
 		e = engexport.NewTagGroups(p)
 	case "actions":

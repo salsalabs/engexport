@@ -4,7 +4,7 @@ import (
 	"errors"
 	"io/ioutil"
 
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 const queueSize = 100
@@ -41,6 +41,18 @@ func NewDonation(p P) *E {
 	e.TableName = "donation(supporter_KEY)supporter"
 	e.CountTableName = "donation"
 	e.PrimaryKey = "donation_KEY"
+	return e
+}
+
+//NewAllDonations instantiates an environment for copy8ing donations to CSV files.
+//All successful donations are completed, even for supporters that do not have emails.
+func NewAllDonations(p P) *E {
+	e := NewDonation(p)
+	c := []string{
+		"RESULT IN 0,-1",
+		"supporter.supporter_KEY IS NOT EMPTY",
+	}
+	e.Conditions = c
 	return e
 }
 
