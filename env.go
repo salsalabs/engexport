@@ -31,7 +31,8 @@ func NewDonation(p P) *E {
 	c := []string{
 		"RESULT IN 0,-1",
 		"supporter.Email IS NOT EMPTY",
-		"supporter.Email LIKE %@%.%"}
+		"supporter.Email LIKE %@%.%",
+		"supporter.Receive_Email>0"}
 	e := NewEnv(p)
 	e.Conditions = c
 	e.Fields = p.T.Donation.Fields
