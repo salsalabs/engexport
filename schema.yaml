@@ -28,14 +28,14 @@ supporter:
         "cellPhone":       "Cell_Phone"
         "workPhone":       "Work_Phone"
         "languageCode":    "Language_Code"
-        "externalSystemId": "supporter_KEY"
-        "supporter_KEY":    "supporter_KEY"
+        "SalsaClassicID":  "supporter_KEY"
+        "supporter_KEY":   "supporter_KEY"
 
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
     headers:
-        - "externalSystemId"
+        - "SalsaClassicID"
         - "email"
         - "status"
         - "title"
