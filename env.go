@@ -109,6 +109,7 @@ func NewTagGroups(p P) *E {
 		//Left join munges Receive_Email, see SCT-969.
 		//"supporter.Receive_Email>0",
 		"tag_data.database_table_KEY=142",
+		"tag_data.table_KEY=supporter.supporter_KEY",
 	}
 
 	e := NewEnv(p)
@@ -190,6 +191,18 @@ func NewInactiveSupporter(p P) *E {
 	c = append(c, "Receive_Email<1")
 	e.Conditions = c
 	e.CsvFilename = "inactive_" + e.CsvFilename
+	return e
+}
+
+//NewNoEmailSupporter instantiates an envionrment to copy supporters with out emails
+//to CSV files.
+func NewNoEmailSupporter(p P) *E {
+	e := NewSupporter(p)
+	c := []string{
+		"Email IS EMPTY",
+	}
+	e.Conditions = c
+	e.CsvFilename = "no_email_" + e.CsvFilename
 	return e
 }
 
