@@ -84,7 +84,7 @@ func NewActiveGroups(p P) *E {
 //to CSV files for all supporters, email or not.
 func NewAllGroups(p P) *E {
 	c := []string{
-		"groups.Group_Name IS NOT EMPTY",
+		"groups.groups_KEY IS NOT EMPTY",
 	}
 
 	e := NewEnv(p)
