@@ -103,12 +103,15 @@ groups:
         "Group": "Group_Name"
         "Email": "supporter.Email"
         "groups_KEY": "groups.groups_KEY"
+        "supporter_KEY": "supporter.supporter_KEY"
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
     headers:
         - "Group"
         - "Email"
+        - "groups_KEY"
+        - "supporter_KEY"
 tag:
     # Field map.  The column on the left is the target.
     # The list of headers must come of out the left column.
@@ -152,7 +155,7 @@ action:
     fieldmap:
         "supporter_KEY": "supporter.supporter_KEY"
         "Email": "supporter.Email"
-        "Reference Name": "Reference_Name"
+        "ReferenceName": "Reference_Name"
         "Title": "action.Title"
         "action_KEY": "action.action_KEY"
         "DateActionTaken": "supporter_action.Date_Created"
@@ -163,7 +166,7 @@ action:
     headers:
         - "supporter_KEY"
         - "Email"
-        - "Reference Name"
+        - "ReferenceName"
         - "Title"
         - "action_KEY"
         - "DateActionTaken"
@@ -183,10 +186,10 @@ event:
     fieldmap:
         "supporter_KEY": "supporter.supporter_KEY"
         "Email": "supporter.Email"
-        "Reference Name": "Reference_Name"
+        "ReferenceName": "Reference_Name"
         "Title": "Event_Name"
         "event_KEY": "event.event_KEY"
-        "DateActionCreated": "event.Date_Created"
+        "SignupDate": "supproter_event.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
@@ -194,10 +197,10 @@ event:
     headers:
         - "supporter_KEY"
         - "Email"
-        - "Reference Name"
+        - "ReferenceName"
         - "Title"
         - "event_KEY"
-        - "DateActionCreated"
+        - "SignupDate"
 
 contact_history:
     fieldmap:
