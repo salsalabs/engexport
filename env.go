@@ -314,6 +314,25 @@ func NewEmailStatistics(p P) *E {
 	return e
 }
 
+//NewBlastStatistics instantiates an environment for copying email statistics
+//to CSV files for all supporters.
+func NewBlastStatistics(p P) *E {
+	c := []string{
+		"email_blast_KEY>0",
+	}
+
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.BlastStatistics.Fields
+	e.Headers = p.T.BlastStatistics.Headers
+	e.Keys = p.T.BlastStatistics.Keys
+	e.CsvFilename = "blast_statistics.csv"
+	e.TableName = "email_blast(email_blast_KEY)email_blast_statistics"
+	e.CountTableName = "email_blast_statistics"
+	e.PrimaryKey = "email_blast_statistics_KEY"
+	return e
+}
+
 //LoadSchema accepts a pointer to a YAML filename and loads the contents
 //into a Table object.
 func LoadSchema(fn *string) (Schema, error) {

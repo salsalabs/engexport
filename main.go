@@ -117,4 +117,9 @@ type Schema struct {
 		Headers []string `yaml:"headers"`
 		Keys    R        `yaml:"keymap"`
 	} `yaml:"supporter_email_statistics"`
+	BlastStatistics struct {
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
+		Keys    R        `yaml:"keymap"`
+	} `yaml:"blast_statistics"`
 }

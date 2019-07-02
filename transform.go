@@ -43,6 +43,10 @@ func Transform(m string, d R) string {
 		s = godig.EngageDate(s)
 	case "End":
 		s = godig.EngageDate(s)
+	case "First_Email_Time":
+		s = godig.EngageTimestamp(s)
+	case "Last_Email_Time":
+		s = godig.EngageTimestamp(s)
 	case "State":
 		s = strings.ToUpper(s)
 	case "Transaction_Date":
