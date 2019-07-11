@@ -227,16 +227,20 @@ tag:
     # This file is the default mapping for transferring
     # tag information from Salsa Classic to Engage.
     fieldmap:
-        "Group": "tag"
+        "supporter_KEY": "supporter.supporter_KEY"
         "Email": "supporter.Email"
         "tag_KEY": "tag.tag_KEY"
+        "Tag": "tag"
+        "Prefix": "prefix"
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
     headers:
-        - "tag_KEY"
-        - "Group"
+        = "supporter_KEY"
         - "Email"
+        - "tag_KEY"
+        - "Prefix"
+        - "Tag"
     # Optional key map.  The key is a tag_KEY, the name is the
     # Engage group to which tagged supporters will be added.
     # "Optional" means that this map can be left out.
