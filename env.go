@@ -109,7 +109,6 @@ func NewTagGroups(p P) *E {
 		//Left join munges Receive_Email, see SCT-969.
 		//"supporter.Receive_Email>0",
 		"tag_data.database_table_KEY=142",
-		"tag_data.table_KEY=supporter.supporter_KEY",
 	}
 
 	e := NewEnv(p)
