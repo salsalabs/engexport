@@ -236,7 +236,7 @@ tag:
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
     headers:
-        = "supporter_KEY"
+        - "supporter_KEY"
         - "Email"
         - "tag_KEY"
         - "Prefix"
