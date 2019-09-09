@@ -68,12 +68,14 @@ func main() {
 		e = engexport.NewAllSupporters(p)
 	case "supporters active":
 		e = engexport.NewActiveSupporter(p)
+	case "supporters inactive all":
+		e = engexport.NewInactiveSupporter(p)
+	case "supporters inactive donors":
+		e = engexport.NewInactiveDonors(p)
 	case "supporters only_email":
 		e = engexport.NewSupporter(p)
 	case "supporters no_email":
 		e = engexport.NewNoEmailSupporter(p)
-	case "supporters inactive donors":
-		e = engexport.NewInactiveDonors(p)
 
 	case "groups active":
 		e = engexport.NewActiveGroups(p)
