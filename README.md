@@ -4,10 +4,12 @@ Go application to export the usual data necessary to convert a client form Class
 
 -   Active supporter data
 -   Inactive supporters that are donors
--   Selected group names and supporter emails.
+-   Ggroup names and supporter emails.
 -   Selected tag and supporter emails.
--   (Future) Actions and supporter emails.
--   (Future) Events and supporter emails.
+-   Actions and supporter emails.
+-   Events and supporter emails.
+-   Blast email statistics.
+-   Supporter email statistics.
 
 All output files are CSV.
 
