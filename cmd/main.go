@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/salsalabs/engexport"
+	engexport "github.com/salsalabs/engexport/pkg"
 	"github.com/salsalabs/godig"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
