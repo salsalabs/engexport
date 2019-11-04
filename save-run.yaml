@@ -1,0 +1,11 @@
+login: wave.yaml
+schema: schemas/engage_schema.yaml
+dir: ./data
+args:
+        - supporters all
+        - donations all
+        - groups all
+        - events
+        - actions
+        - blast_statistics
+        - email_statistics

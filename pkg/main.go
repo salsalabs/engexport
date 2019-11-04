@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/salsalabs/godig"
+	godig "github.com/salsalabs/godig/pkg"
 )
 
 //ParseFmt is used to parse a Salsa database mesasge.  NOote that the only
@@ -61,6 +61,19 @@ type P struct {
 	Tag            *string
 	Dir            string
 	DisableInclude bool
+}
+
+//RunConfig is read from a "run.yaml" file.  It can also be used
+//to store commandline arguments.
+type RunConfig struct {
+	LoginYAML      string   `yaml:"login"`
+	Schema         string   `yaml:"schema"`
+	OutDir         string   `yaml:"dir"`
+	Tag            *string  `yaml:"tag"`
+	Start          int32    `yaml:"start"`
+	APIVerbose     bool     `yaml:"apiVerbose"`
+	DisableInclude bool     `yaml:"disableInclude"`
+	Args           []string `yamml:"args"`
 }
 
 //Processor defines the tools that an engexport processor needs.
@@ -122,4 +135,13 @@ type Schema struct {
 		Headers []string `yaml:"headers"`
 		Keys    R        `yaml:"keymap"`
 	} `yaml:"blast_statistics"`
+}
+
+//FileExists returns true if the provide file exists and is not a directory.
+func FileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }

@@ -346,3 +346,14 @@ func LoadSchema(fn *string) (Schema, error) {
 	err = yaml.Unmarshal(b, &t)
 	return t, err
 }
+
+//LoadRun accepts a filename and parses it into a RUnConfig object.
+func LoadRun(fn string) (*RunConfig, error) {
+	var r RunConfig
+	b, err := ioutil.ReadFile(fn)
+	if err != nil {
+		return nil, err
+	}
+	err = yaml.Unmarshal(b, &r)
+	return &r, err
+}

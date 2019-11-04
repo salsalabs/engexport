@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/salsalabs/godig"
+	godig "github.com/salsalabs/godig/pkg"
 )
 
 //Transform cleans up the value and returns it.  Separated from Save so
