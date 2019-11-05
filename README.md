@@ -16,7 +16,7 @@ All output files are CSV.
 1.  A [recent version of Go](https://golang.org/doc/install) installed.  You should use the googles
     if you are installing on Windows.  Really. Trust me on this.
 
-2.  The correct Go directory structure.  Believe it or not, this is _very_ inportant.  Here's a sample.
+2.  The correct Go directory structure.  Believe it or not, this is _very important_.  Here's a sample.
 
 ```text
 $(HOME)
