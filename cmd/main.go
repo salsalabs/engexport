@@ -12,6 +12,7 @@ import (
 	engexport "github.com/salsalabs/engexport/pkg"
 	_ "github.com/salsalabs/engexport/statik"
 	godig "github.com/salsalabs/godig/pkg"
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 //customFields adds custom fields to the supporter section of a schema.
@@ -60,12 +61,12 @@ func authenticate(run *engexport.RunConfig) (a *godig.API, err error) {
 
 //parseRunYAML parses the contents of "run.yaml" (if it exists) and returns
 //a RunConfig object.
-func parseRunYAML() (run *engexport.RunConfig, err error) {
-	if engexport.FileExists("run.yaml") {
-		run, err = engexport.LoadRun("run.yaml")
+func parseRunYAML(fn string) (run *engexport.RunConfig, err error) {
+	if engexport.FileExists(fn) {
+		run, err = engexport.LoadRun(fn)
 	}
 	//Apply defaults.
-	if length(run.OutDir) == 0 {
+	if len(run.OutDir) == 0 {
 		run.OutDir = "data"
 	}
 	return run, err
@@ -98,7 +99,11 @@ func selectSchema(run *engexport.RunConfig) (r io.Reader, err error) {
 
 //main is the starting point for this app.
 func main() {
-	run, err := parseRunYAML()
+	cpath := kingpin.Flag("run", "YAML file containing credentials and runtime parameters.").PlaceHolder("FILENAME").Default("./run.yaml").String()
+	kingpin.Parse()
+
+	fmt.Printf("Main: run.yaml filename is '%v\n'\n", *cpath)
+	run, err := parseRunYAML(*cpath)
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
@@ -116,11 +121,11 @@ func main() {
 		log.Fatalf("Main: %v\n", err)
 	}
 
-	err = customFields(api, t)
+	err = customFields(api, schema)
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
-	dumpSchema(run, *t)
+	dumpSchema(run, *schema)
 	p := engexport.P{
 		API:            api,
 		T:              *schema,
