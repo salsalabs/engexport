@@ -102,7 +102,6 @@ func main() {
 	cpath := kingpin.Flag("run", "YAML file containing credentials and runtime parameters.").PlaceHolder("FILENAME").Default("./run.yaml").String()
 	kingpin.Parse()
 
-	fmt.Printf("Main: run.yaml filename is '%v\n'\n", *cpath)
 	run, err := parseRunYAML(*cpath)
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
