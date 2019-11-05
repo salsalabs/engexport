@@ -174,6 +174,15 @@ Some things you need to know.
 1.  `supporter`, `donation` and `groups` _must_ be in column 1.
 2.  Indents are four spaces.  Don't use tabs.  Using two spaces also works.  Mostly.
 3.  Quotations are required for name with a space.
+4.  `engexport` automatically adds all supporter custom fields to the schema.  If you don't need all custom fields, then
+    1. Set "dumpSchema" to true in `run.yaml`.
+    2. Run the app once.
+    3. There will be a file named `generated_schema.yaml` in the current directory.
+    4. Rename that file to something useful (e.g. "your_org.yaml")
+    5. Edit the file and remove all of the unwanted custom fields.
+    6. Put the schema's filename ("your_org.yaml") into the "schema" field of `run.yaml`.
+    7. Set "dumpSchema" to false in `run.yaml`.
+    7. Run again.
 4.  The name before the colon is for the target system.
 5.  The name after the colon must be a Salsa Classic field name.
 6.  If the Classic field name starts `supporter.`, then leave it alone.
