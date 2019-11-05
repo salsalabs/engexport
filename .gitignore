@@ -19,7 +19,10 @@ data*
 *log*
 logs
 
-*Mac things
+#Mac things
 .DS_Store
 cmd/.DS_Store
 
+#Credential things.
+*.yaml
+logins/*
