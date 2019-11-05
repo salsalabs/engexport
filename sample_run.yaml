@@ -1,6 +1,6 @@
 host: org2.salsalabs.com
-email: aleonard@salsalabs.com
-password: AwoJuW4Fh61OznFeGSqf8gum
+email: you@your.org
+password: really-long-password
 schema: engage
 dir: ./data2
 tag: example
