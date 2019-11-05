@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -27,6 +28,19 @@ func customFields(api *godig.API, schema *engexport.Schema) error {
 		}
 	}
 	return nil
+}
+
+//dumpSchema writes the generated schema to a disk file.
+func dumpSchema(run *engexport.RunConfig, schema engexport.Schema) {
+	if run.DumpSchema {
+		b, _ := json.MarshalIndent(schema, "", "  ")
+		err := ioutil.WriteFile("generated_schema.yaml", b, os.ModePerm)
+		if err != nil {
+			log.Printf("Warning: unable to write generated schema to ./generated_schema.yaml")
+		} else {
+			log.Println("Modified schema written to ./generated_schema.yaml")
+		}
+	}
 }
 
 //authenticate uses a RunConfig to authenticate with Salsa Classic's API.
@@ -107,10 +121,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
-
-	b, _ := json.MarshalIndent(*t, "", "  ")
-	fmt.Printf("\nModified schema\n%v\n", string(b))
-
+	dumpSchema(run, *t)
 	p := engexport.P{
 		API:            api,
 		T:              *t,

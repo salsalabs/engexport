@@ -75,7 +75,8 @@ type RunConfig struct {
 	Start          int32    `yaml:"start"`
 	APIVerbose     bool     `yaml:"apiVerbose"`
 	DisableInclude bool     `yaml:"disableInclude"`
-	Args           []string `yamml:"args"`
+	DumpSchema     bool     `yaml:"dumpSchema"`
+	Args           []string `yaml:"args"`
 }
 
 //Processor defines the tools that an engexport processor needs.
