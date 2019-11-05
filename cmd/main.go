@@ -73,7 +73,6 @@ func selectSchema(run *engexport.RunConfig) (r io.Reader, err error) {
 	//The schema can be "engage", "goodbye" or a schema filename.
 	//We retrieve a file from the statik object if the schema is
 	//engage or goodbye.
-	fmt.Printf("selectSchema: searching for match to '%v'\n", run.Schema)
 	statikFS, err := fs.New()
 	if err != nil {
 		err = fmt.Errorf("Unable to open statik file system, error is %v", err)
@@ -81,13 +80,10 @@ func selectSchema(run *engexport.RunConfig) (r io.Reader, err error) {
 	}
 	switch run.Schema {
 	case "engage":
-		fmt.Printf("selectSchema: checking for '%v'\n", run.Schema)
 		r, err = statikFS.Open("/engage_schema.yaml")
 	case "goodbye":
-		fmt.Printf("selectSchema: checking for '%v'\n", run.Schema)
 		r, err = statikFS.Open("/goodbye_schema.yaml")
 	default:
-		fmt.Printf("selectSchema: checking for '%v'\n", run.Schema)
 		r, err = os.Open(run.Schema)
 	}
 	if err != nil {
@@ -102,7 +98,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
-	fmt.Printf("*RunConfig is %+v\n", *run)
 
 	api, err := authenticate(run)
 	if err != nil {
