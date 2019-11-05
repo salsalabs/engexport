@@ -1,0 +1,17 @@
+host: org2.salsalabs.com
+email: aleonard@salsalabs.com
+password: AwoJuW4Fh61OznFeGSqf8gum
+schema: engage
+dir: ./data2
+tag: example
+start: 2000
+apiVerbose: false
+disableInclude: true
+args:
+        - supporters all
+        - donations all
+        - groups all
+        - events
+        - actions
+        - blast_statistics
+        - email_statistics

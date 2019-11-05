@@ -1,8 +1,9 @@
 package engexport
 
 import (
-	"errors"
+	"io"
 	"io/ioutil"
+	"os"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -332,19 +333,24 @@ func NewBlastStatistics(p P) *E {
 	return e
 }
 
-//LoadSchema accepts a pointer to a YAML filename and loads the contents
-//into a Table object.
-func LoadSchema(fn *string) (Schema, error) {
+//LoadSchema accepts a reader and returns a Schema.
+func LoadSchema(r io.Reader) (*Schema, error) {
 	var t Schema
-	if fn == nil {
-		panic(errors.New("a config file is required"))
-	}
-	b, err := ioutil.ReadFile(*fn)
+	b, err := ioutil.ReadAll(r)
 	if err != nil {
-		return t, err
+		return &t, err
 	}
 	err = yaml.Unmarshal(b, &t)
-	return t, err
+	return &t, err
+}
+
+//FileExists returns true if the provide file exists and is not a directory.
+func FileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
 
 //LoadRun accepts a filename and parses it into a RUnConfig object.

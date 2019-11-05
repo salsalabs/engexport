@@ -25,8 +25,8 @@ const Threads = 10
 
 //R is a map between output columns and supporters table columns.
 //
-//Oddly enough, Go makes a distrinction thie type and a map[string]string.
-//When indoubt, use this.
+//Oddly enough, Go makes a distinction thie type and a map[string]string.
+//When in doubt, use this.
 //
 //TODO: Given this type a better name.
 type R map[string]string
@@ -66,7 +66,9 @@ type P struct {
 //RunConfig is read from a "run.yaml" file.  It can also be used
 //to store commandline arguments.
 type RunConfig struct {
-	LoginYAML      string   `yaml:"login"`
+	Host           string   `yaml:"host"`
+	Email          string   `yaml:"email"`
+	Password       string   `yaml:"password"`
 	Schema         string   `yaml:"schema"`
 	OutDir         string   `yaml:"dir"`
 	Tag            *string  `yaml:"tag"`
@@ -135,13 +137,4 @@ type Schema struct {
 		Headers []string `yaml:"headers"`
 		Keys    R        `yaml:"keymap"`
 	} `yaml:"blast_statistics"`
-}
-
-//FileExists returns true if the provide file exists and is not a directory.
-func FileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
 }
