@@ -19,7 +19,7 @@ const LayoutFmt = "2006-Jan-02T15:04:05"
 const RecordsPerFile = 50000
 
 //Threads is the number of Drive threads.  That's the one that is the
-//"slowest".  WaitFor is responsible for shutting things down wihen
+//"slowest".  WaitFor is responsible for shutting things down when
 //this number of Drives had pushed a "done" message.
 const Threads = 10
 

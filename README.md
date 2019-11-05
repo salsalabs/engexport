@@ -25,82 +25,148 @@ $(HOME)
     +- pkg
     +- src
 ```
-Make sure that `$(HOME)/bin` is in your PATH environment variable.
+Make sure that `$(HOME)/go/bin` is in your PATH environment variable.
 
 ## Installation
 
 ```bash
 go get github.com/salsalabs/engexport
 go install
-go build -o engexport cmd/main.go
-mv engexport ~/go/bin
+go build -o ~/go/bin/engexport cmd/main.go
 ```
 When installation is done, you'll have an application named `engexport` that can be executed anywhere on your system.
 
-## Setup
+## Configuration
 
-Put your Salsa Classic login credentials into a YAML file.
+The `engexport` app uses a YAML file named 'run.yaml' to provide runtime parameters.
+The runtime parameters include
+* Salsa Classic API host
+* Salsa Classic API login credentials
+* Schema selection to show which fields need to be exported
+* Output directory
+* Runtime options
 
-```yaml
-host: hostname
-email: you@yours.com
-password: super-secret-password
-```
+Contents of 'run.yaml'.
 
-Where
-
--   `host` is the [API Host](https://help.salsalabs.com/hc/en-us/articles/115000341773-Salsa-Application-Program-Interface-API-#api_host)
--   `email` is the email address that you use to login
--   `password` is the password that you use to login
+|Field|Description|Notes|Default|
+| -- | -- | -- | -- |
+|host|[API Host](https://help.salsalabs.com/hc/en-us/articles/115000341773-Salsa-Application-Program-Interface-API-#api_host)||None, required|
+|email|Email address to log into Salsa Classic||None, required|
+|password|Password to log into SalsaClassic||None, required|
+|schema||
+||"engage"|Use the schema that we use to export to Engage.  See `public/engage_schema.yaml`.|
+||"goodbye"|See `public/goodbye_schema.yaml`||
+||filename.yaml|Read the schema from `filename.yaml`.||
+|dir|Output directory, created if it doesn't already exist||./data|
+|tag|Only retrieve records with this tag|||
+|start|Number of records to skip before reading|||
+|apiVerbose|If true, then see the API calls and their responses.  Really ugly...||false|
+|disableInclude|If true, then retrieve all fields on each read.  If false, only retrieve the necessary fields.||false|
+|dumpSchema|If true, then write the as-used schema to "./generated_schema.yaml"||false|
+|args|YAML list of table options for the tables to drop.  See cmd/main.go for the authoritative list|||
+||"supporters all"|All supporters, both subscribed and unsubscribed.||
+||"supporters active"|Supporters with a valid-looking email that are opted in||
+||"supporters inactive all"|Supporters with invalid-looking emails or are opted out.||
+||"supporters inactive donors"|Inactive supporters that donated||
+||"supporters only_email"|Supporters with valid-looking emails||
+||"supporters no_email"|Supporters without valid-looking emails||
+||"groups active"|Supporters and groups for active supporters||
+||"groups all"|Supporters and groups for all supporters||
+||"groups only_email"|Supporters and groups for supporters with valid emails||
+||"donations active"|Donations for active supporters||
+||"donations all"|Donations for all supporters||
+||"tags"|Tags and supporters.  Really long.  Do this on an old node and systems will unleash the dogs.||
+||"actions"|Actions and supporters.  Another opportunity to be chased by the systems hellhounds...||
+||"events"|Events an supporters.||
+||"contact_history"|Contact history and supporters.||
+||"email_statistics"|Email statistics and supporters.||
+||"blast_statistics"|Email blast statistics.||
 
 _Remember to remove this file after you're done!_
 
-## Configuration
+A sample `run.yaml` file can be found in `sample_run.yaml`.  Your best bet will be to create a working directory for the export, then copy `sample_run.yaml` into the working directory as `run.yaml`.
 
-The default behavior for this app is to export Classic data for Engage.
-Only the standard supporter fields are exported.  Custom fields are ignored.
-
-You can change this behavior to
-
--   Change the field names in the CSV file.
--   Change the fields that are exported.
--   Add custom fields.
--   Remove fields that the client doesn't need.
--   Set up an export to another system besides Engage.
-
-The standard field mappings and headings are stored in `schema.yaml`.  YOu can create new file mappings and headings by copying `schema.haml` and then editing the copy.
-
-(You can also edit `schema.yaml`, but that would Not Be A Good Thing.)
-
-The comments in `schema.yaml` are a good guideline for editing.  Here's a sample from `schema.yaml` for the "groups" table.
+These are the current contents of `sample_run.yaml`.
 
 ```yaml
+host: org2.salsalabs.com
+email: you@your.org
+password: really-long-password
+schema: engage
+dir: ./data2
+tag: example
+start: 2000
+apiVerbose: false
+disableInclude: true
+args:
+        - supporters all
+        - donations all
+        - groups all
+        - events
+        - actions
+        - blast_statistics
+        - email_statistics
+```
+
+## Schema
+
+This app uses a schema file to determine which fields to send to the output.  A schema file is a YAML-formatted file containing definitions for each of the files that the app can export.
+
+The YAML file consists of a number of sections.  Each section describes
+the rules to use when exporting a Salsa Classic database table.
+
+```yaml
+supporter:
+    # Supporter rules here.
+donation:
+    # Donation rules here.
 groups:
-    # Field map.  The column on the left is the target.
-    # The list of headers must come of out the left column.
-    #
-    # The column on the right is the Salsa Classic groups
-    # table field name *or* fields from a joined supporter
-    # record.  You can use both standard fields and custom
-    # fields.  Changing the joined supporter fields is
-    # Not A Good Idea.
-    #
-    # This file is the default mapping for transferring
-    # groups information from Salsa Classic to Engage.
+    # Rules for the `groups` table here.
+
+# etc.
+```
+
+The table rules are composed of
+* a `fieldmap` that describes the database table, and
+* `headers` that tell `engexport` which fields need to go into the CSV file.
+
+The `fieldmap` contains a line for each field in the Salsa Classic table.  Each line contains the output field name, a colon, and the database table field name.
+
+```yaml
+supporter:
     fieldmap:
-        "Group": "Group_Name"
-        "Email": "supporter.Email"
-    # Headers for the CSV file.  Headers will appear at the
-    # top of the CSV file in this order.  Note that headers
-    # *must* come from the left column of the field map.
+        "SalsalClassicID": "supporter_KEY"
+        "email":           "Email"
+        "title":           "Title"
+        "firstName":       "First_Name"
+        "middleName":      "MI"
+        "lastName":        "Last_Name"
+```
+
+The `headers` is a simple list of fields that go into the CSV file.  The
+output fields will appear in the order that you specify them.
+
+
+```yaml
+supporter:
+    fieldmap:
+        . . .
     headers:
-        - "Group"
-        - "Email"
-    # Key maps.  A record has a primary key.  If the primary
-    # key is in this list of keys, then the record is saved.
-    # If this list of keys is empty, or does not exist, then
-    # the record is saved anyway.
-    keymap:
+        - "SalsalClassicID"
+        - "email"
+        - "title"
+        - "firstName"
+        - "lastName"
+```
+
+Here's a sample of a CSV file containing supporter records for the example schema for supporter.  Note that middleName is not in the export because "middleName" is not in the list of headers.
+```csv
+SalsaClassicID,email, title,firstName,lastName
+123456789,bob@johnson.bizi,Mr,Bob,Johnson
+123456788,carol@johnson.bizi,Ms,Carol,Johnson
+123456787,ted@johnson.bizi,Mr,Theodore,Johnson
+123456786,alice@johnson.bizi,Mrs,Alycia,Johnson
+
 ```
 
 Some things you need to know.
@@ -113,79 +179,12 @@ Some things you need to know.
 6.  If the Classic field name starts `supporter.`, then leave it alone.
 7.  Headers will appear on the first line of the CSV file in the order shown. Feel free to change the order as you see fit.
 
-If you create your own version of `schema.yaml`, then you can add it to the command line when you invoke the app.  See below.
+If you create your own version of `schema.yaml`, then put the schema's filename in the `schema` entry in `run.yaml`.
 
 ## Execution
 
 ```text
-usage: engexport --login=LOGIN [<flags>] <command> [<args> ...]
-
-Classic-to-Engage exporter.
-
-Flags:
-  --help                  Show context-sensitive help (also try --help-long and --help-man).
-  --login=LOGIN           YAML file with login credentials
-  --schema="schema.yaml"  Classic table schema.
-  --dir="./data"          Directory to use to store results
-  --tag=TAG               Retrieve records tagged with TAG
-  --start=0               start processing at this offset
-  --apiVerbose            each api call and response is displayed if true
-  --disableInclude        do not use &include in URLs
-
-Commands:
-```
-| command | description |
-| --- | --- |
-| `help`  [<command>...] | Show help. |
-| `supporters all` | process all supporters |
-| `supporters active` | process active supporters |
-| `supporters only_email` | process supporters that have emails |
-| `supporters inactive all` | process all inactive supporters |
-| `supporters inactive donors ``| process inactive supporters with donation history|
-| `groups active` | process groups for active supporters |
-| `groups only_email` | process groups for supporters that have emails only |
-| `groups all` | process groups for all supporters, even ones without emails |
-| `donations` | process donations |
-| `tags` | process tags as groups |
-| `actions` | process supporters and actions |
-| `events` | process supporters and events |
-| `contact_history` | contact history for all supporters |
-| `email_statistics` | email statistics for all supporters |
-
-
-### Examples
-
-#### Active supporters
-
-```bash
-go run cmd/main.go --login YOUR_YAML_FILE supporters active
-```
-
-#### Donations by all active and inactive supporters.
-
-This is the most common
-variant that clients ask for.  See "TODO" section for others.
-
-```bash
-go run cmd/main.go --login YOUR_YAML_FILE donations
-```
-
-#### Group names and emails for all active supporters.
-
-```bash
-go run cmd/main.go --login YOUR_YAML_FILE groups
-```
-
-#### Inactive supporters.
-
-```bash
-go run cmd/main.go --login YOUR_YAML_FILE supporters inactive
-```
-
-#### Inactive supporters that have donation history.
-
-```bash
-go run cmd/main.go --login YOUR_YAML_FILE supporters inactive donors
+usage: engexport
 ```
 
 ### Notes
@@ -194,11 +193,7 @@ If the app crashes spectacularly with this message
 
 `panic: invalid response code 555 `
 
-then the number of fields in the `&include=` in the URL going to Salsa has too many items.  The fix is to use `--disableInclude`:
-
-`engexport --disableInclude --login (etc.)`
-
-Doing that adds some overhead since the full record is being returned and not just parts.  The crashing will stop, though, so there's an upside.
+then the number of fields in the `&include=` in the URL going to Salsa has too many items.  The fix is to set `disableInclude` to false in `run.yaml`
 
 ## Output
 
@@ -234,16 +229,14 @@ Output goes to a directory of our choosing.  The default is `./data`.  The outpu
 
 -   You can expect Salsa to provide records at a rate of about 10,000 reads per minute.
 -   A PC or Mac will get really slow overall.  Run this off-peak if you expect to do your day job.
--   I use a small AWS instance in an IDE.  That does the work and lets my little old MacBook have some breathing room.
 -   These are observed estimates.  YMMV.
+-   See, observe and obey the next section.
 
 ### Caution!
 
-**Do not** run really big clients through this application on org, org2 or salsa3.  Just don't.  Arrange for Salsa to get the data for you.  Salsa folks: Submmit a JIRA case to a DBA.
+**Do not** run really big clients through this application on org, org2, wfc or salsa3.  Just don't.  Arrange for Salsa to get the data for you.  Salsa folks: Submmit a JIRA case to a DBA.  Non-Salsa folks: submit a request for the data via an email to support@salsalabs.com
 
 ### TODO
-
-1.  (Optional) Export custom fields separately. Use `supporter_KEY` and `Email` as the identifiers for importing into Engage.
 1.  (Wishful thinking) One pass through the database that updates everyting in Engage automatically.
 
 ### Tools

@@ -64,6 +64,10 @@ func parseRunYAML() (run *engexport.RunConfig, err error) {
 	if engexport.FileExists("run.yaml") {
 		run, err = engexport.LoadRun("run.yaml")
 	}
+	//Apply defaults.
+	if length(run.OutDir) == 0 {
+		run.OutDir = "data"
+	}
 	return run, err
 }
 
@@ -107,7 +111,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
-	t, err := engexport.LoadSchema(r)
+	schema, err := engexport.LoadSchema(r)
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
@@ -119,7 +123,7 @@ func main() {
 	dumpSchema(run, *t)
 	p := engexport.P{
 		API:            api,
-		T:              *t,
+		T:              *schema,
 		Tag:            run.Tag,
 		Dir:            run.OutDir,
 		DisableInclude: run.DisableInclude,
