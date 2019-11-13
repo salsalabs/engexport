@@ -86,9 +86,11 @@ Contents of 'run.yaml'.
 
 _Remember to remove this file after you're done!_
 
-A sample `run.yaml` file can be found in `sample_run.yaml`.  Your best bet will be to create a working directory for the export, then copy `sample_run.yaml` into the working directory as `run.yaml`.
+A sample `run.yaml` file can be found in `public/sample_run.yaml`.  Your best bet will be to create a working directory for the export, then run this command:
 
-These are the current contents of `sample_run.yaml`.
+engexport --sample-run-yaml`
+
+That will create a file called `sample_run.yaml` that contains these contents.
 
 ```yaml
 host: org2.salsalabs.com

@@ -97,11 +97,41 @@ func selectSchema(run *engexport.RunConfig) (r io.Reader, err error) {
 	return r, err
 }
 
+//showSample extracts "sample_run.yaml" from the statik archive and writes it to
+//the current directory.
+func showSample() error {
+	statikFS, err := fs.New()
+	if err != nil {
+		err = fmt.Errorf("Unable to open statik file system, error is %v", err)
+		return err
+	}
+	b, err := fs.ReadFile(statikFS, "/sample_run.yaml")
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile("./sample_run.yaml", b, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	fmt.Println("I've stored 'sample_run.yaml' in the current directory.")
+	return nil
+}
+
 //main is the starting point for this app.
 func main() {
-	cpath := kingpin.Flag("run", "YAML file containing credentials and runtime parameters.").PlaceHolder("FILENAME").Default("./run.yaml").String()
+	var (
+		cpath  = kingpin.Flag("run", "YAML file containing credentials and runtime parameters.").PlaceHolder("FILENAME").Default("./run.yaml").String()
+		sample = kingpin.Flag("sample-run-yaml", "Write a sample run.yaml to the current directory.").Bool()
+	)
 	kingpin.Parse()
 
+	if *sample {
+		err := showSample()
+		if err != nil {
+			panic(err)
+		}
+		return
+	}
 	run, err := parseRunYAML(*cpath)
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
