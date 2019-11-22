@@ -164,7 +164,7 @@ func main() {
 	}
 
 	for _, arg := range run.Args {
-		fmt.Printf("EngExport processing '%v'\n", arg)
+		log.Printf("EngExport processing '%v'\n", arg)
 		var e *engexport.E
 		switch arg {
 		case "supporters all":
