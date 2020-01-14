@@ -75,6 +75,7 @@ donation:
         "Amount":           "amount"
         "Transaction_Type": "Transaction_Type"
         "RESULT":           "RESULT"
+        "Tracking_Code:"    "Tracking_Code"
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
@@ -86,6 +87,7 @@ donation:
         - "Amount"
         - "Transaction_Type"
         - "RESULT"
+        - "Tracking_Code"
 
 groups:
     # Field map.  The column on the left is the target.
