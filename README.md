@@ -34,6 +34,7 @@ Make sure that `$(HOME)/go/bin` is in your PATH environment variable.
 ```bash
 go get github.com/salsalabs/engexport
 go install
+statik -src=public
 go build -o ~/go/bin/engexport cmd/main.go
 ```
 When installation is done, you'll have an application named `engexport` that can be executed anywhere on your system.
@@ -114,7 +115,8 @@ args:
 
 ## Schema
 
-This app uses a schema file to determine which fields to send to the output.  A schema file is a YAML-formatted file containing definitions for each of the files that the app can export.
+This app uses a schema file to determine which fields to send to the output.  A schema file is a YAML-formatted file containing definitions for each of the files that the app can export.  Schema files are stored in `./public`.  Schemas are comiled into a Go file using `statik`.  That manes the available to the app without
+having to tell the app where they live.
 
 The YAML file consists of a number of sections.  Each section describes
 the rules to use when exporting a Salsa Classic database table.
