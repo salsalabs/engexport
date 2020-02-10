@@ -109,11 +109,10 @@ func showSample() error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile("./sample_run.yaml", b, os.ModePerm)
+	err = ioutil.WriteFile("./run.yaml", b, os.ModePerm)
 	if err != nil {
 		return err
 	}
-	fmt.Println("I've stored 'sample_run.yaml' in the current directory.")
 	return nil
 }
 
