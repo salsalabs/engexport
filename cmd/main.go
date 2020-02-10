@@ -120,7 +120,7 @@ func showSample() error {
 func main() {
 	var (
 		cpath  = kingpin.Flag("run", "YAML file containing credentials and runtime parameters.").PlaceHolder("FILENAME").Default("./run.yaml").String()
-		sample = kingpin.Flag("sample-run-yaml", "Write a sample run.yaml to the current directory.").Bool()
+		sample = kingpin.Flag("sample", "Write a sample run.yaml to the current directory.").Bool()
 	)
 	kingpin.Parse()
 
