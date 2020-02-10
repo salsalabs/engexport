@@ -33,20 +33,29 @@ func Transform(m string, d R) string {
 		s = godig.EngageDate(s)
 	case "Date_Created":
 		s = godig.EngageDate(s)
+	case "Email":
+		s = strings.TrimSpace(strings.ToLower(s))
+	case "End":
+		s = godig.EngageDate(s)
+	case "First_Email_Time":
+		s = godig.EngageDate(s)
+	case "last_click":
+		s = godig.EngageDate(s)
+	case "Last_Email_Time":
+		s = godig.EngageDate(s)
 	case "Last_Modified":
 		s = godig.EngageDate(s)
 	case "last_open":
 		s = godig.EngageDate(s)
-	case "last_click":
-		s = godig.EngageDate(s)
+	case "Receive_Email":
+		t := "Unsubscribed"
+		x, err := strconv.ParseInt(s, 10, 32)
+		if err == nil && x > 0 {
+			t = "Subscribed"
+		}
+		s = t
 	case "Start":
 		s = godig.EngageDate(s)
-	case "End":
-		s = godig.EngageDate(s)
-	case "First_Email_Time":
-		s = godig.EngageTimestamp(s)
-	case "Last_Email_Time":
-		s = godig.EngageTimestamp(s)
 	case "State":
 		s = strings.ToUpper(s)
 	case "Transaction_Date":
@@ -55,13 +64,6 @@ func Transform(m string, d R) string {
 		if s != "Recurring" {
 			s = "OneTime"
 		}
-	case "Receive_Email":
-		t := "Unsubscribed"
-		x, err := strconv.ParseInt(s, 10, 32)
-		if err == nil && x > 0 {
-			t = "Subscribed"
-		}
-		s = t
 	}
 	// Convert tabs to spaces. Remove leading/trailing spaces.
 	// Remove any quotation marks.
