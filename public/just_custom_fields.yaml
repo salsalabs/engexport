@@ -1,0 +1,277 @@
+supporter:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic supporter
+    # table field name.  You can use both standard fields
+    # and custom fields.
+    #
+    # This file is the default mapping for transferring
+    # supporter information from Salsa Classic to Engage.
+    #
+    # Note that tabs can confuse things.  Please use spaces.
+    fieldmap:
+        "supporter_KEY":   "supporter_KEY"
+        "email":           "Email"
+        "title":           "Title"
+
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "SalsaClassicID"
+        - "email"
+        - "status"
+        - "title"
+        - "firstName"
+        - "middleName"
+        - "lastName"
+        - "suffix"
+        - "addressLine1"
+        - "addressLine2"
+        - "city"
+        - "state"
+        - "country"
+        - "postalCode"
+        - "homePhone"
+        - "cellPhone"
+        - "workPhone"
+        - "timezone"
+        - "languageCode"
+
+donation:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic donation
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # donation information from Salsa Classic to Engage.
+    fieldmap:
+        "supporter_KEY":    "supporter.supporter_KEY"
+        "Email":            "supporter.Email"
+        "donation_KEY":     "donation_KEY"
+        "Transaction_Date": "Transaction_Date"
+        "Amount":           "amount"
+        "Transaction_Type": "Transaction_Type"
+        "RESULT":           "RESULT"
+        "Tracking_Code":    "donation.Tracking_Code"
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "supporter_KEY"
+        - "Email"
+        - "donation_KEY"
+        - "Transaction_Date"
+        - "Amount"
+        - "Transaction_Type"
+        - "RESULT"
+        - "Tracking_Code"
+
+groups:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # groups information from Salsa Classic to Engage.
+    fieldmap:
+        "Group": "Group_Name"
+        "Email": "supporter.Email"
+        "groups_KEY": "groups.groups_KEY"
+        "supporter_KEY": "supporter.supporter_KEY"
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "Group"
+        - "Email"
+        - "groups_KEY"
+        - "supporter_KEY"
+tag:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # tag information from Salsa Classic to Engage.
+    fieldmap:
+        "Group": "tag"
+        "Email": "supporter.Email"
+        "tag_KEY": "tag.tag_KEY"
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "tag_KEY"
+        - "Group"
+        - "Email"
+    # Optional key map.  The key is a tag_KEY, the name is the
+    # Engage group to which tagged supporters will be added.
+    # "Optional" means that this map can be left out.
+    keymap:
+
+action:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # groups information from Salsa Classic to Engage.
+    fieldmap:
+        "supporter_KEY": "supporter.supporter_KEY"
+        "Email": "supporter.Email"
+        "ReferenceName": "Reference_Name"
+        "Title": "action.Title"
+        "action_KEY": "action.action_KEY"
+        "DateActionTaken": "supporter_action.Date_Created"
+
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "supporter_KEY"
+        - "Email"
+        - "ReferenceName"
+        - "Title"
+        - "action_KEY"
+        - "DateActionTaken"
+
+event:
+    # Field map.  The column on the left is the target.
+    # The list of headers must come of out the left column.
+    #
+    # The column on the right is the Salsa Classic groups
+    # table field name *or* fields from a joined supporter
+    # record.  You can use both standard fields and custom
+    # fields.  Changing the joined supporter fields is
+    # Not A Good Idea.
+    #
+    # This file is the default mapping for transferring
+    # groups information from Salsa Classic to Engage.
+    fieldmap:
+        "supporter_KEY": "supporter.supporter_KEY"
+        "Email": "supporter.Email"
+        "ReferenceName": "Reference_Name"
+        "Title": "Event_Name"
+        "event_KEY": "event.event_KEY"
+        "SignupDate": "supproter_event.Date_Created"
+
+    # Headers for the CSV file.  Headers will appear at the
+    # top of the CSV file in this order.  Note that headers
+    # *must* come from the left column of the field map.
+    headers:
+        - "supporter_KEY"
+        - "Email"
+        - "ReferenceName"
+        - "Title"
+        - "event_KEY"
+        - "SignupDate"
+
+contact_history:
+    fieldmap:
+        "supporter_KEY": "supporter.supporter_KEY"
+        "Email": "supporter.Email"
+        "contact_history_KEY": "contact_history_KEY"
+        "campaign_manager_KEY": "campaign_manager.campaign_manager_KEY"
+        "CampaignManagerEmail": "campaign_manager.Email"
+        "Date_Created": "contact_history.Date_Created"
+        "Contact_Date": "Contact_Date"
+        "Contact_Due_Date": "Contact_Due_Date"
+        "Contacted_By": "Contacted_By"
+        "Method": "Method"
+        "Purpose": "Purpose"
+        "Priority": "Priority"
+        "Codes": "Codes"
+        "Notes": "contact_history.Notes"
+        "Status": "contact_history.Status"
+    headers:
+        - "supporter_KEY"
+        - "Email"
+        - "Date_Created"
+        - "contact_history_KEY"
+        - "campaign_manager_KEY"
+        - "CampaignManagerEmail"
+        - "Contact_Date"
+        - "Contact_Due_Date"
+        - "Contacted_By"
+        - "Method"
+        - "Purpose"
+        - "Priority"
+        - "Codes"
+        - "Notes"
+        - "Status"
+
+supporter_email_statistics:
+    fieldmap:
+        "supporter_KEY": "supporter.supporter_KEY"
+        "Email": "supporter.Email"
+        "emails_sent": "emails_sent"
+        "emails_opened": "emails_opened"
+        "emails_clicked": "emails_clicked"
+        "last_open": "last_open"
+        "last_click": "last_click"
+        "open_percentage": "open_percentage"
+        "click_percentage": "click_percentage"
+    headers:
+        - "supporter_KEY"
+        - 'Email'
+        - "emails_sent"
+        - "emails_opened"
+        - "open_percentage"
+        - "click_percentage"
+        - "emails_clicked"
+        - "last_open"
+        - "last_click"
+
+blast_statistics:
+    fieldmap:
+        "email_blast_KEY": "email_blast.email_blast_KEY"
+        "Reference_Name": "email_blast.Reference_Name"
+        "Subject": "email_blast.Subject"
+        "Date_Created": "email_blast.Date_Created"
+        "First_Email_Time": "First_Email_Time"
+        "Last_Email_Time": "Last_Email_Time"
+        "Total_Emails": "Total_Emails"
+        "Emails_Opened": "Emails_Opened"
+        "Emails_Clicked": "Emails_Clicked"
+        "Emails_Failed": "Emails_Failed"
+        "Open_Percentage": "Open_Percentage"
+        "Click_Percentage": "Click_Percentage"
+        "Unsubscribes": "Unsubscribes"
+        "Unsubscribe_Percentage": "Unsubscribe_Percentage"
+    headers:
+        - "email_blast_KEY"
+        - "Reference_Name"
+        - "Subject"
+        - "Date_Created"
+        - "First_Email_Time"
+        - "Last_Email_Time"
+        - "Total_Emails"
+        - "Emails_Opened"
+        - "Emails_Clicked"
+        - "Emails_Failed"
+        - "Open_Percentage"
+        - "Click_Percentage"
+        - "Unsubscribes"
+        - "Unsubscribe_Percentage"
