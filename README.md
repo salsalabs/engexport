@@ -89,7 +89,7 @@ _Remember to remove this file after you're done!_
 
 A sample `run.yaml` file can be found in `public/sample_run.yaml`.  Your best bet will be to create a working directory for the export, then run this command:
 
-engexport --sample-run-yaml`
+engexport --sample`
 
 That will create a file called `sample_run.yaml` that contains these contents.
 
