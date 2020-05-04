@@ -23,7 +23,7 @@ func customFields(api *godig.API, schema *engexport.Schema) error {
 		return err
 	}
 	for _, f := range a {
-		if f.IsCustom && len(f.DisplayName) != 0 {
+		if f.IsCustom == "true" && len(f.DisplayName) != 0 {
 			schema.Supporter.Fields[f.DisplayName] = f.Name
 			schema.Supporter.Headers = append(schema.Supporter.Headers, f.DisplayName)
 		}
@@ -84,6 +84,8 @@ func selectSchema(run *engexport.RunConfig) (r io.Reader, err error) {
 		return r, err
 	}
 	switch run.Schema {
+	case "just_custom_fields":
+		r, err = statikFS.Open("/just_custom_fields.yaml")
 	case "engage":
 		r, err = statikFS.Open("/engage_schema.yaml")
 	case "goodbye":
