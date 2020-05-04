@@ -19,25 +19,8 @@ supporter:
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
     headers:
-        - "SalsaClassicID"
+        - "supporter_KEY"
         - "email"
-        - "status"
-        - "title"
-        - "firstName"
-        - "middleName"
-        - "lastName"
-        - "suffix"
-        - "addressLine1"
-        - "addressLine2"
-        - "city"
-        - "state"
-        - "country"
-        - "postalCode"
-        - "homePhone"
-        - "cellPhone"
-        - "workPhone"
-        - "timezone"
-        - "languageCode"
 
 donation:
     # Field map.  The column on the left is the target.
