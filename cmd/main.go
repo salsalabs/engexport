@@ -121,8 +121,9 @@ func showSample() error {
 //main is the starting point for this app.
 func main() {
 	var (
-		cpath  = kingpin.Flag("run", "YAML file containing credentials and runtime parameters.").PlaceHolder("FILENAME").Default("./run.yaml").String()
-		sample = kingpin.Flag("sample", "Write a sample run.yaml to the current directory.").Bool()
+		cpath      = kingpin.Flag("run", "YAML file containing credentials and runtime parameters.").PlaceHolder("FILENAME").Default("./run.yaml").String()
+		sample     = kingpin.Flag("sample", "Write a sample run.yaml to the current directory.").Bool()
+		apiVerbose = kingpin.Flag("apiVerbose", "Show network traffic.  Very noisy...").Bool()
 	)
 	kingpin.Parse()
 
@@ -142,6 +143,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
 	}
+	api.Verbose = *apiVerbose
+
 	r, err := selectSchema(run)
 	if err != nil {
 		log.Fatalf("Main: %v\n", err)
