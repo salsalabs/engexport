@@ -23,11 +23,13 @@ func customFields(api *godig.API, schema *engexport.Schema) error {
 		return err
 	}
 	for _, f := range a {
-		if f.IsCustom == "true" && len(f.DisplayName) != 0 {
+		fmt.Printf("%s %s\n", f.Name, f.IsCustom)
+		if f.IsCustom == "true" && len(f.Label) != 0 {
 			schema.Supporter.Fields[f.DisplayName] = f.Name
-			schema.Supporter.Headers = append(schema.Supporter.Headers, f.DisplayName)
+			schema.Supporter.Headers = append(schema.Supporter.Headers, f.Label)
 		}
 	}
+	fmt.Printf("Schema %+v\n", schema.Supporter.Headers)
 	return nil
 }
 
