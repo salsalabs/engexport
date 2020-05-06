@@ -29,7 +29,6 @@ func customFields(api *godig.API, schema *engexport.Schema) error {
 			schema.Supporter.Headers = append(schema.Supporter.Headers, f.Label)
 		}
 	}
-	fmt.Printf("Schema %+v\n", schema.Supporter.Headers)
 	return nil
 }
 
