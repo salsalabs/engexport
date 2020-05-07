@@ -111,11 +111,13 @@ func showSample() error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile("./run.yaml", b, os.ModePerm)
+	f, err := os.Create("./run.yaml")
 	if err != nil {
 		return err
 	}
-	return nil
+	defer f.Close()
+	_, err = f.Write(b)
+	return err
 }
 
 //main is the starting point for this app.
