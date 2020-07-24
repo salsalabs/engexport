@@ -12,8 +12,7 @@ import (
 
 func one(a *godig.API, table string) {
 	t := a.NewTable(table)
-	var target []godig.Fields
-	err := t.Describe(&target)
+	target, err := t.Describe()
 	if err != nil {
 		log.Fatalf("Describe %v on %v\n", err, table)
 	}
