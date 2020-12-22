@@ -75,7 +75,7 @@ func NewActiveGroups(p P) *E {
 	e.Headers = p.T.Groups.Headers
 	e.Keys = p.T.Groups.Keys
 	e.CsvFilename = "groups.csv"
-	e.TableName = "groups(groups_KEY)supporter_groups(supporter_KEY)supporter"
+	e.TableName = "supporter(supporter_KEY)supporter_groups(groups_KEY)groups"
 	e.CountTableName = "supporter_groups"
 	e.PrimaryKey = "groups_KEY"
 	return e
@@ -94,7 +94,7 @@ func NewAllGroups(p P) *E {
 	e.Headers = p.T.Groups.Headers
 	e.Keys = p.T.Groups.Keys
 	e.CsvFilename = "groups.csv"
-	e.TableName = "groups(groups_KEY)supporter_groups(supporter_KEY)supporter"
+	e.TableName = "supporter(supporter_KEY)supporter_groups(groups_KEY)groups"
 	e.CountTableName = "supporter_groups"
 	e.PrimaryKey = "groups_KEY"
 	return e
@@ -345,9 +345,9 @@ func NewAllChapter(p P) *E {
 	e.Headers = p.T.Chapter.Headers
 	e.Keys = p.T.Chapter.Keys
 	e.CsvFilename = "chapters.csv"
-	e.TableName = "chapter(chapter_KEY)supporter_chapter(supporter_KEY)supporter"
+	e.TableName = "supporter(supporter_KEY)supporter_chapter(chapter_KEY)chapter"
 	e.CountTableName = "supporter_chapter"
-	e.PrimaryKey = "chapter_KEY"
+	e.PrimaryKey = "supporter_KEY"
 	return e
 }
 

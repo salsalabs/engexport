@@ -402,12 +402,12 @@ blast_statistics:
         - "Unsubscribe_Percentage"
 chapter:
     fieldmap:
-        "Chapter_Name": "Name"
+        "Chapter_Name": "chapter.Name"
         "Email": "supporter.Email"
         "chapter_KEY": "chapter.chapter_KEY"
         "supporter_KEY": "supporter.supporter_KEY"
     headers:
-        - "chapter_KEY"
         - "supporter_KEY"
-        - "Chapter_Name"
         - "Email"
+        - "chapter_KEY"
+        - "Chapter_Name"
