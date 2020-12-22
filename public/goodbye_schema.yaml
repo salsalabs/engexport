@@ -218,6 +218,7 @@ groups:
         - "Email"
         - "groups_KEY"
         - "supporter_KEY"
+        - "chapter_KEY"
 tag:
     # Field map.  The column on the left is the target.
     # The list of headers must come of out the left column.
