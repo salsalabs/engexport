@@ -208,6 +208,8 @@ func main() {
 			e = engexport.NewEmailStatistics(p)
 		case "blast_statistics":
 			e = engexport.NewBlastStatistics(p)
+		case "chapters all":
+			e = engexport.NewAllChapter(p)
 		}
 		if e == nil {
 			log.Println("Error: you *must* choose a table to export!")

@@ -333,6 +333,24 @@ func NewBlastStatistics(p P) *E {
 	return e
 }
 
+//NewAllChapter instantiates an environment for copying Chapters and supporters.
+func NewAllChapter(p P) *E {
+	c := []string{
+		"chapter.chapter_KEY IS NOT EMPTY",
+	}
+
+	e := NewEnv(p)
+	e.Conditions = c
+	e.Fields = p.T.Chapter.Fields
+	e.Headers = p.T.Chapter.Headers
+	e.Keys = p.T.Chapter.Keys
+	e.CsvFilename = "chapters.csv"
+	e.TableName = "chapter(chapter_KEY)supporter_chapter(supporter_KEY)supporter"
+	e.CountTableName = "supporter_chapter"
+	e.PrimaryKey = "chapter_KEY"
+	return e
+}
+
 //LoadSchema accepts a reader and returns a Schema.
 func LoadSchema(r io.Reader) (*Schema, error) {
 	var t Schema

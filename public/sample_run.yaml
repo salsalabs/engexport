@@ -11,6 +11,7 @@ args:
         - supporters all
         - donations all
         - groups all
+        - chapters all
         - events
         - actions
         - blast_statistics

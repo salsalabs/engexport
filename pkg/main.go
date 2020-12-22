@@ -138,4 +138,9 @@ type Schema struct {
 		Headers []string `yaml:"headers"`
 		Keys    R        `yaml:"keymap"`
 	} `yaml:"blast_statistics"`
+	Chapter struct {
+		Fields  R        `yaml:"fieldmap"`
+		Headers []string `yaml:"headers"`
+		Keys    R        `yaml:"keymap"`
+	} `yaml:"chapter"`
 }
