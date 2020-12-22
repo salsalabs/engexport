@@ -208,6 +208,8 @@ groups:
         "Email": "supporter.Email"
         "groups_KEY": "groups.groups_KEY"
         "supporter_KEY": "supporter.supporter_KEY"
+        "chapter_KEY": "groups.chapter_KEY"
+
     # Headers for the CSV file.  Headers will appear at the
     # top of the CSV file in this order.  Note that headers
     # *must* come from the left column of the field map.
