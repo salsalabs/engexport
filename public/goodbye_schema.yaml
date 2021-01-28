@@ -269,6 +269,7 @@ action:
         "ReferenceName": "Reference_Name"
         "Title": "action.Title"
         "action_KEY": "action.action_KEY"
+        "chapter_KEY" "action.chapter_KEY"
         "DateActionTaken": "supporter_action.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
@@ -280,6 +281,7 @@ action:
         - "ReferenceName"
         - "Title"
         - "action_KEY"
+        - "chapter_KEY"
         - "DateActionTaken"
 
 event:
@@ -300,6 +302,7 @@ event:
         "ReferenceName": "Reference_Name"
         "Title": "Event_Name"
         "event_KEY": "event.event_KEY"
+        "chapter_KEY": event.chapter_KEY"
         "SignupDate": "supporter_event.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
@@ -311,6 +314,7 @@ event:
         - "ReferenceName"
         - "Title"
         - "event_KEY"
+        - "chapter_KEY"
         - "SignupDate"
 
 contact_history:

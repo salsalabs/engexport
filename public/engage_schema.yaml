@@ -71,6 +71,7 @@ donation:
         "supporter_KEY":    "supporter.supporter_KEY"
         "Email":            "supporter.Email"
         "donation_KEY":     "donation_KEY"
+        "chapter_KEY":      "donation.chapter_KEY"
         "Transaction_Date": "Transaction_Date"
         "Amount":           "amount"
         "Transaction_Type": "Transaction_Type"
@@ -83,6 +84,7 @@ donation:
         - "supporter_KEY"
         - "Email"
         - "donation_KEY"
+        - "chapter_KEY"
         - "Transaction_Date"
         - "Amount"
         - "Transaction_Type"
@@ -164,6 +166,7 @@ action:
         "ReferenceName": "Reference_Name"
         "Title": "action.Title"
         "action_KEY": "action.action_KEY"
+        "chapter_KEY": "action.chapter_KEY"
         "DateActionTaken": "supporter_action.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
@@ -175,6 +178,7 @@ action:
         - "ReferenceName"
         - "Title"
         - "action_KEY"
+        - "chapter_KEY"
         - "DateActionTaken"
 
 event:
@@ -195,6 +199,7 @@ event:
         "ReferenceName": "Reference_Name"
         "Title": "Event_Name"
         "event_KEY": "event.event_KEY"
+        "chapter_KEY": "event.chapter_KEY"
         "SignupDate": "supproter_event.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
@@ -206,6 +211,7 @@ event:
         - "ReferenceName"
         - "Title"
         - "event_KEY"
+        - "chapter_KEY"
         - "SignupDate"
 
 contact_history:
