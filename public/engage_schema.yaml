@@ -199,7 +199,7 @@ event:
         "ReferenceName": "Reference_Name"
         "Title": "Event_Name"
         "event_KEY": "event.event_KEY"
-        "chapter_KEY": "event.chapter_KEY"
+        "chapter_KEY": "supporter_event.chapter_KEY"
         "SignupDate": "supproter_event.Date_Created"
 
     # Headers for the CSV file.  Headers will appear at the
